@@ -64,6 +64,7 @@
   "llm_model": "gemini-3.5-flash",
   "llm_fallback_models": ["gemini-3.8-flash", "gemini-flash-lite-latest"],
   "llm_max_calls": 10,
+  "llm_hard_cap": 20,
   "readme_max_chars": 15000,
   "trial_sandbox_root": "D:\\sandbox"
 }

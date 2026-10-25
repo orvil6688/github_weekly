@@ -5,7 +5,8 @@
     python main.py --dry-run --inspect owner/repo   另外印出指定專案的判斷細節
     python main.py                           完整執行:挑選 + 中文介紹,寫入 data/weeks/
     python main.py --no-llm                  不呼叫 LLM,示範降級版本
-    python main.py --refresh-llm             忽略本週快取,重新產生介紹
+    python main.py --refresh-llm             忽略本週快取,重新產生精選介紹與速覽(分類沿用快取)
+    python main.py --fill-missing            只補本週 JSON 中降級的項目(雲端補跑用)
 """
 import argparse
 import json
@@ -137,14 +138,16 @@ def write_up(res: dict, cfg: dict, week: str, llm) -> dict:
     quick_picks = [{
         "full_name": c["full_name"],
         "url": c["url"],
+        "description_raw": c["description_raw"],
         "language": c.get("language"),
         "category": c["category"],
         "stars_total": c.get("stars_total"),
         "stars_this_week": c.get("stars_this_week"),
         "health_score": c["health"]["score"],
         "flags": c["health"]["flags"],
-        "one_liner": lines[c["full_name"]][0],
-        "one_liner_status": lines[c["full_name"]][1],
+        "one_liner": lines[c["full_name"]]["one_liner"],
+        "risk_flag": lines[c["full_name"]]["risk_flag"],
+        "one_liner_status": lines[c["full_name"]]["status"],
     } for c in quick]
 
     week_data = {
@@ -155,12 +158,48 @@ def write_up(res: dict, cfg: dict, week: str, llm) -> dict:
         "projects": projects,
         "quick_picks": quick_picks,
     }
-    out = ROOT / "data" / "weeks" / f"{week}.json"
+    save_week(week_data)
+    selector.update_history(ROOT / "data" / "history.json", week, featured, quick)
+    log.info("已更新 history.json")
+    return week_data
+
+
+def save_week(week_data: dict) -> dict:
+    """轉成台灣繁體後寫入 data/weeks/<週次>.json(就地更新 week_data)。"""
+    week_data.update(summarizer.to_tw(week_data))
+    out = ROOT / "data" / "weeks" / f"{week_data['week']}.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(week_data, ensure_ascii=False, indent=2), encoding="utf-8")
-    selector.update_history(ROOT / "data" / "history.json", week, featured, quick)
-    log.info("已寫入 %s 並更新 history.json", out.relative_to(ROOT))
+    log.info("已寫入 %s", out.relative_to(ROOT))
     return week_data
+
+
+def fill_missing(cfg: dict, week: str, llm) -> dict | None:
+    """只補缺項:讀本週 JSON,對 fallback 的精選與缺一句話的速覽重新呼叫 LLM。
+
+    不重新抓候選、不重新分類、不重新挑選;入選名單維持不變。給雲端補跑用(雲端沒有快取)。
+    """
+    path = ROOT / "data" / "weeks" / f"{week}.json"
+    if not path.exists():
+        print(f"找不到 {path.relative_to(ROOT)},沒有可補的內容")
+        return None
+    wd = json.loads(path.read_text(encoding="utf-8"))
+    todo = [p for p in wd["projects"] if p.get("intro_status") != "ai"]
+    q_todo = [q for q in wd["quick_picks"] if q.get("one_liner_status") != "ai" or not q.get("one_liner")]
+    print(f"需要補的:精選 {len(todo)} 個、速覽 {len(q_todo)} 個")
+    for p in todo:
+        p["readme"] = fetcher.fetch_readme(p["full_name"], cfg["readme_max_chars"])
+        p.update(summarizer.summarize(p, cfg, llm))
+        p.pop("readme")
+    if q_todo:
+        lines = summarizer.quick_one_liners(llm, q_todo)
+        for q in q_todo:
+            v = lines[q["full_name"]]
+            q.update({"one_liner": v["one_liner"], "risk_flag": v["risk_flag"], "one_liner_status": v["status"]})
+    wd["filled_at"] = datetime.now(TPE).isoformat(timespec="seconds")
+    save_week(wd)
+    # 網頁產生在階段 4 加入
+    return wd
 
 
 def _stars(c: dict) -> str:
@@ -258,7 +297,8 @@ def main() -> None:
     ap.add_argument("--trending-url", help="覆蓋 config 的 Trending 網址(測試備援用)")
     ap.add_argument("--inspect", action="append", default=[], help="印出指定 repo 的判斷細節")
     ap.add_argument("--no-llm", action="store_true", help="不呼叫 LLM,全部使用降級介紹(示範/測試用)")
-    ap.add_argument("--refresh-llm", action="store_true", help="忽略本週快取,強制重新產生 LLM 內容")
+    ap.add_argument("--refresh-llm", action="store_true", help="忽略本週快取,重新產生精選介紹與速覽(分類沿用快取)")
+    ap.add_argument("--fill-missing", action="store_true", help="只補本週 JSON 中降級的精選與速覽,不重新挑選")
     args = ap.parse_args()
 
     load_dotenv(ROOT / ".env")
@@ -279,6 +319,12 @@ def main() -> None:
             log.error("Gemini 金鑰驗證失敗,改用降級介紹")
             llm.enabled = False
 
+    if args.fill_missing:
+        wd = fill_missing(cfg, week, llm)
+        if wd:
+            print_llm_report({"cat_changes": {}}, wd, llm)
+        return
+
     res = gather(cfg, week, llm)
     print_report(res, week, args.inspect)
     if args.dry_run:
@@ -292,7 +338,9 @@ def print_llm_report(res: dict, wd: dict, llm) -> None:
     print("\n===== 中文介紹 =====")
     if llm:
         models = Counter(llm.used_models)
-        print(f"LLM 呼叫 {llm.calls} 次;型號:" + ("、".join(f"{m}×{n}" for m, n in models.items()) or "無(全部來自快取)"))
+        print(f"LLM 計數呼叫 {llm.calls} 次(上限 {llm.max_calls})、實際請求 {llm.requests} 次(硬上限 {llm.hard_cap})、"
+              f"暫時性錯誤(503 等){llm.transient} 次")
+        print("成功使用的型號:" + ("、".join(f"{m}×{n}" for m, n in models.items()) or "無(全部來自快取)"))
     else:
         print("LLM:未使用(--no-llm),全部為降級版本")
     if res["cat_changes"]:
@@ -307,9 +355,12 @@ def print_llm_report(res: dict, wd: dict, llm) -> None:
         print(f"     難度 {pr['difficulty']}|Windows {pr['windows_ok']}|GPU {pr['needs_gpu']}|"
               f"付費 API {pr['needs_paid_api']}|寫程式 {pr['needs_coding']}")
         print(f"     {pr['verdict']}")
+        for r in p.get("risk_notes") or []:
+            print(f"     ⚠【{r['type']}】{r['note']}")
     print("\n【速覽】")
     for i, q in enumerate(wd["quick_picks"], 1):
         warn = "  ⚠成長異常" if "成長異常" in q["flags"] else ""
+        warn += f"  ⚠{q['risk_flag']}" if q.get("risk_flag") else ""
         print(f"  {i:>2}. {q['full_name']} [{q['category']}] ({q['one_liner_status']}){warn}")
         print(f"      {q['one_liner']}")
     print(f"\n已寫入 data/weeks/{wd['week']}.json")
