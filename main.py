@@ -3,6 +3,9 @@
 用法:
     python main.py --dry-run                 只挑專案,不呼叫 LLM、不產生網頁
     python main.py --dry-run --inspect owner/repo   另外印出指定專案的判斷細節
+    python main.py                           完整執行:挑選 + 中文介紹,寫入 data/weeks/
+    python main.py --no-llm                  不呼叫 LLM,示範降級版本
+    python main.py --refresh-llm             忽略本週快取,重新產生介紹
 """
 import argparse
 import json
@@ -17,6 +20,7 @@ from dotenv import load_dotenv
 
 import fetcher
 import selector
+import summarizer
 
 ROOT = Path(__file__).resolve().parent
 TPE = timezone(timedelta(hours=8))
@@ -43,8 +47,8 @@ def current_week(now: datetime) -> str:
     return f"{y}-W{w:02d}"
 
 
-def gather(cfg: dict, week: str) -> dict:
-    """抓候選 → 過濾 → 評分 → 挑選。回傳整理好的結果(還沒有中文介紹)。"""
+def gather(cfg: dict, week: str, llm=None) -> dict:
+    """抓候選 → 過濾 → 評分 →(LLM 分類修正)→ 挑選。回傳整理好的結果(還沒有中文介紹)。"""
     cands = fetcher.fetch_candidates(cfg)
     stats = fetcher.fetch_candidates.stats
 
@@ -87,6 +91,9 @@ def gather(cfg: dict, week: str) -> dict:
         c["interest"] = selector.classify_interest(c, cfg["interests"], cfg)
         kept.append(c)
 
+    # 分類修正必須在挑選之前,類別上限才會用到修正後的類別
+    cat_changes = summarizer.fix_categories(llm, kept, cfg) if llm else {}
+
     selector.score_candidates(kept)
     featured = selector.select_picks(kept, cfg)
     quick = selector.select_quick(kept, featured, cfg)
@@ -96,7 +103,64 @@ def gather(cfg: dict, week: str) -> dict:
         c["languages"] = lg
     log.info("GitHub API 呼叫次數:%d", fetcher.api_calls)
     return {"stats": stats, "candidates": cands, "kept": kept, "excluded": excluded,
-            "featured": featured, "quick": quick}
+            "featured": featured, "quick": quick, "cat_changes": cat_changes}
+
+
+def write_up(res: dict, cfg: dict, week: str, llm) -> dict:
+    """產生中文介紹,組成週資料 JSON,存檔並更新 history。llm 為 None 時全部走降級版本。"""
+    featured, quick = res["featured"], res["quick"]
+    with ThreadPoolExecutor(max_workers=5) as ex:
+        readmes = list(ex.map(lambda c: fetcher.fetch_readme(c["full_name"], cfg["readme_max_chars"]), featured))
+    projects = []
+    for c, readme in zip(featured, readmes):
+        c["readme"] = readme
+        s = summarizer.summarize(c, cfg, llm)
+        h = c["health"]
+        projects.append({
+            "rank": c["rank"],
+            "slot": c["slot"],
+            "matched_interest": c["matched_interest"],
+            "category": c["category"],
+            "full_name": c["full_name"],
+            "url": c["url"],
+            "description_raw": c["description_raw"],
+            "language": c.get("language"),
+            "license": c.get("license"),
+            "stars_total": c.get("stars_total"),
+            "stars_this_week": c.get("stars_this_week"),
+            "health": {"score": h["score"], "last_push_days": h["last_push_days"], "commits_30d": h["commits_30d"],
+                       "open_issues": h["open_issues"], "contributors": h["contributors"], "flags": h["flags"]},
+            **s,
+        })
+
+    lines = summarizer.quick_one_liners(llm, quick)
+    quick_picks = [{
+        "full_name": c["full_name"],
+        "url": c["url"],
+        "language": c.get("language"),
+        "category": c["category"],
+        "stars_total": c.get("stars_total"),
+        "stars_this_week": c.get("stars_this_week"),
+        "health_score": c["health"]["score"],
+        "flags": c["health"]["flags"],
+        "one_liner": lines[c["full_name"]][0],
+        "one_liner_status": lines[c["full_name"]][1],
+    } for c in quick]
+
+    week_data = {
+        "week": week,
+        "generated_at": datetime.now(TPE).isoformat(timespec="seconds"),
+        "source": res["stats"]["source"],
+        "excluded_count": len(res["excluded"]),
+        "projects": projects,
+        "quick_picks": quick_picks,
+    }
+    out = ROOT / "data" / "weeks" / f"{week}.json"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(week_data, ensure_ascii=False, indent=2), encoding="utf-8")
+    selector.update_history(ROOT / "data" / "history.json", week, featured, quick)
+    log.info("已寫入 %s 並更新 history.json", out.relative_to(ROOT))
+    return week_data
 
 
 def _stars(c: dict) -> str:
@@ -193,6 +257,8 @@ def main() -> None:
     ap.add_argument("--dry-run", action="store_true", help="只挑專案,不呼叫 LLM、不產生網頁")
     ap.add_argument("--trending-url", help="覆蓋 config 的 Trending 網址(測試備援用)")
     ap.add_argument("--inspect", action="append", default=[], help="印出指定 repo 的判斷細節")
+    ap.add_argument("--no-llm", action="store_true", help="不呼叫 LLM,全部使用降級介紹(示範/測試用)")
+    ap.add_argument("--refresh-llm", action="store_true", help="忽略本週快取,強制重新產生 LLM 內容")
     args = ap.parse_args()
 
     load_dotenv(ROOT / ".env")
@@ -204,11 +270,49 @@ def main() -> None:
     log_path = setup_logging(week)
     print(f"開始執行 {week},紀錄檔:{log_path.relative_to(ROOT)}")
 
-    res = gather(cfg, week)
-    print_report(res, week, args.inspect)
+    llm = None
+    if not args.dry_run and not args.no_llm:
+        llm = summarizer.LLM(cfg, week, ROOT / "data" / "cache", refresh=args.refresh_llm)
+        ok = llm.verify_key()
+        print(f"Gemini 金鑰驗證:{'成功' if ok else '失敗(本次全部改用降級介紹)'}")
+        if not ok:
+            log.error("Gemini 金鑰驗證失敗,改用降級介紹")
+            llm.enabled = False
 
-    if not args.dry_run:
-        print("\n(中文介紹與網頁產生尚未實作,將於階段 3、4 加入)")
+    res = gather(cfg, week, llm)
+    print_report(res, week, args.inspect)
+    if args.dry_run:
+        return
+
+    week_data = write_up(res, cfg, week, llm)
+    print_llm_report(res, week_data, llm)
+
+
+def print_llm_report(res: dict, wd: dict, llm) -> None:
+    print("\n===== 中文介紹 =====")
+    if llm:
+        models = Counter(llm.used_models)
+        print(f"LLM 呼叫 {llm.calls} 次;型號:" + ("、".join(f"{m}×{n}" for m, n in models.items()) or "無(全部來自快取)"))
+    else:
+        print("LLM:未使用(--no-llm),全部為降級版本")
+    if res["cat_changes"]:
+        print(f"\n【分類修正】{len(res['cat_changes'])} 個專案改了類別:")
+        for name, (old, new) in res["cat_changes"].items():
+            print(f"  - {name}:{old} → {new}")
+    print("\n【精選】")
+    for p in wd["projects"]:
+        pr = p["practicality"]
+        print(f"  {p['rank']}. {p['full_name']} [{p['category']}] ({p['intro_status']})")
+        print(f"     {p['intro']['one_liner']}")
+        print(f"     難度 {pr['difficulty']}|Windows {pr['windows_ok']}|GPU {pr['needs_gpu']}|"
+              f"付費 API {pr['needs_paid_api']}|寫程式 {pr['needs_coding']}")
+        print(f"     {pr['verdict']}")
+    print("\n【速覽】")
+    for i, q in enumerate(wd["quick_picks"], 1):
+        warn = "  ⚠成長異常" if "成長異常" in q["flags"] else ""
+        print(f"  {i:>2}. {q['full_name']} [{q['category']}] ({q['one_liner_status']}){warn}")
+        print(f"      {q['one_liner']}")
+    print(f"\n已寫入 data/weeks/{wd['week']}.json")
 
 
 if __name__ == "__main__":

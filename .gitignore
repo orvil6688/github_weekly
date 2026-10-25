@@ -4,6 +4,9 @@
 # 執行紀錄
 logs/
 
+# LLM 快取
+data/cache/
+
 # Python
 __pycache__/
 *.pyc

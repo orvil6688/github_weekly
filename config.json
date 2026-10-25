@@ -62,7 +62,8 @@
   "noise_keywords": ["awesome", "interview", "roadmap", "tutorial", "cheatsheet", "list", "books", "course"],
   "noise_desc_phrases": ["curated list", "awesome list", "a list of", "collection of resources", "interview questions", "learning roadmap", "free books", "cheat sheet", "cheatsheet", "tutorials", "course", "guide to", "learn to"],
   "llm_model": "gemini-3.5-flash",
-  "llm_fallback_models": ["gemini-2.5-flash", "gemini-flash-lite-latest"],
+  "llm_fallback_models": ["gemini-3.8-flash", "gemini-flash-lite-latest"],
+  "llm_max_calls": 10,
   "readme_max_chars": 15000,
   "trial_sandbox_root": "D:\\sandbox"
 }
