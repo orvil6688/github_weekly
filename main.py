@@ -79,6 +79,10 @@ def gather(cfg: dict, week: str) -> dict:
             drop(c, why)
             continue
         c["health"] = selector.health_score(c)
+        c["anomaly"] = selector.growth_anomaly(c, cfg)
+        if c["anomaly"]:
+            c["health"]["flags"].insert(0, "成長異常")
+            log.info("成長異常 %s:%s", c["full_name"], ";".join(c["anomaly"]))
         c["category"] = selector.classify_category(c, cfg)
         c["interest"] = selector.classify_interest(c, cfg["interests"], cfg)
         kept.append(c)
@@ -86,6 +90,10 @@ def gather(cfg: dict, week: str) -> dict:
     selector.score_candidates(kept)
     featured = selector.select_picks(kept, cfg)
     quick = selector.select_quick(kept, featured, cfg)
+    with ThreadPoolExecutor(max_workers=8) as ex:
+        langs = list(ex.map(lambda c: fetcher.fetch_languages(c["full_name"]), featured + quick))
+    for c, lg in zip(featured + quick, langs):
+        c["languages"] = lg
     log.info("GitHub API 呼叫次數:%d", fetcher.api_calls)
     return {"stats": stats, "candidates": cands, "kept": kept, "excluded": excluded,
             "featured": featured, "quick": quick}
@@ -122,7 +130,24 @@ def print_report(res: dict, week: str, inspect: list[str]) -> None:
 
     print("\n【速覽 10 個】")
     for i, c in enumerate(res["quick"], 1):
-        print(f"  {i:>2}. {c['full_name']:<42} {c['category']:<8} 健康度 {c['health']['score']:>3}  本週 {_stars(c)}")
+        h = c["health"]
+        print(f"  {i:>2}. {c['full_name']}  [{c['category']}]  健康度 {h['score']}  本週 {_stars(c)}"
+              + (f"  警示:{'、'.join(h['flags'])}" if h["flags"] else ""))
+
+    kept = res["kept"]
+    print(f"\n【健康度分布】(保留的 {len(kept)} 個候選)")
+    buckets = [("0–39", 0, 39), ("40–59", 40, 59), ("60–79", 60, 79), ("80–99", 80, 99), ("100", 100, 100)]
+    for label, lo, hi in buckets:
+        n = sum(1 for c in kept if lo <= c["health"]["score"] <= hi)
+        print(f"  {label:<6} {n:>3} 個({n * 100 / max(len(kept), 1):.1f}%)")
+
+    anomalies = [c for c in kept if c["anomaly"]]
+    print(f"\n【成長異常】共 {len(anomalies)} 個(不進精選)")
+    featured_names = {c["full_name"] for c in res["featured"]}
+    quick_names = {c["full_name"] for c in res["quick"]}
+    for c in anomalies:
+        where = "速覽" if c["full_name"] in quick_names else ("精選" if c["full_name"] in featured_names else "未入選")
+        print(f"  - {c['full_name']}({where}):{';'.join(c['anomaly'])}")
 
     print("\n【類別分布】(全部保留的候選 / 精選 / 速覽)")
     all_c = Counter(c["category"] for c in res["kept"])
@@ -144,7 +169,20 @@ def print_report(res: dict, week: str, inspect: list[str]) -> None:
         print(f"  總星 {c.get('stars_total')}  本週 +{c.get('stars_this_week')}  建立 {c.get('age_days')} 天"
               f"  近 30 天 commit {c.get('commits_30d')}  open issues {c.get('open_issues')}"
               f"  最後 push {c.get('last_push_days')} 天前  授權 {c.get('license')}")
-        print(f"  結果:{'排除 — ' + why if why else '保留,健康度 ' + str(c['health']['score'])}")
+        print(f"  fork {c.get('forks')}  貢獻者 {'>500(清單太大)' if c.get('contributors_too_large') else c.get('contributors')}"
+              f"  近期作者(抽樣){c.get('recent_authors')}  release {c.get('releases')} 次"
+              f"(最新 {c.get('last_release_days')} 天前)")
+        if why:
+            print(f"  結果:排除 — {why}")
+        else:
+            h = c["health"]
+            where = ("精選" if c["full_name"] in featured_names else
+                     "速覽" if c["full_name"] in quick_names else "未入選")
+            print(f"  結果:保留,{where};健康度 {h['score']}(" +
+                  "、".join(f"{k} {v}" for k, v in h["parts"].items()) + ")")
+            print(f"  警示:{'、'.join(h['flags']) or '無'}")
+            if c["anomaly"]:
+                print(f"  成長異常觸發條件:{';'.join(c['anomaly'])}")
 
     print(f"\nGitHub API 呼叫 {fetcher.api_calls} 次")
 

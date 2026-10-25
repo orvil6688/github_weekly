@@ -1,7 +1,6 @@
 """過濾雜訊、健康度評分、類別與興趣分類、配額挑選、推薦紀錄去重。"""
 import json
 import logging
-import math
 import re
 from datetime import date
 from pathlib import Path
@@ -91,7 +90,7 @@ def is_noise(repo: dict, cfg: dict) -> tuple[bool, str]:
         return True, "已封存(作者不再維護)"
     if repo.get("fork"):
         return True, "是別人專案的分支(fork)"
-    if not repo.get("language") and not repo.get("languages"):
+    if not repo.get("language"):
         return True, "沒有程式碼,像是純文件"
     if repo["last_push_days"] is not None and repo["last_push_days"] > cfg["stale_days"]:
         return True, f"已 {repo['last_push_days']} 天沒更新(超過 {cfg['stale_days']} 天)"
@@ -104,58 +103,107 @@ def is_noise(repo: dict, cfg: dict) -> tuple[bool, str]:
 
 # ---------- 健康度 ----------
 
-def health_score(repo: dict) -> dict:
-    """回傳 health 物件(score 0–100 與 flags)。
+PERMISSIVE = {"MIT", "Apache-2.0", "BSD-2-Clause", "BSD-3-Clause", "ISC", "MPL-2.0", "Unlicense", "0BSD", "Zlib"}
 
-    配分:最近更新 30、近 30 天活躍度 25、授權 15、社群規模 15、issue 堆積程度 15。
+
+def _tier(value, steps: list[tuple[float, int]], default: int = 0) -> int:
+    """value 達到門檻就給對應分數;steps 依門檻由高到低排列。"""
+    for threshold, pts in steps:
+        if value >= threshold:
+            return pts
+    return default
+
+
+def health_score(repo: dict) -> dict:
+    """回傳 health 物件(score 0–100、各項得分 parts 與 flags)。
+
+    配分:最近更新 20、近 30 天 commit 15、貢獻者 20、fork÷star 20、正式 release 10、授權 15。
     """
     flags = []
     push = repo.get("last_push_days")
     if push is None:
         recency = 0
-    elif push <= 7:
-        recency = 30
-    elif push <= 30:
-        recency = 22
-    elif push <= 90:
-        recency = 12
-        flags.append(f"{push} 天沒更新")
     else:
-        recency = 5
+        recency = _tier(-push, [(-3, 20), (-7, 17), (-14, 14), (-30, 10), (-90, 5), (-180, 2)])
+    if push is not None and push > 30:
         flags.append(f"{push} 天沒更新")
 
     commits = repo.get("commits_30d") or 0
-    activity = round(min(25, commits * 25 / 30))
+    activity = _tier(commits, [(100, 15), (50, 12), (20, 9), (10, 6), (3, 3)])
     if commits < 3:
         flags.append("近 30 天幾乎沒有更新")
 
-    lic = 15 if repo.get("license") else 0
-    if not lic:
-        flags.append("無授權")
+    contrib = repo.get("contributors")
+    missing = repo.get("contributors") is None and not repo.get("contributors_too_large") \
+        or repo.get("releases") is None
+    if repo.get("contributors_too_large"):
+        people = 20
+    elif contrib is None:
+        people = 10  # 額度不足沒抓到,給中間分
+    else:
+        people = _tier(contrib, [(200, 20), (100, 17), (50, 14), (20, 10), (10, 7), (5, 4), (2, 2)])
+        if contrib <= 1:
+            flags.append("只有一位作者")
 
     stars = repo.get("stars_total") or 0
-    community = round(min(15, math.log10(stars + 1) * 3.5))
+    fork_ratio = (repo.get("forks") or 0) / max(stars, 1)
+    forks = _tier(fork_ratio, [(0.15, 20), (0.10, 16), (0.06, 12), (0.03, 8), (0.01, 4)])
+
+    rel_days = repo.get("last_release_days")
+    if repo.get("releases") is None:
+        release = 5  # 額度不足沒抓到,給中間分
+    elif not repo.get("releases"):
+        release = 0
+        flags.append("沒有正式版本")
+    else:
+        release = _tier(-(rel_days if rel_days is not None else 9999), [(-30, 10), (-90, 7), (-365, 4)], default=2)
+
+    lic_id = repo.get("license")
+    if not lic_id:
+        lic = 0
+        flags.append("無授權")
+    elif lic_id in PERMISSIVE:
+        lic = 15
+    elif "GPL" in lic_id:
+        lic = 10  # 可用但有義務(修改後散布要開源)
+    else:
+        lic = 5   # 自訂或少見授權,需要自己看條款
 
     issues = repo.get("open_issues") or 0
-    ratio = issues / max(stars, 1)
-    if ratio <= 0.02:
-        backlog = 15
-    elif ratio <= 0.05:
-        backlog = 10
-    elif ratio <= 0.1:
-        backlog = 5
-    else:
-        backlog = 0
-    if ratio > 0.05 and issues > 100:
+    if issues > 100 and issues / max(stars, 1) > 0.05:
         flags.append("issue 堆積")
+    if missing:
+        flags.append("資料不完整")
 
+    parts = {"最近更新": recency, "commit 活躍度": activity, "貢獻者": people,
+             "fork 比例": forks, "正式版本": release, "授權": lic}
     return {
-        "score": recency + activity + lic + community + backlog,
+        "score": sum(parts.values()),
+        "parts": parts,
         "last_push_days": push,
         "commits_30d": commits,
+        "contributors": "500+" if repo.get("contributors_too_large") else contrib,
         "open_issues": issues,
         "flags": flags,
     }
+
+
+def growth_anomaly(repo: dict, cfg: dict) -> list[str]:
+    """成長異常判斷(只標記,不排除)。回傳觸發的條件說明,沒有觸發就是空清單。"""
+    reasons = []
+    stars = repo.get("stars_total") or 0
+    per_day = stars / max(repo.get("age_days") or 1, 1)
+    if per_day > cfg["anomaly_stars_per_day"]:
+        reasons.append(f"平均每天 {per_day:,.0f} 星(門檻 {cfg['anomaly_stars_per_day']:,})")
+    fork_ratio = (repo.get("forks") or 0) / max(stars, 1)
+    if fork_ratio < cfg["anomaly_min_fork_ratio"]:
+        reasons.append(f"fork÷star 只有 {fork_ratio:.4f}(門檻 {cfg['anomaly_min_fork_ratio']})")
+    authors = repo.get("recent_authors")
+    if (repo.get("commits_30d") or 0) > cfg["anomaly_commits_30d"] and authors is not None \
+            and authors < cfg["anomaly_min_contributors"]:
+        reasons.append(f"近 30 天 {repo['commits_30d']:,} 個 commit,但近期作者只有 {authors} 位"
+                       f"(門檻 {cfg['anomaly_commits_30d']:,} commit / {cfg['anomaly_min_contributors']} 人)")
+    return reasons
 
 
 # ---------- 推薦紀錄 ----------
@@ -235,7 +283,10 @@ def select_picks(candidates: list[dict], cfg: dict) -> list[dict]:
     """依 slots 配額挑 5 個,湊不滿時以熱門補位並標 slot='backfill'。
 
     同一 category 最多 featured_category_cap 個;補位仍湊不滿才放寬並記 log。
+    被標記「成長異常」或健康度低於 featured_min_health 的專案不進精選(仍可進速覽)。
     """
+    min_health = cfg.get("featured_min_health", 0)
+    candidates = [c for c in candidates if not c.get("anomaly") and c["health"]["score"] >= min_health]
     cap = cfg["featured_category_cap"]
     slots = cfg["slots"]
     hot = sorted([c for c in candidates if c.get("hot_source")],

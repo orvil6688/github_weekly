@@ -45,6 +45,7 @@
     "資安": ["security", "vulnerability", "vulnerabilities", "pentest", "penetration", "exploit", "audit", "malware", "reverse engineer", "reverse engineering", "ctf", "privacy", "encryption", "osint"],
     "效率工具": ["productivity", "note", "notes", "note-taking", "todo", "calendar", "obsidian", "workflow", "clipboard", "launcher", "markdown", "knowledge base"]
   },
+  "featured_min_health": 50,
   "featured_category_cap": 2,
   "quick_category_cap": 4,
   "trending_url": "https://github.com/trending",
@@ -54,6 +55,10 @@
   "stale_days": 180,
   "exclude_recommended_weeks": 12,
   "suspicious_week_stars": 1000,
+  "anomaly_stars_per_day": 1000,
+  "anomaly_min_fork_ratio": 0.01,
+  "anomaly_commits_30d": 2000,
+  "anomaly_min_contributors": 10,
   "noise_keywords": ["awesome", "interview", "roadmap", "tutorial", "cheatsheet", "list", "books", "course"],
   "noise_desc_phrases": ["curated list", "awesome list", "a list of", "collection of resources", "interview questions", "learning roadmap", "free books", "cheat sheet", "cheatsheet", "tutorials", "course", "guide to", "learn to"],
   "llm_model": "gemini-3.5-flash",

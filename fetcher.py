@@ -20,6 +20,19 @@ _token = None
 _token_loaded = False
 _lock = threading.Lock()
 api_calls = 0  # 本次執行呼叫 GitHub API 的次數
+rate_remaining = None  # 最近一次回應的 X-RateLimit-Remaining(一般 API,不含 Search)
+LOW_QUOTA = 100
+_low_quota_logged = False
+
+
+def low_quota() -> bool:
+    """額度低於 LOW_QUOTA 時回傳 True;第一次觸發時寫 log。"""
+    global _low_quota_logged
+    low = rate_remaining is not None and rate_remaining < LOW_QUOTA
+    if low and not _low_quota_logged:
+        _low_quota_logged = True
+        log.warning("GitHub API 剩餘額度 %d,低於 %d:停止補抓貢獻者與 release,用已有資料繼續", rate_remaining, LOW_QUOTA)
+    return low
 
 
 def _get_token() -> str | None:
@@ -46,7 +59,7 @@ def _get_token() -> str | None:
 
 def _api_get(path: str, params: dict | None = None, accept: str = "application/vnd.github+json"):
     """呼叫 GitHub API,遇到 5xx 或連線錯誤重試 2 次。回傳 Response(呼叫端自行判斷狀態碼)。"""
-    global api_calls
+    global api_calls, rate_remaining
     headers = {"Accept": accept, "User-Agent": UA, "X-GitHub-Api-Version": "2022-11-28"}
     token = _get_token()
     if token:
@@ -61,6 +74,8 @@ def _api_get(path: str, params: dict | None = None, accept: str = "application/v
             log.warning("API 連線失敗 %s:%s", path, e.__class__.__name__)
             time.sleep(1 + attempt)
             continue
+        if r.headers.get("X-RateLimit-Resource", "core") == "core" and r.headers.get("X-RateLimit-Remaining"):
+            rate_remaining = int(r.headers["X-RateLimit-Remaining"])
         if r.status_code >= 500:
             time.sleep(1 + attempt)
             continue
@@ -212,39 +227,88 @@ def fetch_readme(full_name: str, max_chars: int) -> str:
     return r.text[:max_chars]
 
 
-def fetch_repo_detail(full_name: str, cfg: dict, with_readme: bool = False) -> dict:
-    """回傳 repo 基本資料、語言組成、最後 push、近 30 天 commit 數、issue 數、授權、README(截斷)。
+def fetch_languages(full_name: str) -> dict:
+    """語言組成(百分比,取前 3)。只對挑中的專案呼叫,節省 API 次數。"""
+    r = _api_get(f"/repos/{full_name}/languages")
+    if r is None or r.status_code != 200 or not r.json():
+        return {}
+    total = sum(r.json().values())
+    return {k: round(v * 100 / total, 1) for k, v in sorted(r.json().items(), key=lambda x: -x[1])[:3]}
 
-    取不到基本資料時回傳 {"error": 原因}。README 預設不抓(只有挑中的專案才需要)。
+
+def _count_by_link(r) -> int:
+    """per_page=1 時,Link 標頭 rel="last" 的頁碼就是總數;沒有 Link 代表只有 0 或 1 筆。"""
+    m = re.search(r'[?&]page=(\d+)>; rel="last"', r.headers.get("Link", ""))
+    return int(m.group(1)) if m else len(r.json())
+
+
+def _recent_authors(full_name: str, since: str, pages: int = 3) -> int:
+    """抽樣最近 pages×100 個 commit,算有幾位不同作者(近 30 天貢獻者的近似值)。"""
+    authors = set()
+    for page in range(1, pages + 1):
+        r = _api_get(f"/repos/{full_name}/commits", {"since": since, "per_page": 100, "page": page})
+        if r is None or r.status_code != 200 or not r.json():
+            break
+        for c in r.json():
+            who = (c.get("author") or {}).get("login") or ((c.get("commit") or {}).get("author") or {}).get("email")
+            if who:
+                authors.add(who.lower())
+        if len(r.json()) < 100:
+            break
+    return len(authors)
+
+
+def fetch_repo_detail(full_name: str, cfg: dict, with_readme: bool = False) -> dict:
+    """回傳 repo 基本資料、最後 push、近 30 天 commit 數、貢獻者數、release、issue 數、授權、README(截斷)。
+
+    每個候選固定 4 次呼叫(基本資料、commit、貢獻者、release);近 30 天 commit 超過異常門檻時
+    另外抽樣近期作者(最多 3 次)。語言組成與 README 只對挑中的專案另外抓。
+    取不到基本資料時回傳 {"error": 原因}。
     """
     r = _api_get(f"/repos/{full_name}")
     if r is None or r.status_code != 200:
         return {"error": f"無法取得 repo 資料(HTTP {r.status_code if r is not None else '無回應'})"}
     j = r.json()
+    full_name = j["full_name"]  # 改名過的 repo 以 API 回傳的新名稱為準
     now = datetime.now(timezone.utc)
     pushed = datetime.fromisoformat(j["pushed_at"].replace("Z", "+00:00")) if j.get("pushed_at") else None
     created = datetime.fromisoformat(j["created_at"].replace("Z", "+00:00"))
 
-    # 語言組成(百分比,取前 3)
-    langs = {}
-    lr = _api_get(f"/repos/{full_name}/languages")
-    if lr is not None and lr.status_code == 200 and lr.json():
-        total = sum(lr.json().values())
-        langs = {k: round(v * 100 / total, 1) for k, v in sorted(lr.json().items(), key=lambda x: -x[1])[:3]}
-
-    # 近 30 天 commit 數:per_page=1 時,Link 標頭最後一頁的頁碼就是總數
     commits_30d = 0
     since = (now - timedelta(days=30)).strftime("%Y-%m-%dT%H:%M:%SZ")
     cr = _api_get(f"/repos/{full_name}/commits", {"since": since, "per_page": 1})
     if cr is not None and cr.status_code == 200:
-        m = re.search(r'[?&]page=(\d+)>; rel="last"', cr.headers.get("Link", ""))
-        commits_30d = int(m.group(1)) if m else len(cr.json())
+        commits_30d = _count_by_link(cr)
+
+    # 以下屬於非必要資料:額度不足時跳過,值設為 None(健康度給中間分並加警示)
+    contributors, contributors_too_large = None, False
+    releases, last_release_days = None, None
+    recent_authors = None
+    if not low_quota():
+        # 貢獻者總數;超大型 repo 會回 403「清單太大」,視為貢獻者非常多
+        kr = _api_get(f"/repos/{full_name}/contributors", {"per_page": 1})
+        if kr is not None and kr.status_code == 200:
+            contributors = _count_by_link(kr)
+        elif kr is not None and kr.status_code == 204:
+            contributors = 0
+        elif kr is not None and kr.status_code == 403 and "too large" in kr.text:
+            contributors_too_large = True
+    if not low_quota():
+        # release:總數與最新一次發布距今幾天
+        rr = _api_get(f"/repos/{full_name}/releases", {"per_page": 1})
+        if rr is not None and rr.status_code == 200:
+            releases = _count_by_link(rr) if rr.json() else 0
+            if rr.json():
+                pub = rr.json()[0].get("published_at") or rr.json()[0].get("created_at")
+                if pub:
+                    last_release_days = (now - datetime.fromisoformat(pub.replace("Z", "+00:00"))).days
+    if commits_30d > cfg.get("anomaly_commits_30d", 2000) and not low_quota():
+        recent_authors = _recent_authors(full_name, since)
 
     detail = {
-        "full_name": j["full_name"],
+        "full_name": full_name,
         "description_raw": j.get("description") or "",
         "language": j.get("language"),
-        "languages": langs,
         "topics": j.get("topics", []),
         "license": (j.get("license") or {}).get("spdx_id") if j.get("license") else None,
         "stars_total": j.get("stargazers_count"),
@@ -256,6 +320,11 @@ def fetch_repo_detail(full_name: str, cfg: dict, with_readme: bool = False) -> d
         "age_days": max(1, (now - created).days),
         "last_push_days": (now - pushed).days if pushed else None,
         "commits_30d": commits_30d,
+        "contributors": contributors,
+        "contributors_too_large": contributors_too_large,
+        "recent_authors": recent_authors,
+        "releases": releases,
+        "last_release_days": last_release_days,
         "homepage": j.get("homepage"),
     }
     if detail["license"] == "NOASSERTION":
