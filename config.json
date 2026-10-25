@@ -1,0 +1,63 @@
+{
+  "slots": { "hot": 2, "domain": 2, "rising": 1 },
+  "featured_count": 5,
+  "quick_count": 10,
+  "interests": [
+    "Python 自動化與 bot",
+    "網頁爬蟲與資料擷取",
+    "股票與量化交易",
+    "運動數據分析",
+    "AI agent 與 LLM 工具",
+    "瀏覽器擴充與 userscript",
+    "本地網頁小工具",
+    "HTML/JS 小遊戲"
+  ],
+  "interest_keywords": {
+    "Python 自動化與 bot": ["automation", "automate", "bot", "telegram", "discord", "line bot", "rpa", "scheduler", "selenium"],
+    "網頁爬蟲與資料擷取": ["scraper", "scraping", "web-scraping", "crawler", "crawl", "spider", "data extraction", "extract data", "headless browser"],
+    "股票與量化交易": ["stock", "stocks", "trading", "trader", "quant", "quantitative", "backtest", "backtesting", "portfolio", "market data", "investing", "finance"],
+    "運動數據分析": ["sports", "football", "soccer", "nba", "baseball", "basketball", "fantasy football", "esports"],
+    "AI agent 與 LLM 工具": ["agent", "agents", "agentic", "llm", "llms", "mcp", "claude", "claude code", "gpt", "openai", "rag", "chatbot", "copilot", "gemini", "codex"],
+    "瀏覽器擴充與 userscript": ["browser extension", "chrome extension", "firefox extension", "userscript", "tampermonkey", "greasemonkey", "web extension"],
+    "本地網頁小工具": ["self-hosted", "selfhosted", "local-first", "offline", "single html", "single-file", "pwa", "web app", "dashboard"],
+    "HTML/JS 小遊戲": ["game", "games", "canvas", "webgl", "phaser", "pixel art", "puzzle", "arcade", "three.js", "threejs"]
+  },
+  "categories": [
+    "AI 與 LLM",
+    "開發工具",
+    "資料與爬蟲",
+    "金融與交易",
+    "前端與網頁",
+    "遊戲與圖形",
+    "系統與基礎建設",
+    "資安",
+    "效率工具",
+    "其他"
+  ],
+  "category_keywords": {
+    "AI 與 LLM": ["ai", "llm", "llms", "agent", "agents", "agentic", "gpt", "claude", "openai", "mcp", "rag", "machine-learning", "machine learning", "deep-learning", "deep learning", "diffusion", "transformer", "transformers", "gemini", "prompt", "inference", "neural"],
+    "開發工具": ["cli", "ide", "editor", "compiler", "sdk", "devtools", "developer tools", "linter", "git", "testing", "debugger", "terminal", "build tool", "package manager", "code review", "plugin", "plugins"],
+    "資料與爬蟲": ["scraper", "scraping", "crawler", "database", "etl", "analytics", "sql", "dataset", "data pipeline", "visualization", "dataframe", "search engine"],
+    "金融與交易": ["trading", "stock", "stocks", "finance", "financial", "quant", "crypto", "blockchain", "payment", "payments", "backtest"],
+    "前端與網頁": ["react", "vue", "css", "frontend", "front-end", "ui", "nextjs", "next.js", "tailwind", "component", "components", "svelte", "html", "design system", "website"],
+    "遊戲與圖形": ["game", "games", "game engine", "graphics", "3d", "webgl", "rendering", "shader", "unity", "godot", "emulator"],
+    "系統與基礎建設": ["kubernetes", "k8s", "docker", "container", "cloud", "infrastructure", "devops", "linux", "kernel", "runtime", "server", "network", "serverless", "observability", "operating system", "distributed", "sandbox"],
+    "資安": ["security", "vulnerability", "vulnerabilities", "pentest", "penetration", "exploit", "audit", "malware", "reverse engineer", "reverse engineering", "ctf", "privacy", "encryption", "osint"],
+    "效率工具": ["productivity", "note", "notes", "note-taking", "todo", "calendar", "obsidian", "workflow", "clipboard", "launcher", "markdown", "knowledge base"]
+  },
+  "featured_category_cap": 2,
+  "quick_category_cap": 4,
+  "trending_url": "https://github.com/trending",
+  "trending_languages": ["python", "typescript", "javascript", "go", "rust"],
+  "rising_max_total_stars": 3000,
+  "rising_created_within_days": 60,
+  "stale_days": 180,
+  "exclude_recommended_weeks": 12,
+  "suspicious_week_stars": 1000,
+  "noise_keywords": ["awesome", "interview", "roadmap", "tutorial", "cheatsheet", "list", "books", "course"],
+  "noise_desc_phrases": ["curated list", "awesome list", "a list of", "collection of resources", "interview questions", "learning roadmap", "free books", "cheat sheet", "cheatsheet", "tutorials", "course", "guide to", "learn to"],
+  "llm_model": "gemini-3.5-flash",
+  "llm_fallback_models": ["gemini-2.5-flash", "gemini-flash-lite-latest"],
+  "readme_max_chars": 15000,
+  "trial_sandbox_root": "D:\\sandbox"
+}

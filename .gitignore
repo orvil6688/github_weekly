@@ -1,0 +1,11 @@
+# 金鑰與本地設定
+.env
+
+# 執行紀錄
+logs/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
