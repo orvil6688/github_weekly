@@ -7,6 +7,7 @@
     python main.py --no-llm                  不呼叫 LLM,示範降級版本
     python main.py --refresh-llm             忽略本週快取,重新產生精選介紹與速覽(分類沿用快取)
     python main.py --fill-missing            只補本週 JSON 中降級的項目(雲端補跑用)
+    python main.py --build-only              只用現有週資料重新產生網頁
 """
 import argparse
 import json
@@ -19,6 +20,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
+import builder
 import fetcher
 import selector
 import summarizer
@@ -129,6 +131,7 @@ def write_up(res: dict, cfg: dict, week: str, llm) -> dict:
             "license": c.get("license"),
             "stars_total": c.get("stars_total"),
             "stars_this_week": c.get("stars_this_week"),
+            "stars_this_week_est": int(c["momentum"]) if c.get("stars_this_week") is None else None,
             "health": {"score": h["score"], "last_push_days": h["last_push_days"], "commits_30d": h["commits_30d"],
                        "open_issues": h["open_issues"], "contributors": h["contributors"], "flags": h["flags"]},
             **s,
@@ -143,6 +146,7 @@ def write_up(res: dict, cfg: dict, week: str, llm) -> dict:
         "category": c["category"],
         "stars_total": c.get("stars_total"),
         "stars_this_week": c.get("stars_this_week"),
+        "stars_this_week_est": int(c["momentum"]) if c.get("stars_this_week") is None else None,
         "health_score": c["health"]["score"],
         "flags": c["health"]["flags"],
         "one_liner": lines[c["full_name"]]["one_liner"],
@@ -154,6 +158,7 @@ def write_up(res: dict, cfg: dict, week: str, llm) -> dict:
         "week": week,
         "generated_at": datetime.now(TPE).isoformat(timespec="seconds"),
         "source": res["stats"]["source"],
+        "candidate_count": res["stats"]["deduped"],
         "excluded_count": len(res["excluded"]),
         "projects": projects,
         "quick_picks": quick_picks,
@@ -198,8 +203,14 @@ def fill_missing(cfg: dict, week: str, llm) -> dict | None:
             q.update({"one_liner": v["one_liner"], "risk_flag": v["risk_flag"], "one_liner_status": v["status"]})
     wd["filled_at"] = datetime.now(TPE).isoformat(timespec="seconds")
     save_week(wd)
-    # 網頁產生在階段 4 加入
+    build_pages(wd)
     return wd
+
+
+def build_pages(week_data: dict) -> None:
+    weeks = sorted(p.stem for p in (ROOT / "data" / "weeks").glob("*.json"))
+    builder.build_site(week_data, weeks)
+    print("網頁已產生:site/index.html")
 
 
 def _stars(c: dict) -> str:
@@ -299,7 +310,12 @@ def main() -> None:
     ap.add_argument("--no-llm", action="store_true", help="不呼叫 LLM,全部使用降級介紹(示範/測試用)")
     ap.add_argument("--refresh-llm", action="store_true", help="忽略本週快取,重新產生精選介紹與速覽(分類沿用快取)")
     ap.add_argument("--fill-missing", action="store_true", help="只補本週 JSON 中降級的精選與速覽,不重新挑選")
+    ap.add_argument("--build-only", action="store_true", help="只用現有週資料重新產生網頁,不抓資料、不呼叫 LLM")
     args = ap.parse_args()
+
+    if args.build_only:
+        print(f"網頁已產生:{builder.build_all().relative_to(ROOT)}")
+        return
 
     load_dotenv(ROOT / ".env")
     cfg = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
@@ -332,6 +348,7 @@ def main() -> None:
 
     week_data = write_up(res, cfg, week, llm)
     print_llm_report(res, week_data, llm)
+    build_pages(week_data)
 
 
 def print_llm_report(res: dict, wd: dict, llm) -> None:
