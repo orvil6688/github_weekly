@@ -634,7 +634,8 @@ def main() -> None:
     else:
         llm = summarizer.LLM(cfg, P["id"], cache_root, refresh=args.refresh_llm)
         ok = llm.verify_key()
-        print(f"Gemini 金鑰驗證:{'成功' if ok else '失敗(本次全部改用降級介紹)'}")
+        print(f"Gemini 金鑰驗證:{'成功' if ok else '失敗(本次全部改用降級介紹)'}"
+              f"(金鑰指紋 {summarizer.key_fingerprint(llm.key)})")
         if not ok:
             log.error("Gemini 金鑰驗證失敗,改用降級介紹")
             llm.enabled = False

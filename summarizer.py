@@ -6,6 +6,7 @@
 - 成功結果快取在 data/cache/<週次>/llm_cache.json,鍵為「repo 名稱::呼叫類型」
 - 任何失敗都回傳降級版本,不中斷流程
 """
+import hashlib
 import json
 import logging
 import os
@@ -49,11 +50,22 @@ def _tw_str(s: str) -> str:
     return "".join(_s2t.convert(c) if c in simp else c for c in s)
 
 
+def _mostly_chinese(s: str, threshold: float = 0.3) -> bool:
+    """中文字占(中文字 + 英文字母)的比例是否達到門檻;英文官方原文會低於門檻。"""
+    cjk = sum(1 for c in s if "一" <= c <= "鿿")
+    latin = sum(1 for c in s if c.isascii() and c.isalpha())
+    return cjk > 0 and cjk / (cjk + latin) >= threshold
+
+
 def to_tw(obj, skip_keys=("url", "full_name")):
-    """把資料中所有文字轉成台灣繁體,並統一「AI 代理」用語。網址與 repo 名稱不動。"""
+    """把資料中所有文字轉成台灣繁體,並統一「AI 代理」用語。網址與 repo 名稱不動。
+
+    用語替換只套用在以中文為主的文字;英文官方原文只做簡轉繁,避免出現「AI 代理 think like…」。
+    """
     if isinstance(obj, str):
         s = _tw_str(obj)
-        s = re.sub(r"AI\s*代理人|AI\s*[Aa]gents?|智慧代理(?:人)?", "AI 代理", s)
+        if _mostly_chinese(s):
+            s = re.sub(r"AI\s*代理人|AI\s*[Aa]gents?|智慧代理(?:人)?", "AI 代理", s)
         return s
     if isinstance(obj, list):
         return [to_tw(x, skip_keys) for x in obj]
@@ -81,10 +93,25 @@ def _err_msg(r) -> str:
         return ""
 
 
+def clean_key(raw: str | None) -> str:
+    """去掉頭尾空白、換行,以及成對的引號(本機 .env 與雲端 Secret 都可能多帶這些)。"""
+    s = (raw or "").strip()
+    if len(s) >= 2 and s[0] == s[-1] and s[0] in "\"'":
+        s = s[1:-1].strip()
+    return s
+
+
+def key_fingerprint(key: str) -> str:
+    """金鑰指紋:長度、前 4 碼、sha256 前 8 碼。用來比對本機與雲端是不是同一把,不會洩漏金鑰。"""
+    if not key:
+        return "(空)"
+    return f"長度 {len(key)}、前 4 碼 {key[:4]}、sha256 {hashlib.sha256(key.encode()).hexdigest()[:8]}"
+
+
 class LLM:
     def __init__(self, cfg: dict, week: str, cache_root: Path, enabled: bool = True, refresh: bool = False):
         self.cfg = cfg
-        self.key = os.environ.get("GEMINI_API_KEY", "").strip()
+        self.key = clean_key(os.environ.get("GEMINI_API_KEY"))
         self.enabled = enabled and bool(self.key)
         self.models = [cfg["llm_model"]] + cfg.get("llm_fallback_models", [])
         self.dead_models: set[str] = set()  # 本次執行已確定額度用完或不可用的型號
@@ -119,14 +146,31 @@ class LLM:
 
     # ---------- 金鑰驗證 ----------
     def verify_key(self) -> bool:
-        """用最小請求(讀取型號資訊,不產生內容、不計入呼叫數)確認金鑰可用。"""
+        """用最小請求(讀取型號資訊,不產生內容、不計入呼叫數)確認金鑰可用。
+
+        成功或失敗都把金鑰指紋寫進 log;失敗時另外記錄 HTTP 狀態碼與 Google 回傳的錯誤(遮掉金鑰)。
+        """
+        fp = key_fingerprint(self.key)
         if not self.key:
+            log.error("金鑰驗證失敗:沒有 GEMINI_API_KEY(指紋 %s)", fp)
             return False
         try:
             r = requests.get(f"{GEMINI}/{self.models[0]}", headers={"x-goog-api-key": self.key}, timeout=20)
-        except requests.RequestException:
+        except requests.RequestException as e:
+            log.error("金鑰驗證失敗:連線錯誤 %s(指紋 %s)", e.__class__.__name__, fp)
             return False
-        return r.ok
+        if r.ok:
+            log.info("金鑰驗證成功(指紋 %s)", fp)
+            return True
+        status, message = "", r.text[:300]
+        try:
+            err = r.json().get("error", {})
+            status, message = err.get("status", ""), err.get("message", "")
+        except ValueError:
+            pass
+        message = message.replace(self.key, "***")
+        log.error("金鑰驗證失敗:HTTP %s %s:%s(指紋 %s)", r.status_code, status, message, fp)
+        return False
 
     # ---------- 呼叫 ----------
     def _request(self, model: str, prompt: str, temperature: float) -> str:
