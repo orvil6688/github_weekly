@@ -1,0 +1,676 @@
+{
+  "period": "2026-W44",
+  "period_type": "weekly",
+  "generated_at": "2026-10-27T05:49:59+08:00",
+  "coverage": {
+    "from": "2026-10-20",
+    "to": "2026-10-27"
+  },
+  "source": "trending",
+  "candidate_count": 118,
+  "excluded_count": 8,
+  "projects": [
+    {
+      "rank": 1,
+      "slot": "hot",
+      "matched_interest": null,
+      "category": "AI 與 LLM",
+      "category_model": null,
+      "full_name": "stablyai/orca",
+      "url": "https://github.com/stablyai/orca",
+      "description_raw": "Orca is the place for working with a fleet of agents (e.g. Grok Bot, Claude Code). Run any coding agent with your own subscription. Available on desktop, mobile and remote runtime.",
+      "language": "TypeScript",
+      "license": "MIT",
+      "stars_total": 106965,
+      "stars_this_week": 9622,
+      "stars_this_week_est": null,
+      "health": {
+        "score": 92,
+        "last_push_days": 0,
+        "commits_30d": 4867,
+        "open_issues": 8248,
+        "contributors": 467,
+        "flags": [
+          "issue 堆積"
+        ]
+      },
+      "intro": {
+        "one_liner": "Orca is the place for working with a fleet of agents (e.g. Grok Bot, Claude Code). Run any coding agent with your own subscription. Available on desktop, mobile and remote runtime.",
+        "problem": "The AI Orchestrator for 100x builders.\n  Run Codex, ClaudeCode, OpenCode or Pi side-by-side — each in its own worktree, tracked in one place.",
+        "features": [
+          "資料不足"
+        ],
+        "audience": "資料不足",
+        "getting_started": "請參考官方 README：https://github.com/stablyai/orca#readme",
+        "tech_stack": "TypeScript",
+        "why_trending": "資料不足"
+      },
+      "practicality": {
+        "difficulty": null,
+        "windows_ok": "unknown",
+        "needs_gpu": "unknown",
+        "needs_paid_api": "unknown",
+        "needs_coding": "unknown",
+        "verdict": "AI 介紹產生失敗，以下為官方原文描述，請自行判斷"
+      },
+      "ideas_for_me": [],
+      "glossary": [],
+      "risk_notes": [],
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "Windows 支援為 unknown",
+          "付費 API 為 unknown",
+          "難度未知",
+          "寫程式需求為 unknown",
+          "介紹不是 AI 產生"
+        ],
+        "badge": false,
+        "has_misuse_risk": false
+      },
+      "trial_prompt": "# 任務：試用 GitHub 專案 stablyai/orca\n\n專案網址：https://github.com/stablyai/orca\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：資料不足\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\orca` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/stablyai/orca.git \"D:\\sandbox\\orca\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
+      "intro_status": "fallback",
+      "model": null,
+      "lite_model": false
+    },
+    {
+      "rank": 2,
+      "slot": "hot",
+      "matched_interest": null,
+      "category": "AI 與 LLM",
+      "category_model": null,
+      "full_name": "DietrichGebert/ponytail",
+      "url": "https://github.com/DietrichGebert/ponytail",
+      "description_raw": "Makes your AI 代理 think like the laziest senior dev in the room. The best code is the code you never wrote.",
+      "language": "JavaScript",
+      "license": "MIT",
+      "stars_total": 177047,
+      "stars_this_week": 9475,
+      "stars_this_week_est": null,
+      "health": {
+        "score": 79,
+        "last_push_days": 8,
+        "commits_30d": 139,
+        "open_issues": 140,
+        "contributors": 128,
+        "flags": [
+          "爆發成長"
+        ]
+      },
+      "intro": {
+        "one_liner": "Makes your AI 代理 think like the laziest senior dev in the room. The best code is the code you never wrote.",
+        "problem": "Ponytail 5: rebuilt from the ground up.\n  -53% code &middot; -41% time &middot; -26% cost &middot; -45% tokens\n  And yet: 98% of risky logic ships with a test. Without Ponytail: 68%.\n  Benchmarked in Claude Code, the same agent with and without the skill: 39 tasks including a real FastAPI + React repo, Opus 5.5, 5 runs each. Details.",
+        "features": [
+          "資料不足"
+        ],
+        "audience": "資料不足",
+        "getting_started": "請參考官方 README：https://github.com/DietrichGebert/ponytail#readme",
+        "tech_stack": "JavaScript",
+        "why_trending": "資料不足"
+      },
+      "practicality": {
+        "difficulty": null,
+        "windows_ok": "unknown",
+        "needs_gpu": "unknown",
+        "needs_paid_api": "unknown",
+        "needs_coding": "unknown",
+        "verdict": "AI 介紹產生失敗，以下為官方原文描述，請自行判斷"
+      },
+      "ideas_for_me": [],
+      "glossary": [],
+      "risk_notes": [],
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "Windows 支援為 unknown",
+          "付費 API 為 unknown",
+          "難度未知",
+          "寫程式需求為 unknown",
+          "介紹不是 AI 產生"
+        ],
+        "badge": false,
+        "has_misuse_risk": false
+      },
+      "trial_prompt": "# 任務：試用 GitHub 專案 DietrichGebert/ponytail\n\n專案網址：https://github.com/DietrichGebert/ponytail\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：資料不足\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\ponytail` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/DietrichGebert/ponytail.git \"D:\\sandbox\\ponytail\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
+      "intro_status": "fallback",
+      "model": null,
+      "lite_model": false
+    },
+    {
+      "rank": 3,
+      "slot": "domain",
+      "matched_interest": "本地網頁小工具",
+      "category": "效率工具",
+      "category_model": null,
+      "full_name": "debpalash/VoiceStudio",
+      "url": "https://github.com/debpalash/VoiceStudio",
+      "description_raw": "VoiceStudio is the open-source, fully-local ElevenLabs alternative — voice cloning, voice design, video dubbing, dictation, transcription & audiobook creation in 646 languages.",
+      "language": "Python",
+      "license": "AGPL-3.0",
+      "stars_total": 89005,
+      "stars_this_week": null,
+      "stars_this_week_est": 16044,
+      "health": {
+        "score": 88,
+        "last_push_days": 0,
+        "commits_30d": 2477,
+        "open_issues": 131,
+        "contributors": 107,
+        "flags": []
+      },
+      "intro": {
+        "one_liner": "VoiceStudio is the open-source, fully-local ElevenLabs alternative — voice cloning, voice design, video dubbing, dictation, transcription & audiobook creation in 646 languages.",
+        "problem": "VoiceStudio\n  \n    \n  \n  Open-source voice cloning, voice design, video dubbing, dictation, transcription & audiobook creation in 646 languages.\n  \n    Website ·\n    Download ·\n    Get started ·\n    Docs ·\n    Discord ·\n    簡體中文 ·\n    日本語",
+        "features": [
+          "資料不足"
+        ],
+        "audience": "資料不足",
+        "getting_started": "請參考官方 README：https://github.com/debpalash/VoiceStudio#readme",
+        "tech_stack": "Python",
+        "why_trending": "資料不足"
+      },
+      "practicality": {
+        "difficulty": null,
+        "windows_ok": "unknown",
+        "needs_gpu": "unknown",
+        "needs_paid_api": "unknown",
+        "needs_coding": "unknown",
+        "verdict": "AI 介紹產生失敗，以下為官方原文描述，請自行判斷"
+      },
+      "ideas_for_me": [],
+      "glossary": [],
+      "risk_notes": [],
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "Windows 支援為 unknown",
+          "付費 API 為 unknown",
+          "難度未知",
+          "寫程式需求為 unknown",
+          "介紹不是 AI 產生"
+        ],
+        "badge": false,
+        "has_misuse_risk": false
+      },
+      "trial_prompt": "# 任務：試用 GitHub 專案 debpalash/VoiceStudio\n\n專案網址：https://github.com/debpalash/VoiceStudio\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：資料不足\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\VoiceStudio` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/debpalash/VoiceStudio.git \"D:\\sandbox\\VoiceStudio\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
+      "intro_status": "fallback",
+      "model": null,
+      "lite_model": false
+    },
+    {
+      "rank": 4,
+      "slot": "domain",
+      "matched_interest": "AI 代理 與 LLM 工具",
+      "category": "金融與交易",
+      "category_model": null,
+      "full_name": "TauricResearch/TradingAgents",
+      "url": "https://github.com/TauricResearch/TradingAgents",
+      "description_raw": "TradingAgents: Multi-Agents LLM Financial Trading Framework",
+      "language": "Python",
+      "license": "Apache-2.0",
+      "stars_total": 115940,
+      "stars_this_week": 2461,
+      "stars_this_week_est": null,
+      "health": {
+        "score": 81,
+        "last_push_days": 10,
+        "commits_30d": 78,
+        "open_issues": 154,
+        "contributors": 23,
+        "flags": []
+      },
+      "intro": {
+        "one_liner": "TradingAgents: Multi-Agents LLM Financial Trading Framework",
+        "problem": "Deutsch | \n  Español | \n  français | \n  日本語 | \n  한국어 | \n  Português | \n  Русский | \n  中文",
+        "features": [
+          "資料不足"
+        ],
+        "audience": "資料不足",
+        "getting_started": "請參考官方 README：https://github.com/TauricResearch/TradingAgents#readme",
+        "tech_stack": "Python",
+        "why_trending": "資料不足"
+      },
+      "practicality": {
+        "difficulty": null,
+        "windows_ok": "unknown",
+        "needs_gpu": "unknown",
+        "needs_paid_api": "unknown",
+        "needs_coding": "unknown",
+        "verdict": "AI 介紹產生失敗，以下為官方原文描述，請自行判斷"
+      },
+      "ideas_for_me": [],
+      "glossary": [],
+      "risk_notes": [],
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "Windows 支援為 unknown",
+          "付費 API 為 unknown",
+          "難度未知",
+          "寫程式需求為 unknown",
+          "介紹不是 AI 產生"
+        ],
+        "badge": false,
+        "has_misuse_risk": false
+      },
+      "trial_prompt": "# 任務：試用 GitHub 專案 TauricResearch/TradingAgents\n\n專案網址：https://github.com/TauricResearch/TradingAgents\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：資料不足\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\TradingAgents` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/TauricResearch/TradingAgents.git \"D:\\sandbox\\TradingAgents\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
+      "intro_status": "fallback",
+      "model": null,
+      "lite_model": false
+    },
+    {
+      "rank": 5,
+      "slot": "rising",
+      "matched_interest": null,
+      "category": "資安",
+      "category_model": null,
+      "full_name": "aicodeking/leanrea",
+      "url": "https://github.com/aicodeking/leanrea",
+      "description_raw": "One 8 KB skill that replaces REA (Reverse Engineer Anything): plain CLI tools, no MCP. Benchmarked: 38% faster, 35% cheaper.",
+      "language": "Python",
+      "license": "MIT",
+      "stars_total": 2949,
+      "stars_this_week": null,
+      "stars_this_week_est": 2293,
+      "health": {
+        "score": 55,
+        "last_push_days": 7,
+        "commits_30d": 4,
+        "open_issues": 7,
+        "contributors": 1,
+        "flags": [
+          "只有一位作者",
+          "沒有正式版本"
+        ]
+      },
+      "intro": {
+        "one_liner": "One 8 KB skill that replaces REA (Reverse Engineer Anything): plain CLI tools, no MCP. Benchmarked: 38% faster, 35% cheaper.",
+        "problem": "**One 8 KB skill file that does what REA does: no MCP server, no 207 tools, no setup.**",
+        "features": [
+          "資料不足"
+        ],
+        "audience": "資料不足",
+        "getting_started": "請參考官方 README：https://github.com/aicodeking/leanrea#readme",
+        "tech_stack": "Python",
+        "why_trending": "資料不足"
+      },
+      "practicality": {
+        "difficulty": null,
+        "windows_ok": "unknown",
+        "needs_gpu": "unknown",
+        "needs_paid_api": "unknown",
+        "needs_coding": "unknown",
+        "verdict": "AI 介紹產生失敗，以下為官方原文描述，請自行判斷"
+      },
+      "ideas_for_me": [],
+      "glossary": [],
+      "risk_notes": [],
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "Windows 支援為 unknown",
+          "付費 API 為 unknown",
+          "難度未知",
+          "寫程式需求為 unknown",
+          "健康度 55 < 60",
+          "介紹不是 AI 產生"
+        ],
+        "badge": false,
+        "has_misuse_risk": false
+      },
+      "trial_prompt": "# 任務：試用 GitHub 專案 aicodeking/leanrea\n\n專案網址：https://github.com/aicodeking/leanrea\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：資料不足\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\leanrea` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/aicodeking/leanrea.git \"D:\\sandbox\\leanrea\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
+      "intro_status": "fallback",
+      "model": null,
+      "lite_model": false
+    }
+  ],
+  "quick_picks": [
+    {
+      "full_name": "affaan-m/ECC",
+      "url": "https://github.com/affaan-m/ECC",
+      "description_raw": "The agent harness performance optimization system. Skills, instincts, memory, security, and research-first development for Claude Code, Codex, Opencode, Cursor and beyond.",
+      "language": "JavaScript",
+      "category": "AI 與 LLM",
+      "category_model": null,
+      "stars_total": 289741,
+      "stars_this_week": null,
+      "stars_this_week_est": 6909,
+      "health_score": 96,
+      "flags": [
+        "爆發成長"
+      ],
+      "one_liner": "The agent harness performance optimization system. Skills, instincts, memory, security, and research-first development f",
+      "risk_flag": null,
+      "difficulty": null,
+      "windows_ok": "unknown",
+      "needs_paid_api": "unknown",
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "Windows 支援為 unknown",
+          "付費 API 為 unknown",
+          "難度未知",
+          "介紹不是 AI 產生"
+        ],
+        "maybe_fit": false
+      },
+      "model": null,
+      "one_liner_status": "fallback",
+      "lite_model": false
+    },
+    {
+      "full_name": "anomalyco/opencode",
+      "url": "https://github.com/anomalyco/opencode",
+      "description_raw": "The open source coding agent.",
+      "language": "TypeScript",
+      "category": "AI 與 LLM",
+      "category_model": null,
+      "stars_total": 221925,
+      "stars_this_week": 5921,
+      "stars_this_week_est": null,
+      "health_score": 96,
+      "flags": [],
+      "one_liner": "The open source coding agent.",
+      "risk_flag": null,
+      "difficulty": null,
+      "windows_ok": "unknown",
+      "needs_paid_api": "unknown",
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "Windows 支援為 unknown",
+          "付費 API 為 unknown",
+          "難度未知",
+          "介紹不是 AI 產生"
+        ],
+        "maybe_fit": false
+      },
+      "model": null,
+      "one_liner_status": "fallback",
+      "lite_model": false
+    },
+    {
+      "full_name": "Graphify-Labs/graphify",
+      "url": "https://github.com/Graphify-Labs/graphify",
+      "description_raw": "Turn any codebase, with its docs, SQL schemas, configs, and PDFs, into a queryable knowledge graph. A /graphify skill for Claude Code, Cursor, Codex, and Gemini CLI: local deterministic AST parsing, every edge explained, no vector store.",
+      "language": "Python",
+      "category": "AI 與 LLM",
+      "category_model": null,
+      "stars_total": 136066,
+      "stars_this_week": 6903,
+      "stars_this_week_est": null,
+      "health_score": 92,
+      "flags": [],
+      "one_liner": "Turn any codebase, with its docs, SQL schemas, configs, and PDFs, into a queryable knowledge graph. A /graphify skill fo",
+      "risk_flag": null,
+      "difficulty": null,
+      "windows_ok": "unknown",
+      "needs_paid_api": "unknown",
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "Windows 支援為 unknown",
+          "付費 API 為 unknown",
+          "難度未知",
+          "介紹不是 AI 產生"
+        ],
+        "maybe_fit": false
+      },
+      "model": null,
+      "one_liner_status": "fallback",
+      "lite_model": false
+    },
+    {
+      "full_name": "xerj-org/xerj",
+      "url": "https://github.com/xerj-org/xerj",
+      "description_raw": "Local-first search engine and MCP server for AI 代理. One Rust binary indexes code, docs, logs, JSONL/CSV and PDFs for BM25 full-text, vector and hybrid search, code search without grep, agent memory and RAG. Elasticsearch-compatible API; Corpus Hub serves hundreds of reference memory corpora.",
+      "language": "Rust",
+      "category": "AI 與 LLM",
+      "category_model": null,
+      "stars_total": 16817,
+      "stars_this_week": 7637,
+      "stars_this_week_est": null,
+      "health_score": 86,
+      "flags": [],
+      "one_liner": "Local-first search engine and MCP server for AI 代理. One Rust binary indexes code, docs, logs, JSONL/CSV and PDFs for",
+      "risk_flag": null,
+      "difficulty": null,
+      "windows_ok": "unknown",
+      "needs_paid_api": "unknown",
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "Windows 支援為 unknown",
+          "付費 API 為 unknown",
+          "難度未知",
+          "介紹不是 AI 產生"
+        ],
+        "maybe_fit": false
+      },
+      "model": null,
+      "one_liner_status": "fallback",
+      "lite_model": false
+    },
+    {
+      "full_name": "pingdotgg/t3code",
+      "url": "https://github.com/pingdotgg/t3code",
+      "description_raw": "",
+      "language": "TypeScript",
+      "category": "其他",
+      "category_model": null,
+      "stars_total": 30481,
+      "stars_this_week": 1770,
+      "stars_this_week_est": null,
+      "health_score": 100,
+      "flags": [
+        "issue 堆積"
+      ],
+      "one_liner": "資料不足",
+      "risk_flag": null,
+      "difficulty": null,
+      "windows_ok": "unknown",
+      "needs_paid_api": "unknown",
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "Windows 支援為 unknown",
+          "付費 API 為 unknown",
+          "難度未知",
+          "介紹不是 AI 產生"
+        ],
+        "maybe_fit": false
+      },
+      "model": null,
+      "one_liner_status": "fallback",
+      "lite_model": false
+    },
+    {
+      "full_name": "jub0t/Concat",
+      "url": "https://github.com/jub0t/Concat",
+      "description_raw": "The truly free, open-source, local-first, cross-platform CapCut replacement. Scriptable through a JSON-RPC API & MCP.",
+      "language": "Rust",
+      "category": "開發工具",
+      "category_model": null,
+      "stars_total": 11758,
+      "stars_this_week": 2616,
+      "stars_this_week_est": null,
+      "health_score": 81,
+      "flags": [],
+      "one_liner": "The truly free, open-source, local-first, cross-platform CapCut replacement. Scriptable through a JSON-RPC API & MCP.",
+      "risk_flag": null,
+      "difficulty": null,
+      "windows_ok": "unknown",
+      "needs_paid_api": "unknown",
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "Windows 支援為 unknown",
+          "付費 API 為 unknown",
+          "難度未知",
+          "介紹不是 AI 產生"
+        ],
+        "maybe_fit": false
+      },
+      "model": null,
+      "one_liner_status": "fallback",
+      "lite_model": false
+    },
+    {
+      "full_name": "strelov1/freehire",
+      "url": "https://github.com/strelov1/freehire",
+      "description_raw": "freehire — the open-source search engine for job seekers",
+      "language": "Go",
+      "category": "資料與爬蟲",
+      "category_model": null,
+      "stars_total": 3162,
+      "stars_this_week": 1933,
+      "stars_this_week_est": null,
+      "health_score": 86,
+      "flags": [],
+      "one_liner": "freehire — the open-source search engine for job seekers",
+      "risk_flag": null,
+      "difficulty": null,
+      "windows_ok": "unknown",
+      "needs_paid_api": "unknown",
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "Windows 支援為 unknown",
+          "付費 API 為 unknown",
+          "難度未知",
+          "介紹不是 AI 產生"
+        ],
+        "maybe_fit": false
+      },
+      "model": null,
+      "one_liner_status": "fallback",
+      "lite_model": false
+    },
+    {
+      "full_name": "PC2005-cloud/dsh-pet",
+      "url": "https://github.com/PC2005-cloud/dsh-pet",
+      "description_raw": "DSH 桌面寵物：一行命令裝好即用的透明動畫小桌寵，支援多開、大小位置隨心配置；還內建 DIY 素材鏈，能用 AI 影片自造專屬寵物",
+      "language": "TypeScript",
+      "category": "開發工具",
+      "category_model": null,
+      "stars_total": 4312,
+      "stars_this_week": 2283,
+      "stars_this_week_est": null,
+      "health_score": 82,
+      "flags": [],
+      "one_liner": "DSH 桌面寵物：一行命令裝好即用的透明動畫小桌寵，支援多開、大小位置隨心配置；還內建 DIY 素材鏈，能用 AI 影片自造專屬寵物",
+      "risk_flag": null,
+      "difficulty": null,
+      "windows_ok": "unknown",
+      "needs_paid_api": "unknown",
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "Windows 支援為 unknown",
+          "付費 API 為 unknown",
+          "難度未知",
+          "介紹不是 AI 產生"
+        ],
+        "maybe_fit": false
+      },
+      "model": null,
+      "one_liner_status": "fallback",
+      "lite_model": false
+    },
+    {
+      "full_name": "anthropics/knowledge-work-plugins",
+      "url": "https://github.com/anthropics/knowledge-work-plugins",
+      "description_raw": "Open source repository of plugins primarily intended for knowledge workers to use in Claude Cowork",
+      "language": "Python",
+      "category": "開發工具",
+      "category_model": null,
+      "stars_total": 33185,
+      "stars_this_week": 2790,
+      "stars_this_week_est": null,
+      "health_score": 73,
+      "flags": [
+        "沒有正式版本"
+      ],
+      "one_liner": "Open source repository of plugins primarily intended for knowledge workers to use in Claude Cowork",
+      "risk_flag": null,
+      "difficulty": null,
+      "windows_ok": "unknown",
+      "needs_paid_api": "unknown",
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "Windows 支援為 unknown",
+          "付費 API 為 unknown",
+          "難度未知",
+          "介紹不是 AI 產生"
+        ],
+        "maybe_fit": false
+      },
+      "model": null,
+      "one_liner_status": "fallback",
+      "lite_model": false
+    },
+    {
+      "full_name": "pollen-robotics/microduck",
+      "url": "https://github.com/pollen-robotics/microduck",
+      "description_raw": "A Tiny biped duck robot 🦆",
+      "language": "Rust",
+      "category": "其他",
+      "category_model": null,
+      "stars_total": 12350,
+      "stars_this_week": 1876,
+      "stars_this_week_est": null,
+      "health_score": 83,
+      "flags": [],
+      "one_liner": "A Tiny biped duck robot 🦆",
+      "risk_flag": null,
+      "difficulty": null,
+      "windows_ok": "unknown",
+      "needs_paid_api": "unknown",
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "Windows 支援為 unknown",
+          "付費 API 為 unknown",
+          "難度未知",
+          "介紹不是 AI 產生"
+        ],
+        "maybe_fit": false
+      },
+      "model": null,
+      "one_liner_status": "fallback",
+      "lite_model": false
+    }
+  ],
+  "week": "2026-W44"
+}

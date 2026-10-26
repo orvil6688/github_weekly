@@ -1,0 +1,79 @@
+{
+  "entries": [
+    {
+      "week": "2026-W44",
+      "full_name": "stablyai/orca",
+      "tier": "featured"
+    },
+    {
+      "week": "2026-W44",
+      "full_name": "DietrichGebert/ponytail",
+      "tier": "featured"
+    },
+    {
+      "week": "2026-W44",
+      "full_name": "debpalash/VoiceStudio",
+      "tier": "featured"
+    },
+    {
+      "week": "2026-W44",
+      "full_name": "TauricResearch/TradingAgents",
+      "tier": "featured"
+    },
+    {
+      "week": "2026-W44",
+      "full_name": "aicodeking/leanrea",
+      "tier": "featured"
+    },
+    {
+      "week": "2026-W44",
+      "full_name": "affaan-m/ECC",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W44",
+      "full_name": "anomalyco/opencode",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W44",
+      "full_name": "Graphify-Labs/graphify",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W44",
+      "full_name": "xerj-org/xerj",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W44",
+      "full_name": "pingdotgg/t3code",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W44",
+      "full_name": "jub0t/Concat",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W44",
+      "full_name": "strelov1/freehire",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W44",
+      "full_name": "PC2005-cloud/dsh-pet",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W44",
+      "full_name": "anthropics/knowledge-work-plugins",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W44",
+      "full_name": "pollen-robotics/microduck",
+      "tier": "quick"
+    }
+  ]
+}
