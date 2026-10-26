@@ -185,8 +185,8 @@ footer { margin-top: 48px; padding-top: 12px; border-top: 1px solid var(--rule);
 </nav>
 
 {% if not wd %}
-<header class="top"><h1>每月熱門</h1></header>
-<p class="empty-page">還沒有月資料。每月 1 日會產生上個月的熱門專案；也可以手動執行 python main.py --period monthly。</p>
+<header class="top"><h1>{{ "每週熱門" if ptype == "weekly" else "每月熱門" }}</h1></header>
+<p class="empty-page">{{ "第一份週精選會在週一產生。" if ptype == "weekly" else "第一份月度精選會在每月 1 日產生。" }}</p>
 {% else %}
 
 <header class="top">
@@ -306,9 +306,9 @@ footer { margin-top: 48px; padding-top: 12px; border-top: 1px solid var(--rule);
 <h2 class="section" id="archive">過往存檔</h2>
 <dl class="arch">
   <dt>週</dt>
-  <dd>{% for w in weeks %}{% if w == pid and ptype == "weekly" %}<b>{{ w }}</b>{% else %}<a href="{{ root }}archive/{{ w }}.html">{{ w }}</a>{% endif %}{% else %}<span class="muted">還沒有週資料</span>{% endfor %}</dd>
+  <dd>{% for w in weeks %}{% if w == pid and ptype == "weekly" %}<b>{{ w }}</b>{% else %}<a href="{{ root }}archive/{{ w }}.html">{{ w }}</a>{% endif %}{% else %}<span class="muted">尚無週次存檔</span>{% endfor %}</dd>
   <dt>月</dt>
-  <dd>{% for m in months %}{% if m == pid and ptype == "monthly" %}<b>{{ m }}</b>{% else %}<a href="{{ root }}archive/{{ m }}.html">{{ m }}</a>{% endif %}{% else %}<span class="muted">還沒有月資料</span>{% endfor %}</dd>
+  <dd>{% for m in months %}{% if m == pid and ptype == "monthly" %}<b>{{ m }}</b>{% else %}<a href="{{ root }}archive/{{ m }}.html">{{ m }}</a>{% endif %}{% else %}<span class="muted">尚無月度存檔</span>{% endfor %}</dd>
 </dl>
 
 <footer>

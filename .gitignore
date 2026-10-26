@@ -4,14 +4,11 @@
 # 執行紀錄
 logs/
 
-# LLM 快取
+# LLM 快取(雲端不保留,補跑靠 --fill-missing)
 data/cache/
 
-# 本地測試產生的週資料與推薦紀錄(階段 5 部署前再處理)
-data/weeks/
-data/history.json
-data/months/
-data/history_monthly.json
+# 網頁每次由 GitHub Actions 重新產生後部署到 Pages,不進版控
+site/
 
 # Python
 __pycache__/

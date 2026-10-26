@@ -1,0 +1,140 @@
+name: GitHub 每週熱門五選
+
+on:
+  schedule:
+    # cron 用 UTC;括號內為台灣時間
+    - cron: "17 0 * * 1"   # 週一 08:17 週完整
+    - cron: "17 6 * * 1"   # 週一 14:17 週補跑
+    - cron: "17 2 1 * *"   # 每月 1 日 10:17 月完整
+    - cron: "17 8 1 * *"   # 每月 1 日 16:17 月補跑
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 執行模式
+        type: choice
+        options: [週完整, 週補跑, 月完整, 月補跑]
+        default: 週完整
+
+# 所有執行共用同一組,排隊依序執行,不互相取消(避免同時改 data/ 造成 push 衝突)
+concurrency:
+  group: github-weekly
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+env:
+  TZ: Asia/Taipei
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: 取得程式碼
+        uses: actions/checkout@v7
+
+      - name: 安裝 Python 3.12
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: 安裝套件
+        run: python -m pip install -r requirements.txt
+
+      - name: 決定執行模式
+        id: mode
+        env:
+          EVENT: ${{ github.event_name }}
+          SCHEDULE: ${{ github.event.schedule }}
+          INPUT: ${{ inputs.mode }}
+        run: |
+          if [ "$EVENT" = "schedule" ]; then
+            case "$SCHEDULE" in
+              "17 0 * * 1") MODE="週完整" ;;
+              "17 6 * * 1") MODE="週補跑" ;;
+              "17 2 1 * *") MODE="月完整" ;;
+              "17 8 1 * *") MODE="月補跑" ;;
+              *) echo "::error::未知的排程:$SCHEDULE"; exit 1 ;;
+            esac
+          else
+            MODE="$INPUT"
+          fi
+          case "$MODE" in
+            "週完整") ARGS="" ;;
+            "週補跑") ARGS="--fill-missing" ;;
+            "月完整") ARGS="--period monthly" ;;
+            "月補跑") ARGS="--period monthly --fill-missing" ;;
+            *) echo "::error::未知的模式:$MODE"; exit 1 ;;
+          esac
+          echo "執行模式:$MODE(參數:${ARGS:-無})"
+          echo "mode=$MODE" >> "$GITHUB_OUTPUT"
+          echo "args=$ARGS" >> "$GITHUB_OUTPUT"
+
+      - name: 執行 main.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          PYTHONIOENCODING: utf-8
+        run: python main.py ${{ steps.mode.outputs.args }}
+
+      - name: 檢查資料是否有變動
+        id: changes
+        run: |
+          if [ -z "$(git status --porcelain -- data/)" ]; then
+            echo "沒有資料變動(補跑時代表沒有缺項),不 commit、不部署"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git status --porcelain -- data/
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit 資料變更
+        if: steps.changes.outputs.changed == 'true'
+        env:
+          MODE: ${{ steps.mode.outputs.mode }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898900+github-actions[bot]@users.noreply.github.com"
+          for p in data/weeks data/months data/history.json data/history_monthly.json; do
+            if [ -e "$p" ]; then git add -- "$p"; fi
+          done
+          # 只允許這四類資料進版控
+          bad="$(git diff --cached --name-only | grep -vE '^data/(weeks|months)/[^/]+\.json$|^data/history(_monthly)?\.json$' || true)"
+          if [ -n "$bad" ]; then
+            echo "::error::出現不允許 commit 的檔案:$bad"
+            exit 1
+          fi
+          if git diff --cached --quiet; then
+            echo "沒有可 commit 的變更"
+            exit 0
+          fi
+          git commit -m "自動更新:$MODE $(date '+%Y-%m-%d %H:%M')"
+          # 執行期間若有人 push 過(例如手動改了 config),先接上最新版再推
+          git pull --rebase
+          git push
+
+      - name: 產生網頁(所有週次與月份)
+        if: steps.changes.outputs.changed == 'true'
+        run: python main.py --build-only
+
+      - name: 設定 Pages
+        if: steps.changes.outputs.changed == 'true'
+        uses: actions/configure-pages@v6
+
+      - name: 上傳網頁
+        if: steps.changes.outputs.changed == 'true'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: site
+
+      - name: 部署到 GitHub Pages
+        id: deploy
+        if: steps.changes.outputs.changed == 'true'
+        uses: actions/deploy-pages@v5
