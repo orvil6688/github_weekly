@@ -4,270 +4,315 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>GitHub 每週熱門五選 {{ wd.week }}</title>
+<title>GitHub {{ "每週" if ptype == "weekly" else "每月" }}熱門五選{% if pid %} {{ pid }}{% endif %}</title>
 <style>
 :root {
-  --bg: #f6f7f9; --surface: #ffffff; --surface-2: #f0f2f5; --border: #dfe3e8;
-  --text: #1c2128; --muted: #5b6573; --link: #0b62c4;
-  --accent: #3b5bdb; --accent-soft: #e7ecff;
-  --good: #1a7f37; --good-soft: #dcf5e3;
-  --warn: #9a6700; --warn-soft: #fff4d1;
-  --bad: #c62828; --bad-soft: #fde4e4;
-  --risk-border: #e0a100; --risk-bg: #fff8e1;
-  --code-bg: #f3f4f6;
-  --shadow: 0 1px 2px rgba(0,0,0,.05), 0 2px 8px rgba(0,0,0,.04);
+  --paper: #EDF0EB; --paper-2: #F5F7F3; --ink: #1D2A23; --muted: #5E6B63; --rule: #C8CFC8;
+  --kraft: #C8A46A; --kraft-ink: #4A3613; --caution: #9A6400; --alert: #A3272F; --link: #1F5E54;
+  --sans: "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", sans-serif;
+  --narrow: "Bahnschrift", "Avenir Next Condensed", "Roboto Condensed", "Arial Narrow", "Microsoft JhengHei", "PingFang TC", sans-serif;
+  --mono: Consolas, "Cascadia Mono", "Microsoft JhengHei", monospace;
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0f1216; --surface: #171b21; --surface-2: #1e232b; --border: #2c333d;
-    --text: #e6e9ee; --muted: #9aa4b2; --link: #6cb2ff;
-    --accent: #8ea5ff; --accent-soft: #232b48;
-    --good: #5fd38a; --good-soft: #15301f;
-    --warn: #f0c04a; --warn-soft: #362b0e;
-    --bad: #ff7b72; --bad-soft: #3a1717;
-    --risk-border: #c99500; --risk-bg: #2a2310;
-    --code-bg: #0b0e12;
-    --shadow: none;
+    --paper: #131A16; --paper-2: #18211C; --ink: #E4E9E3; --muted: #97A39B; --rule: #2B3530;
+    --kraft: #B8955C; --kraft-ink: #2A1F0B; --caution: #E0B04A; --alert: #F08A8F; --link: #8CCFC1;
   }
 }
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
-body {
-  margin: 0; background: var(--bg); color: var(--text);
-  font-family: "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", sans-serif;
-  font-size: 16px; line-height: 1.65; overflow-wrap: anywhere;
-}
-a { color: var(--link); }
-.wrap { max-width: 920px; margin: 0 auto; padding: 24px 16px 64px; }
-header.top h1 { font-size: 1.6rem; margin: 0 0 4px; line-height: 1.3; }
-header.top .sub { color: var(--muted); font-size: .92rem; }
-.stats { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-.stat { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 6px 12px; font-size: .9rem; }
-.stat b { font-size: 1.05rem; }
-.archive-note { margin-top: 12px; padding: 8px 12px; border-radius: 8px; background: var(--accent-soft); font-size: .92rem; }
-h2.section { font-size: 1.2rem; margin: 36px 0 12px; padding-bottom: 6px; border-bottom: 2px solid var(--border); }
-h2.section small { color: var(--muted); font-weight: normal; font-size: .85rem; margin-left: 6px; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.75; overflow-wrap: anywhere; }
+a { color: var(--link); text-underline-offset: 3px; }
+:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+.wrap { max-width: 980px; margin: 0 auto; padding: 12px 24px 72px; }
+.num { font-family: var(--narrow); font-variant-numeric: tabular-nums; }
+.muted { color: var(--muted); }
+.small { font-size: .875rem; }
 
-/* ---------- 精選卡片 ---------- */
-.card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 16px; box-shadow: var(--shadow); }
-.card.has-risk { border-left: 5px solid var(--risk-border); }
-.fallback-banner { background: var(--warn-soft); color: var(--warn); border-radius: 8px; padding: 6px 10px; font-size: .9rem; font-weight: bold; margin-bottom: 10px; }
-.card-head { display: flex; gap: 12px; align-items: flex-start; }
-.rank { flex: none; width: 40px; height: 40px; border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center; font-weight: bold; font-size: 1.15rem; }
-@media (prefers-color-scheme: dark) { .rank { color: #0f1216; } }
-.card-title { min-width: 0; flex: 1; }
-.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 4px; }
-.tag { display: inline-block; font-size: .78rem; line-height: 1.5; padding: 1px 8px; border-radius: 999px; background: var(--surface-2); color: var(--muted); border: 1px solid var(--border); white-space: nowrap; }
-.tag.slot { background: var(--accent-soft); color: var(--accent); border-color: transparent; font-weight: bold; }
-.tag.risk { background: var(--risk-bg); color: var(--warn); border-color: var(--risk-border); font-weight: bold; }
-.tag.alert { background: var(--bad-soft); color: var(--bad); border-color: transparent; font-weight: bold; }
-.tag.flag { background: var(--warn-soft); color: var(--warn); border-color: transparent; }
-.repo-name { font-size: 1.2rem; font-weight: bold; text-decoration: none; word-break: break-all; }
-.repo-name:hover { text-decoration: underline; }
-.meta { color: var(--muted); font-size: .88rem; display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 2px; }
-.health { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 10px; }
-.score { font-weight: bold; padding: 1px 10px; border-radius: 999px; font-size: .88rem; }
-.score.good { background: var(--good-soft); color: var(--good); }
-.score.mid { background: var(--warn-soft); color: var(--warn); }
-.score.low { background: var(--bad-soft); color: var(--bad); }
-.one-liner { font-size: 1.05rem; margin: 12px 0 8px; }
-.badges { display: flex; flex-wrap: wrap; gap: 6px; }
-.badge { font-size: .82rem; padding: 3px 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface-2); white-space: nowrap; }
-.badge.yes { border-color: var(--good); color: var(--good); }
-.badge.no { border-color: var(--bad); color: var(--bad); }
-.badge.maybe { border-color: var(--warn); color: var(--warn); }
-.dots { letter-spacing: 1px; }
-.verdict { margin: 12px 0 0; padding: 8px 12px; border-radius: 8px; background: var(--surface-2); font-size: .95rem; }
-.verdict b { color: var(--muted); font-weight: normal; }
+/* ---------- 頁首 ---------- */
+nav.tabs { display: flex; gap: 28px; padding: 8px 0; border-bottom: 1px solid var(--rule); font-size: .95rem; }
+nav.tabs a { color: var(--muted); text-decoration: none; padding: 4px 0; }
+nav.tabs a.on { color: var(--ink); font-weight: bold; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 8px; }
+nav.tabs a.right { margin-left: auto; }
+header.top { padding: 28px 0 18px; border-bottom: 3px double var(--rule); }
+header.top h1 { font-family: var(--narrow); font-weight: 600; font-size: clamp(2.4rem, 6vw, 3.6rem); line-height: 1.1; margin: 0 0 10px; letter-spacing: .01em; }
+.facts { margin: 0; font-size: .95rem; }
+.facts-2 { margin: 2px 0 0; color: var(--muted); font-size: .875rem; }
+.rec-line { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; margin-top: 14px; }
+.rec-line .names { font-size: 1rem; }
+.rec-line .names b { font-weight: bold; }
+label.switch { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; font-size: .95rem; }
+label.switch input { width: 18px; height: 18px; margin: 0; accent-color: var(--ink); }
+.archive-note { margin-top: 10px; font-size: .875rem; color: var(--muted); }
+h2.section { font-size: 1.15rem; font-weight: bold; margin: 36px 0 0; padding-bottom: 8px; border-bottom: 1px solid var(--ink); }
+h2.section small { color: var(--muted); font-weight: normal; font-size: .875rem; margin-left: 10px; }
+.empty-page { margin: 32px 0; color: var(--muted); }
 
-details.more { margin-top: 14px; border-top: 1px dashed var(--border); padding-top: 10px; }
-details > summary { cursor: pointer; font-weight: bold; color: var(--link); list-style: none; padding: 4px 0; }
+/* ---------- 精選 ---------- */
+.item { position: relative; display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 0 32px; padding: 26px 0 24px; border-bottom: 1px solid var(--rule); }
+.item.has-risk { border-left: 3px solid var(--caution); padding-left: 16px; margin-left: -19px; }
+.price { font-family: var(--narrow); font-variant-numeric: tabular-nums; }
+.price .rank { font-size: .875rem; color: var(--muted); }
+.price .gain { font-size: 2rem; font-weight: 600; line-height: 1.1; display: block; }
+.price .gain-label { font-family: var(--sans); font-size: .8rem; color: var(--muted); display: block; margin-bottom: 10px; }
+.price dl { margin: 0; font-size: .9rem; line-height: 1.7; }
+.price dt { display: none; }
+.price dd { margin: 0; }
+.h-good { color: var(--ink); }
+.h-low { color: var(--alert); }
+.body { min-width: 0; }
+.name { font-family: var(--narrow); font-size: 1.5rem; font-weight: 600; line-height: 1.25; text-decoration: none; color: var(--ink); overflow-wrap: anywhere; padding-right: 130px; display: inline-block; }
+.price .health { font-family: var(--narrow); font-size: 1.25rem; font-weight: 600; line-height: 1.5; }
+.m-only { display: none; }
+.name:hover { color: var(--link); text-decoration: underline; }
+.kind { color: var(--muted); font-size: .875rem; margin-top: 2px; }
+.flags { font-size: .875rem; margin-top: 2px; }
+.flags span + span::before { content: " ｜ "; color: var(--muted); }
+.f-alert { color: var(--alert); }
+.f-link { color: var(--link); }
+.f-muted { color: var(--muted); }
+.fallback { color: var(--caution); font-size: .9rem; margin: 8px 0 0; }
+.one-liner { font-size: 1.1rem; margin: 12px 0 2px; }
+.reason { color: var(--muted); font-size: .9rem; margin: 0 0 4px; }
+.specs { font-size: .9rem; margin: 10px 0 0; }
+.specs span { margin-right: 1.2em; white-space: nowrap; }
+.s-bad { color: var(--alert); }
+.s-unk { color: var(--muted); }
+.verdict { margin: 8px 0 0; font-size: .95rem; }
+.verdict b { font-weight: normal; color: var(--muted); }
+.foot { margin-top: 8px; font-size: .8rem; color: var(--muted); }
+.foot span + span::before { content: " ｜ "; }
+
+/* 牛皮紙吊牌:全頁唯一搶眼元素 */
+.tag-kraft { position: absolute; top: 22px; right: 4px; background: var(--kraft); color: var(--kraft-ink); padding: 6px 14px 6px 24px; font-weight: bold; font-size: .95rem; line-height: 1.3; transform: rotate(-3deg); border-radius: 2px; }
+.tag-kraft::before { content: ""; position: absolute; left: 8px; top: 50%; width: 8px; height: 8px; margin-top: -4px; border-radius: 50%; background: var(--paper); }
+.tag-kraft small { display: block; font-weight: normal; font-size: .75rem; }
+.tag-kraft.with-note::before { top: 14px; margin-top: 0; }
+@media (prefers-reduced-motion: reduce) { .tag-kraft { transform: none; } }
+
+details.more { margin-top: 12px; }
+details > summary { cursor: pointer; color: var(--link); list-style: none; padding: 2px 0; width: fit-content; }
 details > summary::-webkit-details-marker { display: none; }
 details > summary::before { content: "▸ "; }
 details[open] > summary::before { content: "▾ "; }
-.risk-box { border: 2px solid var(--risk-border); background: var(--risk-bg); border-radius: 10px; padding: 10px 14px; margin: 10px 0 14px; }
-.risk-box h3 { margin: 0 0 4px; font-size: 1rem; color: var(--warn); }
+.risk-box { border: 1px solid var(--caution); padding: 10px 14px; margin: 12px 0 16px; }
+.risk-box h3 { margin: 0 0 4px; font-size: .95rem; color: var(--caution); }
 .risk-box ul { margin: 0; padding-left: 1.2em; }
-.block h3 { font-size: 1rem; margin: 16px 0 4px; }
+.risk-box .scope { color: var(--muted); font-size: .8rem; }
+.block h3 { font-size: .95rem; margin: 18px 0 4px; }
 .block p, .block ul, .block dl { margin: 0 0 6px; }
 .block ul { padding-left: 1.3em; }
-dl.kv { display: grid; grid-template-columns: 7.5em 1fr; gap: 4px 10px; }
+dl.kv { display: grid; grid-template-columns: 7.5em 1fr; gap: 4px 12px; }
 dl.kv dt { color: var(--muted); }
 dl.kv dd { margin: 0; }
-@media (max-width: 560px) { dl.kv { grid-template-columns: 1fr; } dl.kv dd { margin-bottom: 6px; } }
-.idea { background: var(--accent-soft); border-radius: 8px; padding: 8px 12px; margin-bottom: 6px; }
-.idea b { color: var(--accent); }
-.trial { margin-top: 16px; }
-.trial-tools { display: flex; align-items: center; gap: 10px; margin: 8px 0; }
-button.copy { font: inherit; font-size: .9rem; padding: 5px 16px; border-radius: 8px; border: 1px solid var(--accent); background: var(--accent); color: #fff; cursor: pointer; }
-@media (prefers-color-scheme: dark) { button.copy { color: #0f1216; } }
-button.copy:active { transform: translateY(1px); }
-.copied { color: var(--good); font-size: .9rem; font-weight: bold; opacity: 0; transition: opacity .2s; }
+.idea { border-left: 2px solid var(--rule); padding: 2px 0 2px 12px; margin-bottom: 8px; }
+.trial { margin-top: 18px; }
+.trial-tools { display: flex; align-items: center; gap: 12px; margin: 8px 0; }
+button.copy { font: inherit; font-size: .9rem; padding: 5px 18px; border-radius: 2px; border: 0; background: var(--ink); color: var(--paper); cursor: pointer; }
+.copied { color: var(--link); font-size: .9rem; opacity: 0; transition: opacity .2s; }
 .copied.show { opacity: 1; }
-pre.prompt { margin: 0; background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px; font-size: .85rem; line-height: 1.6; white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere; font-family: Consolas, "Microsoft JhengHei", "PingFang TC", monospace; max-height: 420px; overflow-y: auto; }
+@media (prefers-reduced-motion: reduce) { .copied { transition: none; } }
+pre.prompt { margin: 0; background: var(--paper-2); border: 1px solid var(--rule); padding: 12px 14px; font-family: var(--mono); font-size: .85rem; line-height: 1.6; white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere; max-height: 420px; overflow-y: auto; }
 
 /* ---------- 速覽 ---------- */
-.quick { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; box-shadow: var(--shadow); }
-.q-row { display: grid; grid-template-columns: 2em minmax(0, 1fr) auto; gap: 4px 12px; padding: 12px 16px; border-top: 1px solid var(--border); }
-.q-row:first-child { border-top: 0; }
-.q-num { color: var(--muted); font-weight: bold; }
-.q-main { min-width: 0; }
-.q-name { font-weight: bold; text-decoration: none; word-break: break-all; }
-.q-name:hover { text-decoration: underline; }
-.q-line { margin: 2px 0 4px; }
-.q-meta { color: var(--muted); font-size: .84rem; display: flex; flex-wrap: wrap; gap: 2px 12px; }
-.q-side { text-align: right; }
-@media (max-width: 560px) {
-  .q-row { grid-template-columns: 1.6em minmax(0, 1fr); }
-  .q-side { grid-column: 2; text-align: left; }
-}
+.q-head, .q-row { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) 7.5rem 4rem; gap: 0 20px; align-items: baseline; }
+.q-head { font-size: .8rem; color: var(--muted); padding: 10px 0 6px; border-bottom: 1px solid var(--rule); }
+.q-row { padding: 12px 0; border-bottom: 1px solid var(--rule); }
+.q-r { text-align: right; }
+.q-name { font-family: var(--narrow); font-weight: 600; font-size: 1.05rem; text-decoration: none; color: var(--ink); overflow-wrap: anywhere; }
+.q-name:hover { color: var(--link); text-decoration: underline; }
+.q-sub { font-size: .8rem; color: var(--muted); }
+.q-marks { font-size: .8rem; }
+.q-marks span + span::before { content: " ｜ "; color: var(--muted); }
+.maybe::before { content: ""; display: inline-block; width: 8px; height: 8px; background: var(--kraft); margin-right: 6px; vertical-align: 1px; }
+.q-line { font-size: .95rem; }
 
-/* ---------- 過往週次 ---------- */
-ul.weeks { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
-ul.weeks a { display: inline-block; padding: 4px 12px; border-radius: 8px; background: var(--surface); border: 1px solid var(--border); text-decoration: none; }
-.empty { color: var(--muted); }
-footer { margin-top: 40px; color: var(--muted); font-size: .82rem; }
+/* ---------- 只看推薦 ---------- */
+body.only-rec .item:not(.rec) { display: none; }
+body.only-rec #quick-section { display: none; }
+.only-rec-empty { display: none; color: var(--muted); padding: 24px 0; }
+body.only-rec .only-rec-empty { display: block; }
+
+/* ---------- 存檔 ---------- */
+.arch { display: grid; grid-template-columns: 3em 1fr; gap: 6px 12px; padding-top: 12px; font-size: .95rem; }
+.arch dt { color: var(--muted); }
+.arch dd { margin: 0; }
+.arch dd a, .arch dd b { margin-right: 1.2em; font-family: var(--narrow); }
+footer { margin-top: 48px; padding-top: 12px; border-top: 1px solid var(--rule); color: var(--muted); font-size: .8rem; }
+
+/* ---------- 手機 ---------- */
+@media (max-width: 640px) {
+  .wrap { padding: 8px 16px 56px; }
+  nav.tabs { gap: 18px; }
+  .item { grid-template-columns: minmax(0, 1fr); padding-top: 22px; }
+  .item.has-risk { margin-left: -13px; padding-left: 10px; }
+  /* 價格標移到名稱下方、橫排一行:.body 攤平後用 order 重新排序 */
+  /* 吊牌移到名稱下方靠左 */
+  .body { display: contents; }
+  .body > * { grid-column: 1; order: 6; }
+  .body > .name { order: 1; }
+  .tag-kraft { order: 2; position: static; justify-self: start; margin: 8px 0 6px 2px; font-size: .85rem; padding: 4px 10px 4px 20px; }
+  .tag-kraft::before { left: 6px; }
+  .tag-kraft small { display: inline; margin-left: 6px; }
+  .tag-kraft.with-note::before { top: 50%; margin-top: -4px; }
+  .body > .kind { order: 3; }
+  .body > .flags { order: 4; }
+  .price { order: 5; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 14px; margin-top: 8px; font-size: .9rem; }
+  .price .gain { font-size: 1.3rem; display: inline; }
+  .price .gain-label { display: inline; margin: 0; }
+  .price .health { font-size: 1.1rem; }
+  .price dl { display: contents; }
+  .name { padding-right: 0; }
+  .m-only { display: inline; }
+  dl.kv { grid-template-columns: 1fr; }
+  dl.kv dd { margin-bottom: 6px; }
+  .q-head { display: none; }
+  .q-row { grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; }
+  .q-row .q-line { grid-column: 1 / -1; grid-row: 2; }
+  .q-row .q-gain { grid-column: 2; grid-row: 1; }
+  .q-row .q-health { grid-column: 2; grid-row: 2; align-self: end; }
+  label.switch { margin-left: 0; }
+}
 </style>
 </head>
 <body>
 <div class="wrap">
 
+<nav class="tabs">
+  <a href="{{ root }}index.html" class="{{ 'on' if ptype == 'weekly' and not is_archive }}">本週精選</a>
+  <a href="{{ root }}monthly.html" class="{{ 'on' if ptype == 'monthly' and not is_archive }}">本月精選</a>
+  <a href="#archive" class="right">過往存檔</a>
+</nav>
+
+{% if not wd %}
+<header class="top"><h1>每月熱門</h1></header>
+<p class="empty-page">還沒有月資料。每月 1 日會產生上個月的熱門專案；也可以手動執行 python main.py --period monthly。</p>
+{% else %}
+
 <header class="top">
-  <h1>GitHub 每週熱門五選</h1>
-  <div class="sub">{{ wd.week }}（{{ week_range }}）· 產生時間 {{ generated }}</div>
-  <div class="stats">
-    <span class="stat">候選總數 <b>{{ wd.get("candidate_count") or "—" }}</b></span>
-    <span class="stat">排除雜訊 <b>{{ wd.excluded_count }}</b></span>
-    <span class="stat">精選 <b>{{ wd.projects|length }}</b> · 速覽 <b>{{ wd.quick_picks|length }}</b></span>
-    <span class="stat">資料來源 <b>{{ "GitHub Trending" if wd.source == "trending" else "Search API（備援）" }}</b></span>
+  <h1>{{ title }}</h1>
+  <p class="facts">{{ facts[0] }}</p>
+  <p class="facts-2">{{ facts[1] }}</p>
+  {% if is_archive %}<div class="archive-note">這是過往{{ "週次" if ptype == "weekly" else "月份" }}的存檔　<a href="{{ root }}{{ 'index' if ptype == 'weekly' else 'monthly' }}.html">回到最新{{ "一週" if ptype == "weekly" else "一個月" }}</a></div>{% endif %}
+  <div class="rec-line">
+    {% if recommended %}
+    <span class="names"><b>{{ label }}推薦安裝：</b>{{ recommended|join("、") }}</span>
+    {% else %}
+    <span class="names muted">本期沒有推薦安裝的項目</span>
+    {% endif %}
+    <label class="switch"><input type="checkbox" id="only-rec"> 只看推薦</label>
   </div>
-  {% if is_archive %}
-  <div class="archive-note">這是過往週次的存檔。<a href="{{ root }}index.html">回到最新一週 →</a></div>
-  {% endif %}
 </header>
 
-<h2 class="section">本週精選<small>點「展開完整介紹」看詳細內容與試用指令</small></h2>
+<h2 class="section">精選</h2>
+<p class="only-rec-empty">本期沒有推薦安裝的項目。</p>
 
 {% for p in wd.projects %}
 {% set pr = p.practicality %}
 {% set risks = p.risk_notes or [] %}
-<article class="card{% if risks %} has-risk{% endif %}" id="p{{ p.rank }}">
-  {% if p.intro_status != "ai" %}<div class="fallback-banner">AI 介紹產生失敗，以下為官方原文</div>{% endif %}
-  <div class="card-head">
-    <div class="rank">{{ p.rank }}</div>
-    <div class="card-title">
-      <div class="tags">
-        <span class="tag slot">{{ slot_label(p.slot) }}</span>
-        <span class="tag">{{ p.category }}</span>
-        {% if p.matched_interest %}<span class="tag">{{ p.matched_interest }}</span>{% endif %}
-        {% if risks %}<span class="tag risk">⚠ 注意事項 {{ risks|length }}</span>{% endif %}
+{% set rec = p.recommend or {} %}
+{% set main_risk = risks|selectattr("scope", "equalto", "主要用途")|list %}
+<article class="item{% if main_risk %} has-risk{% endif %}{% if rec.badge %} rec{% endif %}" id="p{{ p.rank }}">
+  {% if rec.badge %}<div class="tag-kraft{% if rec.has_misuse_risk %} with-note{% endif %}">推薦安裝{% if rec.has_misuse_risk %}<small>先看注意事項</small>{% endif %}</div>{% endif %}
+
+  <div class="price">
+    <span class="rank">No.{{ p.rank }}</span>
+    <span class="gain">{{ period_stars(p) }}</span>
+    <span class="gain-label">{{ label }}新增星數</span>
+    <dl>
+      <dt>總星數</dt><dd>★ {{ num(p.stars_total) }}</dd>
+      <dt>健康度</dt><dd class="health h-{{ health_class(p.health.score) }}">健康度 {{ p.health.score }}</dd>
+      <dt>語言</dt><dd>{{ p.language or "語言不明" }}</dd>
+      <dt>授權</dt><dd>{{ p.license or "無授權" }}</dd>
+    </dl>
+  </div>
+
+  <div class="body">
+    <a class="name" href="{{ p.url }}" target="_blank" rel="noopener">{{ repo_wbr(p.full_name) }}</a>
+    <div class="kind">{{ slot_label(p.slot) }} ｜ {{ p.category }}{% if p.matched_interest %} ｜ {{ p.matched_interest }}{% endif %}{% if risks %} ｜ <span style="color: var(--caution)">注意事項 {{ risks|length }}</span>{% endif %}</div>
+    {% if p.health.flags %}<div class="flags">{% for f in p.health.flags %}<span class="f-{{ flag_class(f) }}">{{ f }}</span>{% endfor %}</div>{% endif %}
+    {% if p.intro_status != "ai" %}<p class="fallback">AI 介紹未產生，以下是官方原文</p>{% endif %}
+    <p class="one-liner">{{ p.intro.one_liner }}</p>
+    {% if rec.badge and rec.llm_reason %}<p class="reason">{{ rec.llm_reason }}</p>{% endif %}
+    <p class="specs">{% for s in specs(pr) %}<span class="s-{{ s[1] }}">{{ s[0] }}</span>{% endfor %}</p>
+    <p class="verdict"><b>值不值得試：</b>{{ pr.verdict }}</p>
+
+    <details class="more">
+      <summary>展開完整介紹</summary>
+      {% if risks %}
+      <div class="risk-box">
+        <h3>注意事項</h3>
+        <ul>{% for r in risks %}<li>【{{ r.type }}】{{ r.note }}{% if r.scope %} <span class="scope">（{{ "正常用法就有這個風險" if r.scope == "主要用途" else "被不當使用時才有風險" }}）</span>{% endif %}</li>{% endfor %}</ul>
       </div>
-      <a class="repo-name" href="{{ p.url }}" target="_blank" rel="noopener">{{ p.full_name }}</a>
-      <div class="meta">
-        <span>{{ p.language or "語言不明" }}</span>
-        <span>★ {{ num(p.stars_total) }}</span>
-        <span>本週 {{ week_stars(p) }}</span>
-        {% if p.license %}<span>授權 {{ p.license }}</span>{% endif %}
-      </div>
-    </div>
-  </div>
-
-  <div class="health">
-    <span class="score {{ health_class(p.health.score) }}">健康度 {{ p.health.score }}</span>
-    {% for f in p.health.flags %}<span class="tag {{ 'alert' if f == '成長異常' else 'flag' }}">{{ f }}</span>{% endfor %}
-  </div>
-
-  <p class="one-liner">{{ p.intro.one_liner }}</p>
-
-  <div class="badges">
-    {% if pr.difficulty %}<span class="badge">難度 <span class="dots">{{ "●" * pr.difficulty }}{{ "○" * (5 - pr.difficulty) }}</span> {{ pr.difficulty }}/5</span>
-    {% else %}<span class="badge">難度 ?</span>{% endif %}
-    {% for b in badges(pr) %}<span class="badge {{ b[1] }}">{{ b[0] }}</span>{% endfor %}
-  </div>
-
-  <p class="verdict"><b>值不值得試：</b>{{ pr.verdict }}</p>
-
-  <details class="more">
-    <summary>展開完整介紹</summary>
-
-    {% if risks %}
-    <div class="risk-box">
-      <h3>⚠ 注意事項</h3>
-      <ul>{% for r in risks %}<li><b>【{{ r.type }}】</b>{{ r.note }}</li>{% endfor %}</ul>
-    </div>
-    {% endif %}
-
-    <div class="block">
-      <h3>介紹</h3>
-      <dl class="kv">
-        <dt>解決什麼問題</dt><dd>{{ p.intro.problem }}</dd>
-        <dt>主要功能</dt><dd><ul>{% for f in p.intro.features %}<li>{{ f }}</li>{% endfor %}</ul></dd>
-        <dt>適合誰</dt><dd>{{ p.intro.audience }}</dd>
-        <dt>怎麼開始</dt><dd>{{ p.intro.getting_started }}</dd>
-        <dt>使用技術</dt><dd>{{ p.intro.tech_stack }}</dd>
-        <dt>為什麼紅</dt><dd>{{ p.intro.why_trending }}</dd>
-      </dl>
-      {% if p.intro_status != "ai" and p.description_raw %}<p><b>官方原文描述：</b>{{ p.description_raw }}</p>{% endif %}
-
-      {% if p.ideas_for_me %}
-      <h3>可以怎麼用在我的專案</h3>
-      {% for i in p.ideas_for_me %}<div class="idea"><b>{{ i.interest }}</b>：{{ i.idea }}</div>{% endfor %}
       {% endif %}
-
-      {% if p.glossary %}
-      <h3>名詞解釋</h3>
-      <dl class="kv">
-        {% for g in p.glossary %}<dt>{{ g.term }}</dt><dd>{{ g.explain }}</dd>{% endfor %}
-      </dl>
-      {% endif %}
-    </div>
-
-    <details class="trial">
-      <summary>給 Claude Code 的試用指令</summary>
-      <div class="trial-tools">
-        <button type="button" class="copy" data-target="prompt-{{ p.rank }}">複製</button>
-        <span class="copied" aria-live="polite"></span>
+      <div class="block">
+        <h3>介紹</h3>
+        <dl class="kv">
+          <dt>解決什麼問題</dt><dd>{{ p.intro.problem }}</dd>
+          <dt>主要功能</dt><dd><ul>{% for f in p.intro.features %}<li>{{ f }}</li>{% endfor %}</ul></dd>
+          <dt>適合誰</dt><dd>{{ p.intro.audience }}</dd>
+          <dt>怎麼開始</dt><dd>{{ p.intro.getting_started }}</dd>
+          <dt>使用技術</dt><dd>{{ p.intro.tech_stack }}</dd>
+          <dt>為什麼紅</dt><dd>{{ p.intro.why_trending }}</dd>
+        </dl>
+        {% if p.intro_status != "ai" and p.description_raw %}<p><span class="muted">官方原文描述：</span>{{ p.description_raw }}</p>{% endif %}
+        {% if p.ideas_for_me %}
+        <h3>可以怎麼用在我的專案</h3>
+        {% for i in p.ideas_for_me %}<div class="idea"><span class="muted">{{ i.interest }}</span><br>{{ i.idea }}</div>{% endfor %}
+        {% endif %}
+        {% if p.glossary %}
+        <h3>名詞解釋</h3>
+        <dl class="kv">{% for g in p.glossary %}<dt>{{ g.term }}</dt><dd>{{ g.explain }}</dd>{% endfor %}</dl>
+        {% endif %}
       </div>
-      <pre class="prompt" id="prompt-{{ p.rank }}">{{ p.trial_prompt }}</pre>
+      <details class="trial">
+        <summary>給 Claude Code 的試用指令</summary>
+        <div class="trial-tools">
+          <button type="button" class="copy" data-target="prompt-{{ p.rank }}">複製</button>
+          <span class="copied" aria-live="polite"></span>
+        </div>
+        <pre class="prompt" id="prompt-{{ p.rank }}">{{ p.trial_prompt }}</pre>
+      </details>
     </details>
-  </details>
+
+    {% if p.reused_from or p.lite_model %}
+    <div class="foot">{% if p.reused_from %}<span>介紹沿用 {{ p.reused_from }} 週精選</span>{% endif %}{% if p.lite_model %}<span>本則由輕量模型產生</span>{% endif %}</div>
+    {% endif %}
+  </div>
 </article>
 {% endfor %}
 
-<h2 class="section">速覽<small>另外 {{ wd.quick_picks|length }} 個值得一看的專案</small></h2>
-<div class="quick">
+<section id="quick-section">
+<h2 class="section">速覽<small>其他新品</small></h2>
+<div class="q-head"><span>名稱</span><span>一句話</span><span class="q-r">{{ label }}新增</span><span class="q-r">健康度</span></div>
 {% for q in wd.quick_picks %}
-  <div class="q-row">
-    <div class="q-num">{{ loop.index }}</div>
-    <div class="q-main">
-      <a class="q-name" href="{{ q.url }}" target="_blank" rel="noopener">{{ q.full_name }}</a>
-      {% if "成長異常" in (q.flags or []) %}<span class="tag alert">成長異常</span>{% endif %}
-      {% if q.risk_flag %}<span class="tag risk">⚠ {{ q.risk_flag }}</span>{% endif %}
-      <div class="q-line">{{ q.one_liner }}</div>
-      <div class="q-meta">
-        <span>{{ q.category }}</span>
-        <span>{{ q.language or "語言不明" }}</span>
-        <span>★ {{ num(q.stars_total) }}</span>
-        <span>本週 {{ week_stars(q) }}</span>
-      </div>
-    </div>
-    <div class="q-side"><span class="score {{ health_class(q.health_score) }}">健康度 {{ q.health_score }}</span></div>
+{% set qr = q.recommend or {} %}
+<div class="q-row">
+  <div>
+    <a class="q-name" href="{{ q.url }}" target="_blank" rel="noopener">{{ repo_wbr(q.full_name) }}</a>
+    <div class="q-sub">{{ q.category }} ｜ {{ q.language or "語言不明" }} ｜ ★ <span class="num">{{ num(q.stars_total) }}</span>{% if q.lite_model %} ｜ 輕量模型產生{% endif %}</div>
+    {% if qr.maybe_fit or q.flags or q.risk_flag %}
+    <div class="q-marks">{% if qr.maybe_fit %}<span class="maybe" title="{{ qr.llm_reason }}">可能適合</span>{% endif %}{% for f in q.flags or [] %}<span class="f-{{ flag_class(f) }}">{{ f }}</span>{% endfor %}{% if q.risk_flag %}<span style="color: var(--caution)">{{ q.risk_flag }}</span>{% endif %}</div>
+    {% endif %}
   </div>
-{% endfor %}
+  <div class="q-line">{{ q.one_liner }}</div>
+  <div class="q-r q-gain num">{{ period_stars(q) }}</div>
+  <div class="q-r q-health num h-{{ health_class(q.health_score) }}"><span class="m-only">健康度 </span>{{ q.health_score }}</div>
 </div>
-
-<h2 class="section">過往週次</h2>
-{% if other_weeks or (is_archive and wd.week != latest) %}
-<ul class="weeks">
-  {% if is_archive and wd.week != latest %}<li><a href="{{ root }}index.html">最新一週（{{ latest }}）</a></li>{% endif %}
-  {% for w in other_weeks %}<li><a href="{{ root }}archive/{{ w }}.html">{{ w }}</a></li>{% endfor %}
-</ul>
-{% else %}
-<p class="empty">目前只有本週。</p>
+{% endfor %}
+</section>
 {% endif %}
 
+<h2 class="section" id="archive">過往存檔</h2>
+<dl class="arch">
+  <dt>週</dt>
+  <dd>{% for w in weeks %}{% if w == pid and ptype == "weekly" %}<b>{{ w }}</b>{% else %}<a href="{{ root }}archive/{{ w }}.html">{{ w }}</a>{% endif %}{% else %}<span class="muted">還沒有週資料</span>{% endfor %}</dd>
+  <dt>月</dt>
+  <dd>{% for m in months %}{% if m == pid and ptype == "monthly" %}<b>{{ m }}</b>{% else %}<a href="{{ root }}archive/{{ m }}.html">{{ m }}</a>{% endif %}{% else %}<span class="muted">還沒有月資料</span>{% endfor %}</dd>
+</dl>
+
 <footer>
-  資料來源：GitHub Trending 與 GitHub API；中文介紹由 Gemini 產生，可能有誤，請以官方 README 為準。健康度依最近更新、commit 活躍度、貢獻者、fork 比例、正式版本、授權計算。
+  資料來源：GitHub Trending 與 GitHub API。中文介紹由 Gemini 產生，可能有誤，請以官方 README 為準。健康度依最近更新、commit 活躍度、貢獻者、fork 比例、正式版本、授權計算。「推薦安裝」需同時通過 AI 判斷與程式門檻：Windows 可用、免付費 API、難度不高、健康度足夠、沒有主要用途上的版權／法律／資安風險。
 </footer>
 </div>
 
@@ -305,6 +350,13 @@ footer { margin-top: 40px; color: var(--muted); font-size: .82rem; }
       }
     });
   });
+  var onlyRec = document.getElementById("only-rec");
+  if (onlyRec) {
+    onlyRec.checked = false;
+    onlyRec.addEventListener("change", function () {
+      document.body.classList.toggle("only-rec", onlyRec.checked);
+    });
+  }
 })();
 </script>
 </body>

@@ -21,7 +21,9 @@ log = logging.getLogger("github_weekly")
 GEMINI = "https://generativelanguage.googleapis.com/v1beta/models"
 NOT_RECOMMEND_WORDS = ["超熱門", "必試", "必備", "推薦", "爆紅", "神器", "必看", "強烈", "最強", "首選"]
 UNRESERVED_WORDS = ["非常值得", "強烈推薦", "必試", "必備", "絕對值得", "大推"]
+RECOMMEND_BANNED = ["必裝", "強烈推薦", "必試", "必備", "一定要裝", "絕對要裝", "大推", "神器"]
 RISK_TYPES = ["版權", "法律", "隱私", "資安", "費用", "其他"]
+RISK_SCOPES = ["主要用途", "不當使用"]
 BACKOFF_SECONDS = [5, 15, 30]
 TERM_RULE = "用語統一:英文 agent 一律寫「AI 代理」,不要寫成「AI 代理人」「AI Agent」「智慧代理」「智慧助手」等其他說法。"
 
@@ -91,6 +93,9 @@ class LLM:
         self.calls = 0      # 計數呼叫(不含暫時性錯誤)
         self.requests = 0   # 實際送出的請求總數
         self.transient = 0  # 暫時性錯誤次數(503 等)
+        self.trace: list[tuple[str, str, str]] = []  # (呼叫類型, 型號, 結果),供回報拆分用量
+        self.flaky: set[str] = set()  # 本次執行中等滿退避仍 503 的型號,後續項目不再等待
+        self.last_model: str | None = None  # 最近一次成功產生內容的型號
         self.used_models: list[str] = []
         self.refresh = refresh
         self.cache_path = cache_root / week / "llm_cache.json"
@@ -160,43 +165,58 @@ class LLM:
             raise FormatError(f"回應是空的(finishReason={cands[0].get('finishReason')})")
         return text
 
-    def ask(self, label: str, prompt: str, validate, temperature: float = 0.4):
-        """送出提示詞並用 validate(parsed) 檢查。成功回傳驗證後結果,失敗回傳 None。
+    def ask(self, label: str, prompt: str, validate, temperature: float = 0.2, exclude=None):
+        """送出提示詞並用 validate(parsed) 檢查。成功回傳驗證後結果(型號記在 last_model),失敗回傳 None。
 
         同一項目:格式錯誤重試 1 次(同型號);503 等暫時性錯誤依 BACKOFF_SECONDS 等待後重試同型號,
-        等待用完才換下一個型號;額度/不開放錯誤直接換型號。
+        等待用完才換下一個型號;額度/不開放錯誤直接換型號。exclude 中的型號這次不使用(例如升級時排除輕量模型)。
         """
         if not self.enabled:
             return None
         format_tries = 0
         backoff_step = 0
-        skip_here: set[str] = set()  # 退避用完仍暫時性失敗的型號:只在這個項目跳過
+        skip_here: set[str] = set(exclude or ())  # 退避用完仍暫時性失敗的型號:只在這個項目跳過
         while True:
             alive = [m for m in self.models if m not in self.dead_models and m not in skip_here]
             if not alive:
+                self.trace.append((_kind(label), "-", "所有型號都無法使用,未送出"))
                 log.warning("[%s] 所有型號都無法使用,改用降級版本", label)
                 return None
             if self.calls >= self.max_calls:
+                self.trace.append((_kind(label), "-", "已達計數上限,未送出"))
                 log.warning("[%s] 已達本次呼叫上限 %d 次,改用降級版本", label, self.max_calls)
                 return None
             if self.requests >= self.hard_cap:
+                self.trace.append((_kind(label), "-", "已達硬上限,未送出"))
                 log.warning("[%s] 已達總請求硬上限 %d 次,改用降級版本", label, self.hard_cap)
                 return None
             model = alive[0]
+            kind = _kind(label)
             try:
                 text = self._request(model, prompt, temperature)
+                result = validate(_parse_json(text))
+                self.last_model = model
                 self.used_models.append(model)
+                self.trace.append((kind, model, "成功"))
                 log.info("LLM 請求 #%d(計數 %d)[%s] 型號 %s 成功", self.requests, self.calls, label, model)
-                return validate(_parse_json(text))
+                return result
             except PermissionError as e:
+                self.trace.append((kind, model, "金鑰錯誤"))
                 log.error("LLM 請求 #%d [%s] 型號 %s:%s,本次停用 LLM", self.requests, label, model, e)
                 self.enabled = False
                 return None
             except ModelGone as e:
+                self.trace.append((kind, model, "額度用完/不開放"))
                 log.warning("LLM 請求 #%d [%s] 型號 %s 額度用完或不開放(%s),本次不再使用", self.requests, label, model, e)
                 self.dead_models.add(model)
             except Transient as e:
-                if backoff_step < len(BACKOFF_SECONDS):
+                self.trace.append((kind, model, "503 等暫時性錯誤"))
+                if model in self.flaky:
+                    # 這個型號在前面的項目已經等滿退避仍失敗:這次不再等待,直接換型號,省下請求次數
+                    log.warning("LLM 請求 #%d [%s] 型號 %s 仍暫時無法使用,直接改用下一個型號",
+                                self.requests, label, model)
+                    skip_here.add(model)
+                elif backoff_step < len(BACKOFF_SECONDS):
                     wait = BACKOFF_SECONDS[backoff_step]
                     backoff_step += 1
                     log.warning("LLM 請求 #%d [%s] 型號 %s 暫時無法使用(%s),等 %d 秒後重試",
@@ -206,12 +226,22 @@ class LLM:
                     log.warning("LLM 請求 #%d [%s] 型號 %s 暫時無法使用(%s),等待用完,這一項改用下一個型號",
                                 self.requests, label, model, e)
                     skip_here.add(model)
+                    self.flaky.add(model)
             except FormatError as e:
+                self.trace.append((kind, model, "格式錯誤"))
                 format_tries += 1
                 log.warning("LLM 請求 #%d [%s] 型號 %s 格式不合格:%s%s", self.requests, label, model, e,
                             ",重試" if format_tries < 2 else ",放棄")
                 if format_tries >= 2:
                     return None
+
+
+def _kind(label: str) -> str:
+    if label.startswith("分類"):
+        return "分類修正"
+    if label.startswith("介紹"):
+        return "精選介紹"
+    return "速覽批次"
 
 
 def _parse_json(text: str):
@@ -254,10 +284,12 @@ def fix_categories(llm: LLM, repos: list[dict], cfg: dict) -> dict[str, tuple[st
         got = llm.ask("分類修正", prompt, validate, temperature=0) or {}
         for name, cat in got.items():
             llm.store(name, "category", cat)
+            llm.store(name, "category_model", llm.last_model)
 
     changes = {}
     for r in repos:
         new = llm.cache.get(f"{r['full_name']}::category")
+        r["category_model"] = llm.cache.get(f"{r['full_name']}::category_model")
         if new and new != r["category"]:
             changes[r["full_name"]] = (r["category"], new)
             r["category"] = new
@@ -287,7 +319,8 @@ INTRO_SCHEMA = """{
   },
   "ideas_for_me": [{"interest": "必須是興趣清單中的原字串", "idea": "具體應用點子,2–3 句"}],
   "glossary": [{"term": "名詞", "explain": "一句話白話解釋"}],
-  "risk_notes": [{"type": "版權 | 法律 | 隱私 | 資安 | 費用 | 其他(擇一)", "note": "一句白話說明"}],
+  "risk_notes": [{"type": "版權 | 法律 | 隱私 | 資安 | 費用 | 其他(擇一)", "scope": "主要用途 | 不當使用(擇一)", "note": "一句白話說明"}],
+  "recommend": {"llm_says": true 或 false, "llm_reason": "一句話:為什麼值得(或不值得)這位讀者安裝,要具體連結讀者背景或興趣清單"},
   "trial_goal": "README 官方最小範例是什麼、跑起來應該看到什麼(一句話;看不出就寫「資料不足」)"
 }"""
 
@@ -313,7 +346,9 @@ def _intro_prompt(repo: dict, cfg: dict) -> str:
         "health_flags": repo["health"]["flags"],
         "homepage": repo.get("homepage"),
     }
-    return f"""你要替一位「非工程師」讀者介紹一個 GitHub 專案。讀者用 Windows,懂一點電腦但不會寫程式。
+    return f"""你要替一位「非工程師」讀者介紹一個 GitHub 專案。
+
+讀者背景:{cfg.get("user_profile", "非工程師,使用 Windows")}
 
 規則:
 1. 全部用繁體中文(台灣用語),白話、具體,以非工程師看得懂為準;英文專有名詞可保留原文。
@@ -321,10 +356,12 @@ def _intro_prompt(repo: dict, cfg: dict) -> str:
 3. practicality 依 README 的安裝需求判斷(作業系統、GPU、是否需要 OpenAI/Anthropic 等付費 API 金鑰、是否要寫程式),看不出就填 unknown。
 4. ideas_for_me 只能從下面的興趣清單挑 1–2 個「最相關」的領域,提出具體點子;都不相關就回傳空陣列 [],不得硬湊。interest 欄位必須是清單中的原字串。
 5. glossary 只收你在 intro 文字中「實際寫出來」、非工程師可能看不懂的技術名詞,最多 5 個;沒有就回傳 []。
-6. risk_notes:判斷這個專案「合理的使用方式」是否涉及以下風險——未授權內容(影視、音樂、直播來源)、冒用他人聲音或肖像、反向工程或破解、蒐集他人資料、需要系統管理員等高權限、可能產生意外費用(例如自動呼叫付費 API)。每個風險一筆,type 從「版權、法律、隱私、資安、費用、其他」擇一。沒有風險就回傳 [],不得硬湊。
+6. risk_notes:判斷這個專案「合理的使用方式」是否涉及以下風險——未授權內容(影視、音樂、直播來源)、冒用他人聲音或肖像、反向工程或破解、蒐集他人資料、需要系統管理員等高權限、可能產生意外費用(例如自動呼叫付費 API)。每個風險一筆,type 從「版權、法律、隱私、資安、費用、其他」擇一。
+   scope 必填:「主要用途」= 專案的正常用法本身就有風險(例如聚合未授權影視來源);「不當使用」= 只有被拿來做壞事才有風險(例如未經同意複製他人聲音)。沒有風險就回傳 [],不得硬湊。
 7. practicality.verdict 必須考慮 risk_notes:有版權或法律風險時,不得寫「非常值得」「強烈推薦」這類無保留的推薦,要點出風險。
-8. {TERM_RULE}
-9. 只輸出一個 JSON 物件,格式如下,不要多餘文字:
+8. recommend:依讀者背景判斷「這位讀者值不值得實際安裝來用」。llm_says 為 true 時,llm_reason 必須具體說明對這位讀者的用處(連結到讀者背景或興趣清單中的某件事),不能只是「功能強大」「很熱門」這類泛泛好評;false 時簡短說明原因。不得使用「必裝」「強烈推薦」「必試」等字眼。
+9. {TERM_RULE}
+10. 只輸出一個 JSON 物件,格式如下,不要多餘文字:
 {INTRO_SCHEMA}
 
 興趣清單:{json.dumps(cfg["interests"], ensure_ascii=False)}
@@ -373,14 +410,34 @@ def _validate_intro(obj, cfg: dict) -> dict:
     risks = obj.get("risk_notes")
     if not isinstance(risks, list):
         raise FormatError("risk_notes 不是清單")
-    risks = [{"type": r.get("type") if r.get("type") in RISK_TYPES else "其他", "note": str(r["note"]).strip()}
-             for r in risks if isinstance(r, dict) and str(r.get("note") or "").strip()]
+    risks = [r for r in risks if isinstance(r, dict) and str(r.get("note") or "").strip()]
+    if any(r.get("scope") not in RISK_SCOPES for r in risks):
+        raise FormatError("risk_notes 有項目缺少 scope 或 scope 不合規格")
+    risks = [{"type": r.get("type") if r.get("type") in RISK_TYPES else "其他", "scope": r["scope"],
+              "note": str(r["note"]).strip()} for r in risks]
+    for r in risks:
+        if r["type"] == "費用":
+            r["scope"] = "主要用途"  # 程式強制:費用不是被濫用才發生的事
     if any(r["type"] in ("版權", "法律") for r in risks):
         bad = [w for w in UNRESERVED_WORDS if w in prac["verdict"]]
         if bad:
             raise FormatError(f"有版權/法律風險,verdict 卻寫了「{bad[0]}」")
+    rec = _validate_recommend(obj.get("recommend"))
     return {"intro": intro, "practicality": prac, "ideas_for_me": ideas, "glossary": gl,
-            "risk_notes": risks, "trial_goal": str(obj.get("trial_goal") or "資料不足")}
+            "risk_notes": risks, "recommend": rec, "trial_goal": str(obj.get("trial_goal") or "資料不足")}
+
+
+def _validate_recommend(rec) -> dict:
+    """推薦判斷:llm_says 必須是布林;說推薦時理由不能空;不得出現「必裝」等字眼。"""
+    if not isinstance(rec, dict) or not isinstance(rec.get("llm_says"), bool):
+        raise FormatError("recommend.llm_says 不是 true/false")
+    reason = str(rec.get("llm_reason") or "").strip()
+    if rec["llm_says"] and not reason:
+        raise FormatError("recommend.llm_says 為 true 卻沒有 llm_reason")
+    bad = [w for w in RECOMMEND_BANNED if w in reason]
+    if bad:
+        raise FormatError(f"recommend.llm_reason 用了「{bad[0]}」")
+    return {"llm_says": rec["llm_says"], "llm_reason": reason}
 
 
 def build_trial_prompt(repo: dict, cfg: dict, trial_goal: str, needs_paid_api: str,
@@ -392,7 +449,8 @@ def build_trial_prompt(repo: dict, cfg: dict, trial_goal: str, needs_paid_api: s
             if needs_paid_api in ("yes", "optional") else "")
     warn = ""
     if risk_notes:
-        lines = "\n".join(f"- 【{r['type']}】{r['note']}" for r in risk_notes)
+        lines = "\n".join(f"- 【{r['type']}｜{r['scope']}】{r['note']}" if r.get("scope") else f"- 【{r['type']}】{r['note']}"
+                          for r in risk_notes)
         warn = f"## ⚠ 注意事項\n{lines}\n\n"
     return f"""{warn}# 任務：試用 GitHub 專案 {repo['full_name']}
 
@@ -443,20 +501,28 @@ def fallback_summary(repo: dict, cfg: dict) -> dict:
         "ideas_for_me": [],
         "glossary": [],
         "risk_notes": [],
+        "recommend": {"llm_says": False, "llm_reason": ""},
         "trial_prompt": build_trial_prompt(repo, cfg, nd, "unknown"),
         "intro_status": "fallback",
+        "model": None,
     }
 
 
-def summarize(repo: dict, cfg: dict, llm: LLM | None = None) -> dict:
-    """回傳 intro / practicality / ideas_for_me / glossary / trial_prompt。失敗重試 1 次,仍失敗回傳降級版本,不中斷流程。"""
+def summarize(repo: dict, cfg: dict, llm: LLM | None = None, force: bool = False, exclude=None) -> dict:
+    """回傳 intro / practicality / ideas_for_me / glossary / trial_prompt。失敗重試 1 次,仍失敗回傳降級版本,不中斷流程。
+
+    force=True 時不讀快取(升級輕量模型產生的內容用);exclude 為這次不使用的型號。
+    回傳的 model 是實際產生內容的型號,降級版本為 None。
+    """
     if llm is not None:
-        hit = llm.cached(repo["full_name"], "intro")
-        if hit is not None and "risk_notes" not in hit:
-            hit = None  # 舊版快取(沒有注意事項欄位)視為沒有快取
+        hit = None if force else llm.cached(repo["full_name"], "intro")
+        if hit is not None and "recommend" not in hit:
+            hit = None  # 舊版快取(沒有推薦判斷或注意事項 scope)視為沒有快取
         if hit is None and llm.enabled:
-            hit = llm.ask(f"介紹 {repo['full_name']}", _intro_prompt(repo, cfg), lambda o: _validate_intro(o, cfg))
+            hit = llm.ask(f"介紹 {repo['full_name']}", _intro_prompt(repo, cfg), lambda o: _validate_intro(o, cfg),
+                          exclude=exclude)
             if hit is not None:
+                hit["model"] = llm.last_model
                 llm.store(repo["full_name"], "intro", hit)
         if hit is not None:
             return {
@@ -465,9 +531,11 @@ def summarize(repo: dict, cfg: dict, llm: LLM | None = None) -> dict:
                 "ideas_for_me": hit["ideas_for_me"],
                 "glossary": hit["glossary"],
                 "risk_notes": hit["risk_notes"],
+                "recommend": dict(hit["recommend"]),
                 "trial_prompt": build_trial_prompt(repo, cfg, hit["trial_goal"], hit["practicality"]["needs_paid_api"],
                                                    hit["risk_notes"]),
                 "intro_status": "ai",
+                "model": hit.get("model"),
             }
     return fallback_summary(repo, cfg)
 
@@ -479,34 +547,44 @@ def _is_anomaly(r: dict) -> bool:
     return bool(r.get("anomaly")) or "成長異常" in flags
 
 
-def quick_one_liners(llm: LLM | None, repos: list[dict]) -> dict[str, dict]:
-    """10 個一起送出,一次產生一句話與風險標籤。
+def quick_one_liners(llm: LLM | None, repos: list[dict], cfg: dict, force: bool = False,
+                     exclude=None) -> dict[str, dict]:
+    """10 個一起送出,一次產生一句話、風險標籤、實用性與推薦判斷(不增加呼叫次數)。
 
-    回傳 {full_name: {"one_liner": str, "risk_flag": str | None, "status": "ai" | "fallback"}}。
+    每個 repo 可帶 readme_head(README 開頭,由呼叫端抓好)。force=True 時不讀快取;exclude 為這次不使用的型號。
+    回傳 {full_name: {"one_liner", "risk_flag", "difficulty", "windows_ok", "needs_paid_api",
+                      "recommend": {"llm_says", "llm_reason"}, "model", "status": "ai" | "fallback"}}。
     """
     out = {}
     todo = []
     for r in repos:
-        hit = llm.cached(r["full_name"], "quick") if llm else None
-        if isinstance(hit, dict):  # 舊版快取是純文字(沒有 risk_flag),視為沒有快取
+        hit = llm.cached(r["full_name"], "quick") if llm and not force else None
+        if isinstance(hit, dict) and "recommend" in hit:  # 舊版快取(沒有推薦判斷)視為沒有快取
             out[r["full_name"]] = {**hit, "status": "ai"}
         else:
             todo.append(r)
     if todo and llm and llm.enabled:
         items = [{"repo": r["full_name"], "desc": (r.get("description_raw") or "")[:300],
                   "topics": (r.get("topics") or [])[:8], "lang": r.get("language"),
-                  "growth_anomaly": _is_anomaly(r)} for r in todo]
+                  "growth_anomaly": _is_anomaly(r),
+                  "readme_head": (r.get("readme_head") or "")[:cfg.get("quick_readme_chars", 2000)]} for r in todo]
         prompt = (
-            "替下列每個 GitHub 專案寫一句繁體中文(台灣用語)白話說明,讓非工程師一看就懂它是做什麼的,"
-            "40 字以內。只根據提供的描述,不得捏造;描述太少就寫「官方描述不足」加上你能確定的部分。\n"
-            "growth_anomaly 為 true 的專案:星數成長異常,只能中性描述功能,"
+            f"讀者背景:{cfg.get('user_profile', '非工程師,使用 Windows')}\n"
+            f"讀者的興趣清單:{json.dumps(cfg['interests'], ensure_ascii=False)}\n\n"
+            "替下列每個 GitHub 專案產生以下欄位,只根據提供的描述與 README 開頭判斷,不得捏造:\n"
+            "1. one_liner:一句繁體中文(台灣用語)白話說明,讓非工程師一看就懂它是做什麼的,40 字以內;"
+            "資料太少就寫「官方描述不足」加上你能確定的部分。"
+            "growth_anomaly 為 true 的專案星數成長異常,只能中性描述功能,"
             f"不得使用肯定或推薦語氣(例如:{'、'.join(NOT_RECOMMEND_WORDS)})。\n"
-            "另外判斷 risk_flag:若專案的合理用途涉及未授權內容(影視、音樂、直播來源)、冒用他人聲音或肖像、"
+            "2. risk_flag:若專案的合理用途涉及未授權內容(影視、音樂、直播來源)、冒用他人聲音或肖像、"
             "反向工程或破解、蒐集他人資料、需要高權限、可能產生意外費用,給一個 2–6 字的短標籤"
             "(例如「版權疑慮」「隱私疑慮」「破解疑慮」「可能產生費用」);沒有就填 null,不得硬湊。\n"
+            "3. difficulty:1 到 5 的整數(1=下載就能用,5=需要大量程式能力);看不出就填 null。\n"
+            "4. windows_ok:yes | no | wsl | unknown。needs_paid_api:yes | no | optional | unknown。看不出就填 unknown。\n"
+            '5. recommend:{"llm_says": true/false, "llm_reason": "一句話"}——這位讀者值不值得實際安裝來用。'
+            "true 時理由必須具體連結讀者背景或興趣清單,不能是泛泛好評;不得使用「必裝」「強烈推薦」「必試」等字眼。\n"
             f"{TERM_RULE}\n"
-            '輸出 JSON 物件,鍵是 repo 名稱,值是 {"one_liner": "一句話", "risk_flag": "短標籤或 null"},'
-            "必須包含每一個 repo。\n\n"
+            "輸出 JSON 物件,鍵是 repo 名稱,值是包含上述 6 個欄位的物件,必須包含每一個 repo。\n\n"
             + json.dumps(items, ensure_ascii=False)
         )
         anomaly_names = {r["full_name"] for r in todo if _is_anomaly(r)}
@@ -517,24 +595,42 @@ def quick_one_liners(llm: LLM | None, repos: list[dict]) -> dict[str, dict]:
             got = {}
             for r in todo:
                 v = obj.get(r["full_name"])
-                if isinstance(v, dict) and isinstance(v.get("one_liner"), str) and v["one_liner"].strip():
-                    flag = v.get("risk_flag")
-                    flag = flag.strip() if isinstance(flag, str) and flag.strip() and flag.strip() != "null" else None
-                    got[r["full_name"]] = {"one_liner": v["one_liner"].strip(), "risk_flag": flag}
+                if not (isinstance(v, dict) and isinstance(v.get("one_liner"), str) and v["one_liner"].strip()):
+                    continue
+                flag = v.get("risk_flag")
+                flag = flag.strip() if isinstance(flag, str) and flag.strip() and flag.strip() != "null" else None
+                try:
+                    diff = int(v.get("difficulty"))
+                    diff = diff if 1 <= diff <= 5 else None
+                except (TypeError, ValueError):
+                    diff = None
+                win = str(v.get("windows_ok", "")).lower()
+                paid = str(v.get("needs_paid_api", "")).lower()
+                got[r["full_name"]] = {
+                    "one_liner": v["one_liner"].strip(),
+                    "risk_flag": flag,
+                    "difficulty": diff,
+                    "windows_ok": win if win in ENUMS["windows_ok"] else "unknown",
+                    "needs_paid_api": paid if paid in ENUMS["needs_paid_api"] else "unknown",
+                    "recommend": _validate_recommend(v.get("recommend")),
+                }
             if len(got) < len(todo):
-                raise FormatError(f"只回傳 {len(got)}/{len(todo)} 個")
+                raise FormatError(f"只回傳 {len(got)}/{len(todo)} 個合格項目")
             for name in anomaly_names:
                 bad = [w for w in NOT_RECOMMEND_WORDS if w in got[name]["one_liner"]]
                 if bad:
                     raise FormatError(f"{name} 是成長異常專案卻用了推薦語氣「{bad[0]}」")
             return got
 
-        got = llm.ask("速覽一句話", prompt, validate) or {}
+        got = llm.ask("速覽一句話", prompt, validate, exclude=exclude) or {}
         for name, v in got.items():
+            v["model"] = llm.last_model
             llm.store(name, "quick", v)
             out[name] = {**v, "status": "ai"}
     for r in repos:
         if r["full_name"] not in out:
             out[r["full_name"]] = {"one_liner": (r.get("description_raw") or "資料不足")[:120],
-                                   "risk_flag": None, "status": "fallback"}
+                                   "risk_flag": None, "difficulty": None, "windows_ok": "unknown",
+                                   "needs_paid_api": "unknown", "recommend": {"llm_says": False, "llm_reason": ""},
+                                   "model": None, "status": "fallback"}
     return out

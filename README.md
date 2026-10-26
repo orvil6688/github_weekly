@@ -1,16 +1,18 @@
 # GitHub 每週熱門五選
 
-每週從 GitHub 熱門專案中挑出 **精選 5 個**（附繁體中文白話介紹、實用性評估、應用點子、試用指令）和 **速覽 10 個**（一句話說明），產生一個可以直接雙擊打開的網頁。
+每週（以及每月）從 GitHub 熱門專案中挑出 **精選 5 個**（附繁體中文白話介紹、實用性評估、應用點子、試用指令）和 **速覽 10 個**（一句話說明），產生一個可以直接雙擊打開的網頁。
 
 ---
 
 ## 怎麼看網頁
 
-用檔案總管打開 `site` 資料夾，雙擊 `index.html` 就可以看，不需要網路。
+用檔案總管打開 `site` 資料夾，雙擊 `index.html`（最新一週）或 `monthly.html`（最新一個月）就可以看，不需要網路。
 
-- 卡片上的「展開完整介紹」可以看詳細內容
-- 展開後最下面的「給 Claude Code 的試用指令」有「複製」按鈕，複製後直接貼給 Claude Code 就能試用該專案
-- 有 ⚠ 標記的專案代表有版權、法律、費用等需要注意的地方，展開後最上方有說明
+- 「展開完整介紹」可以看詳細內容；最下面的「給 Claude Code 的試用指令」有「複製」按鈕，複製後直接貼給 Claude Code 就能試用該專案
+- 牛皮紙吊牌「推薦安裝」：AI 判斷值得你安裝，而且通過程式門檻（Windows 可用、免付費 API、難度不高、健康度足夠、沒有主要用途上的版權／法律／資安風險）。吊牌下寫「先看注意事項」時，代表被不當使用才會有風險
+- 名稱下方的「注意事項 N」：展開後最上方有說明；左側有細直線的，代表正常用法就有風險
+- 速覽的「可能適合」：門檻比精選更嚴（難度 2 以下），只是提示，不是正式推薦
+- 頁首的「只看推薦」可以只留下有吊牌的精選
 
 ## 怎麼手動執行
 
@@ -20,17 +22,24 @@
 python main.py
 ```
 
-約 2–5 分鐘會跑完，結果會寫進 `data/weeks/` 並重新產生 `site/index.html`。
+約 2–5 分鐘會跑完，結果會寫進 `data/weeks/` 並重新產生網頁。每月熱門則是：
 
-其他常用指令：
+```
+python main.py --period monthly
+```
+
+期間是「執行當下的上個月」，結果寫進 `data/months/`。
+
+其他常用指令（都可以加 `--period monthly`）：
 
 | 指令 | 用途 |
 |---|---|
 | `python main.py --dry-run` | 只看會挑出哪些專案，不產生中文介紹、不產生網頁（不花 Gemini 額度） |
-| `python main.py --build-only` | 只用現有資料重新產生網頁（改版面時用，不抓資料、不呼叫 AI） |
-| `python main.py --fill-missing` | 本週有專案的中文介紹產生失敗時，只補那幾個，不改變入選名單 |
-| `python main.py --refresh-llm` | 重新產生本週的中文介紹（同一週重跑預設會沿用上次結果） |
+| `python main.py --build-only` | 只用現有資料重新產生全部網頁（改版面時用，不抓資料、不呼叫 AI） |
+| `python main.py --fill-missing` | 只補介紹產生失敗、或由輕量模型產生的項目，不改變入選名單 |
+| `python main.py --refresh-llm` | 重新產生本期的中文介紹（同一期重跑預設會沿用上次結果） |
 | `python main.py --no-llm` | 完全不呼叫 AI，只用官方原文（測試用） |
+| `--week 2026-W43`／`--month 2026-10` | 指定要處理的週次或月份（補跑舊的一期時用） |
 
 第一次在新電腦上執行前，先安裝需要的套件：
 
@@ -45,15 +54,15 @@ python -m pip install -r requirements.txt
 - `GEMINI_API_KEY`：Gemini 金鑰（Google AI Studio 申請）
 - `GITHUB_TOKEN`：可以留空，程式會自動向已登入的 gh 取得
 
-`.env` 不會被上傳到 GitHub。
+`.env` 不會被上傳到 GitHub。雲端執行時，金鑰放在 GitHub 的 Secrets。
 
 ## 怎麼修改設定（config.json）
 
 用記事本或 VS Code 打開 `config.json` 修改，存檔後下次執行就生效。
 
-### 興趣領域
+### 興趣領域與個人背景
 
-`interests` 是你的興趣清單，影響「領域相關」的挑選和「可以怎麼用在我的專案」的點子：
+`interests` 是你的興趣清單，影響「領域相關」的挑選和「可以怎麼用在我的專案」的點子；`user_profile` 是給 AI 判斷「推薦安裝」時參考的個人背景。
 
 ```json
 "interests": [
@@ -86,26 +95,37 @@ python -m pip install -r requirements.txt
 
 `slots` 三個數字加起來要等於 `featured_count`（目前 5）。
 
+### 推薦門檻（recommend_gate）
+
+| 設定 | 意思 |
+|---|---|
+| `max_difficulty` | 精選難度上限（3）；難度 3 時還要完全不用寫程式（`difficulty_3_requires_coding`） |
+| `quick_max_difficulty` | 速覽「可能適合」的難度上限（2） |
+| `min_health` | 健康度下限（60） |
+| `blocking_risk_types` | 正常用法就有這些風險時不推薦（版權、法律、資安） |
+
 ### 其他常調整的
 
 | 設定 | 意思 |
 |---|---|
 | `stale_days` | 超過幾天沒更新就排除（180） |
-| `exclude_recommended_weeks` | 精選過的專案幾週內不再出現（12） |
-| `rising_max_total_stars` / `rising_created_within_days` | 「潛力新星」的條件：總星數上限、建立幾天內 |
+| `exclude_recommended_weeks` | 精選過的專案幾週內不再出現（12）；月度用 `monthly.exclude_recommended_months`（3） |
+| `rising_max_total_stars` / `rising_created_within_days` | 「潛力新星」的條件：總星數上限、建立幾天內（月度在 `monthly` 裡另外設定） |
 | `noise_keywords` | 名稱含這些字就當成清單／教學類排除 |
-| `trial_sandbox_root` | 試用指令中，Claude Code 操作的資料夾（`D:\sandbox`） |
+| `trial_sandbox_root` | 試用指令中，Claude Code 操作的資料夾（例如 `C:\sandbox`，改成你自己的試用資料夾） |
+| `llm_model` / `llm_fallback_models` / `lite_models` | 使用的 Gemini 型號與備援順序；`lite_models` 產生的內容之後補跑會嘗試升級 |
 
 ## 健康度怎麼算
 
 總分 100：最近更新 20、近 30 天 commit 15、貢獻者人數 20、fork÷star 比例 20、正式版本 10、授權 15。
-80 分以上綠色、50–79 黃色、50 以下紅色。
+低於 60 分用紅色顯示。
 
-「成長異常」代表星數成長速度不太自然（例如平均每天超過 1,000 顆星），這類專案不會進精選，只放在速覽並保留警示。
+「成長異常」代表星數成長速度不太自然、又缺乏社群佐證，這類專案不會進精選，只放在速覽並保留警示。
+「爆發成長」代表星數暴增，但 fork 比例與貢獻者人數都證明社群是真的，照常參與挑選。
 
 ## 開發注意事項
 
-- **讀寫含中文的檔案時，不得使用 PowerShell 的重導向或文字指令**（`>`、`>>`、`Out-File`、`Set-Content`、`Get-Content -Raw` 再寫回）。Windows PowerShell 5.1 預設用系統編碼讀寫，會把中文弄成亂碼，或在檔案開頭加上 BOM。請改用編輯器、Python（`encoding="utf-8"`），或 Git Bash。
+- **讀寫含中文的檔案時，不得使用 PowerShell 的重導向或文字指令**（`>`、`>>`、`Out-File`、`Set-Content`、`Get-Content -Raw` 再寫回），**也不要用 Git Bash 的 heredoc 把中文程式碼交給 Python**。這些方式會用系統編碼讀寫，把中文弄成亂碼或在檔案開頭加上 BOM。請改用編輯器，或寫成 UTF-8 檔案後用 `python -X utf8` 執行。
 - 所有 `.py`、`.j2`、`.json`、`.md` 檔案一律存成 **UTF-8（無 BOM）**。
 - 需要把程式輸出存成檔案時，用 `cmd /c "python main.py > logs\輸出.txt 2>&1"`，由 Python 自己輸出 UTF-8。
 
@@ -115,9 +135,10 @@ python -m pip install -r requirements.txt
 |---|---|
 | `main.py` | 主流程 |
 | `fetcher.py` | 抓 GitHub 熱門清單與專案資料 |
-| `selector.py` | 過濾、健康度評分、挑選 |
+| `selector.py` | 過濾、健康度評分、推薦門檻、挑選 |
 | `summarizer.py` | 呼叫 Gemini 產生中文介紹 |
 | `builder.py`、`templates/` | 產生網頁 |
-| `data/weeks/` | 每週結果 |
+| `data/weeks/`、`data/months/` | 每週、每月結果 |
+| `data/history.json`、`data/history_monthly.json` | 推薦紀錄（避免重複推薦） |
 | `site/` | 產生的網頁 |
 | `logs/` | 執行紀錄（排除了哪些專案、為什麼，都在這裡） |

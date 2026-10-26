@@ -188,12 +188,21 @@ def health_score(repo: dict) -> dict:
     }
 
 
-def growth_anomaly(repo: dict, cfg: dict) -> list[str]:
-    """成長異常判斷(只標記,不排除)。回傳觸發的條件說明,沒有觸發就是空清單。"""
+def growth_anomaly(repo: dict, cfg: dict) -> tuple[str | None, list[str]]:
+    """回傳 (等級, 觸發原因清單)。只標記,不排除。
+
+    等級:
+      None        沒有觸發任何條件
+      "爆發成長"   只觸發「平均每日星數」,且 fork÷star ≥ burst_min_fork_ratio、
+                   貢獻者 ≥ burst_min_contributors(含 contributors_too_large)——社群是真的
+      "成長異常"   其他所有觸發情況(包含 fork 比例過低、commit 多但作者少、缺乏社群佐證)
+    只有「成長異常」不得進入精選;「爆發成長」照常參與挑選。
+    """
     reasons = []
     stars = repo.get("stars_total") or 0
     per_day = stars / max(repo.get("age_days") or 1, 1)
-    if per_day > cfg["anomaly_stars_per_day"]:
+    star_hit = per_day > cfg["anomaly_stars_per_day"]
+    if star_hit:
         reasons.append(f"平均每天 {per_day:,.0f} 星(門檻 {cfg['anomaly_stars_per_day']:,})")
     fork_ratio = (repo.get("forks") or 0) / max(stars, 1)
     if fork_ratio < cfg["anomaly_min_fork_ratio"]:
@@ -203,36 +212,161 @@ def growth_anomaly(repo: dict, cfg: dict) -> list[str]:
             and authors < cfg["anomaly_min_contributors"]:
         reasons.append(f"近 30 天 {repo['commits_30d']:,} 個 commit,但近期作者只有 {authors} 位"
                        f"(門檻 {cfg['anomaly_commits_30d']:,} commit / {cfg['anomaly_min_contributors']} 人)")
-    return reasons
+    if not reasons:
+        return None, []
+
+    contrib = repo.get("contributors")
+    community = (fork_ratio >= cfg["burst_min_fork_ratio"]
+                 and (repo.get("contributors_too_large") or (contrib or 0) >= cfg["burst_min_contributors"]))
+    if star_hit and len(reasons) == 1 and community:
+        who = "500+" if repo.get("contributors_too_large") else f"{contrib}"
+        reasons.append(f"社群佐證:fork÷star {fork_ratio:.2f}(≥ {cfg['burst_min_fork_ratio']})、"
+                       f"貢獻者 {who} 位(≥ {cfg['burst_min_contributors']})")
+        return "爆發成長", reasons
+    if star_hit and len(reasons) == 1:
+        reasons.append(f"缺乏社群佐證:fork÷star {fork_ratio:.2f}(需 ≥ {cfg['burst_min_fork_ratio']})、"
+                       f"貢獻者 {contrib if contrib is not None else '未知'} 位(需 ≥ {cfg['burst_min_contributors']})")
+    return "成長異常", reasons
+
+
+# ---------- 推薦安裝門檻 ----------
+
+MISUSE_TYPES = ("法律", "版權", "隱私", "資安")
+
+
+def normalize_risks(item: dict) -> None:
+    """程式強制規則:「費用」一律算主要用途(付錢不是被濫用才發生的事)。試用指令裡的同一行一併更正。"""
+    for r in item.get("risk_notes") or []:
+        if r.get("type") == "費用" and r.get("scope") != "主要用途":
+            old = f"【費用｜{r.get('scope')}】"
+            r["scope"] = "主要用途"
+            if item.get("trial_prompt"):
+                item["trial_prompt"] = item["trial_prompt"].replace(old + r["note"], "【費用｜主要用途】" + r["note"])
+
+
+def has_misuse_risk(item: dict) -> bool:
+    """只有法律、版權、隱私、資安類,且屬於「不當使用」的風險,才算需要先看注意事項。"""
+    return any(r.get("type") in MISUSE_TYPES and r.get("scope") == "不當使用" for r in item.get("risk_notes") or [])
+
+def recommend_gate(item: dict, cfg: dict, tier: str) -> tuple[bool, list[str]]:
+    """程式寫死的門檻,回傳 (是否通過, 未通過原因清單)。tier 為 "featured" 或 "quick"。
+
+    以下任一條成立就不通過:Windows 不支援、需要付費 API、難度過高或未知(速覽上限 quick_max_difficulty;
+    精選難度 3 時 needs_coding 必須在 difficulty_3_requires_coding 內)、
+    需要大量寫程式(只檢查精選)、健康度不足、成長異常、介紹不是 AI 產生、
+    精選有「主要用途」的版權/法律/資安風險、速覽有 risk_flag。
+    精選:badge = llm_says and gate_passed;速覽:maybe_fit = llm_says and gate_passed。由呼叫端計算。
+    """
+    g = cfg["recommend_gate"]
+    pr = item.get("practicality") or item  # 精選的欄位在 practicality 裡,速覽在外層
+    fails = []
+    if pr.get("windows_ok") not in g["windows_ok"]:
+        fails.append(f"Windows 支援為 {pr.get('windows_ok')}")
+    if pr.get("needs_paid_api") not in g["needs_paid_api"]:
+        fails.append(f"付費 API 為 {pr.get('needs_paid_api')}")
+    diff = pr.get("difficulty")
+    max_diff = g["max_difficulty"] if tier == "featured" else g.get("quick_max_difficulty", g["max_difficulty"])
+    if not isinstance(diff, int):
+        fails.append("難度未知")
+    elif diff > max_diff:
+        fails.append(f"難度 {diff} > {max_diff}")
+    elif tier == "featured" and diff == 3 and pr.get("needs_coding") not in g.get("difficulty_3_requires_coding", g["needs_coding"]):
+        # 難度 3 的專案必須完全不用寫程式才推薦
+        fails.append(f"難度 3 但寫程式需求為 {pr.get('needs_coding')}")
+    if tier == "featured" and "needs_coding" in pr and pr.get("needs_coding") not in g["needs_coding"]:
+        fails.append(f"寫程式需求為 {pr.get('needs_coding')}")
+    score = item["health"]["score"] if tier == "featured" else item.get("health_score")
+    if score is None or score < g["min_health"]:
+        fails.append(f"健康度 {score} < {g['min_health']}")
+    flags = item["health"]["flags"] if tier == "featured" else (item.get("flags") or [])
+    if "成長異常" in flags:
+        fails.append("成長異常")
+    status = item.get("intro_status") if tier == "featured" else item.get("one_liner_status")
+    if status != "ai":
+        fails.append("介紹不是 AI 產生")
+    if tier == "featured":
+        for r in item.get("risk_notes") or []:
+            if r.get("type") in g["blocking_risk_types"] and r.get("scope") == "主要用途":
+                fails.append(f"主要用途有{r['type']}風險")
+    elif item.get("risk_flag"):
+        fails.append(f"有風險標籤「{item['risk_flag']}」")
+    return not fails, fails
+
+
+# ---------- 替代方案標籤(規則 A) ----------
+
+# 不收 vs:「VS Code」太常見,容易誤判
+ALT_WORDS = re.compile(r"(?<![a-z])(replac\w*|alternatives?|instead of|compar\w*|drop-in)(?![a-z])"
+                       r"|取代|替代|替換|比較", re.I)
+
+
+def first_paragraph(readme: str) -> str:
+    """README 第一段正文(跳過標題、徽章、圖片、表格與程式碼)。"""
+    for block in re.split(r"\n\s*\n", readme or ""):
+        clean = re.sub(r"<[^>]+>|!\[[^\]]*\]\([^)]*\)", "", block).strip()
+        if len(clean) > 30 and not clean.startswith(("#", "|", "```", "[![")):
+            return clean[:600]
+    return ""
+
+
+def alternative_of(repo: dict, texts: list[str], candidates: list[dict]) -> str | None:
+    """描述或 README 第一段明確寫出「取代/替代/比較」某個專案,且該專案也在本次候選中 → 回傳該專案名稱。"""
+    for text in texts:
+        if not text or not ALT_WORDS.search(text):
+            continue
+        for other in candidates:
+            if other["full_name"] == repo["full_name"]:
+                continue
+            short = other["full_name"].split("/")[-1]
+            names = [other["full_name"]] + ([short] if len(short) >= 3 else [])
+            for n in names:
+                if re.search(r"(?<![\w-])" + re.escape(n) + r"(?![\w-])", text, re.I):
+                    return other["full_name"]
+    return None
+
+
+def add_alternative_flag(repo: dict, texts: list[str], candidates: list[dict]) -> None:
+    other = alternative_of(repo, texts, candidates)
+    flags = repo["health"]["flags"] if "health" in repo else repo.setdefault("flags", [])
+    if other and not any(f.endswith("的替代方案") for f in flags):
+        flags.append(f"{other} 的替代方案")
+        log.info("替代方案 %s:提到 %s", repo["full_name"], other)
 
 
 # ---------- 推薦紀錄 ----------
 
-def _week_monday(week: str) -> date:
-    y, w = week.split("-W")
-    return date.fromisocalendar(int(y), int(w), 1)
+def _period_index(pid: str) -> int:
+    """週次(2026-W43)換成週序號、月份(2026-10)換成月序號,相減就是相差幾週/幾個月。"""
+    if "-W" in pid:
+        y, w = pid.split("-W")
+        return date.fromisocalendar(int(y), int(w), 1).toordinal() // 7
+    y, m = pid.split("-")
+    return int(y) * 12 + int(m)
 
 
 def load_history(path: Path) -> dict:
     if path.exists():
-        return json.loads(path.read_text(encoding="utf-8"))
+        return json.loads(path.read_text(encoding="utf-8-sig"))
     return {"entries": []}
 
 
-def recent_recommended(history: dict, current_week: str, weeks: int) -> tuple[set, set]:
-    """回傳近 N 週內 (精選過的, 速覽過的) repo 名稱集合(小寫)。"""
-    cur = _week_monday(current_week)
+def recent_recommended(history: dict, current: str, n: int) -> tuple[set, set]:
+    """回傳近 n 期(週或月,依 current 的格式)內 (精選過的, 速覽過的) repo 名稱集合(小寫)。"""
+    cur = _period_index(current)
     featured, quick = set(), set()
     for e in history.get("entries", []):
-        if e["week"] == current_week:
-            continue  # 同一週重跑時不要把自己排掉
-        if 0 <= (cur - _week_monday(e["week"])).days < weeks * 7:
+        if e["week"] == current:
+            continue  # 同一期重跑時不要把自己排掉
+        if 0 <= cur - _period_index(e["week"]) < n:
             (featured if e["tier"] == "featured" else quick).add(e["full_name"].lower())
     return featured, quick
 
 
 def update_history(path: Path, week: str, featured: list[dict], quick: list[dict]) -> None:
-    """把本週推薦寫入 history.json;同一週重跑會覆蓋該週舊紀錄。"""
+    """把本期推薦寫入 history(週用 history.json、月用 history_monthly.json);同一期重跑會覆蓋舊紀錄。
+
+    欄位名稱沿用 week,月度時存的是月份(例如 2026-10)。
+    """
     h = load_history(path)
     h["entries"] = [e for e in h["entries"] if e["week"] != week]
     h["entries"] += [{"week": week, "full_name": p["full_name"], "tier": "featured"} for p in featured]
@@ -243,19 +377,19 @@ def update_history(path: Path, week: str, featured: list[dict], quick: list[dict
 
 # ---------- 挑選 ----------
 
-def _momentum(repo: dict) -> tuple[float, bool]:
-    """回傳 (每週新增星數, 是否為估算值)。"""
+def _momentum(repo: dict, days: int) -> tuple[float, bool]:
+    """回傳 (本期新增星數, 是否為估算值)。days 為本期天數(週 7、月 30)。"""
     if repo.get("stars_this_week") is not None:
         return float(repo["stars_this_week"]), False
     if repo.get("stars_today") is not None:
-        return float(repo["stars_today"]) * 7, True
-    return (repo.get("stars_total") or 0) / max(repo.get("age_days") or 1, 1) * 7, True
+        return float(repo["stars_today"]) * days, True
+    return (repo.get("stars_total") or 0) / max(repo.get("age_days") or 1, 1) * days, True
 
 
-def score_candidates(cands: list[dict]) -> None:
-    """替每個候選加上 momentum 與 composite(健康度 50% + 本週熱度排名 50%)。"""
+def score_candidates(cands: list[dict], days: int = 7) -> None:
+    """替每個候選加上 momentum 與 composite(健康度 50% + 本期熱度排名 50%)。"""
     for c in cands:
-        c["momentum"], c["momentum_est"] = _momentum(c)
+        c["momentum"], c["momentum_est"] = _momentum(c, days)
     ordered = sorted(cands, key=lambda c: c["momentum"])
     n = max(len(ordered) - 1, 1)
     for i, c in enumerate(ordered):

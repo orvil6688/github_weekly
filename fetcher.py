@@ -149,8 +149,12 @@ def fetch_candidates(cfg: dict) -> list[dict]:
     來源統計放在 fetch_candidates.stats,供 main 顯示。
     """
     base = cfg["trending_url"]
-    pages = [("trending:weekly", "weekly", None), ("trending:daily", "daily", None)]
-    pages += [(f"trending:{lang}", "weekly", lang) for lang in cfg.get("trending_languages", [])]
+    # 週度:週榜 + 日榜 + 語言週榜;月度:月榜 + 語言月榜。本期新增星數一律存在 stars_this_week
+    since_main = cfg.get("trending_since", "weekly")
+    pages = [(f"trending:{since_main}", since_main, None)]
+    if since_main == "weekly":
+        pages.append(("trending:daily", "daily", None))
+    pages += [(f"trending:{lang}", since_main, lang) for lang in cfg.get("trending_languages", [])]
 
     merged: dict[str, dict] = {}
     stats: dict[str, int] = {}
@@ -187,7 +191,7 @@ def fetch_candidates(cfg: dict) -> list[dict]:
         for it in items:
             c = add(it, source)
             c["hot_source"] = "trending"
-            if since == "weekly":
+            if since == since_main:
                 c["stars_this_week"] = max(c["stars_this_week"] or 0, it["gain"] or 0)
             else:
                 c["stars_today"] = it["gain"]
@@ -195,7 +199,7 @@ def fetch_candidates(cfg: dict) -> list[dict]:
 
     if trending_total == 0:
         log.warning("Trending 全部失敗,改用 GitHub Search API 備援")
-        q = f"stars:>1000 pushed:>={_days_ago(7)} created:>={_days_ago(365)}"
+        q = f"stars:>1000 pushed:>={_days_ago(cfg.get('period_days', 7))} created:>={_days_ago(365)}"
         items = _search(q, 50)
         stats["search_api(備援熱門)"] = len(items)
         for it in items:

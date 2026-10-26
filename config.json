@@ -59,12 +59,32 @@
   "anomaly_min_fork_ratio": 0.01,
   "anomaly_commits_30d": 2000,
   "anomaly_min_contributors": 10,
+  "burst_min_fork_ratio": 0.05,
+  "burst_min_contributors": 50,
   "noise_keywords": ["awesome", "interview", "roadmap", "tutorial", "cheatsheet", "list", "books", "course"],
   "noise_desc_phrases": ["curated list", "awesome list", "a list of", "collection of resources", "interview questions", "learning roadmap", "free books", "cheat sheet", "cheatsheet", "tutorials", "course", "guide to", "learn to"],
+  "user_profile": "非工程師，使用 Windows 電腦，透過 Claude Code 開發 Python bot、Tampermonkey userscript、本地網頁小工具；偏好下載即用或照步驟就能裝好的軟體",
+  "recommend_gate": {
+    "windows_ok": ["yes"],
+    "needs_paid_api": ["no", "optional"],
+    "max_difficulty": 3,
+    "difficulty_3_requires_coding": ["none"],
+    "quick_max_difficulty": 2,
+    "needs_coding": ["none", "light"],
+    "min_health": 60,
+    "blocking_risk_types": ["版權", "法律", "資安"]
+  },
+  "quick_readme_chars": 2000,
   "llm_model": "gemini-3.5-flash",
   "llm_fallback_models": ["gemini-3.8-flash", "gemini-flash-lite-latest"],
+  "lite_models": ["gemini-flash-lite-latest"],
   "llm_max_calls": 10,
   "llm_hard_cap": 20,
   "readme_max_chars": 15000,
-  "trial_sandbox_root": "D:\\sandbox"
+  "trial_sandbox_root": "D:\\sandbox",
+  "monthly": {
+    "rising_created_within_days": 90,
+    "rising_max_total_stars": 8000,
+    "exclude_recommended_months": 3
+  }
 }

@@ -10,6 +10,8 @@ data/cache/
 # 本地測試產生的週資料與推薦紀錄(階段 5 部署前再處理)
 data/weeks/
 data/history.json
+data/months/
+data/history_monthly.json
 
 # Python
 __pycache__/
