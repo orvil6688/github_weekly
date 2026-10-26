@@ -448,7 +448,7 @@
       "stars_this_week_est": null,
       "health_score": 86,
       "flags": [],
-      "one_liner": "Local-first search engine and MCP server for AI 代理. One Rust binary indexes code, docs, logs, JSONL/CSV and PDFs for",
+      "one_liner": "Local-first search engine and MCP server for AI 代理. One Rust binary indexes code, docs, logs, JSONL/CSV and PDFs for BM2",
       "risk_flag": null,
       "difficulty": null,
       "windows_ok": "unknown",
@@ -672,5 +672,6 @@
       "lite_model": false
     }
   ],
-  "week": "2026-W44"
+  "week": "2026-W44",
+  "filled_at": "2026-10-27T05:57:27+08:00"
 }
