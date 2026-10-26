@@ -4,9 +4,9 @@ on:
   schedule:
     # cron 用 UTC;括號內為台灣時間
     - cron: "17 0 * * 1"   # 週一 08:17 週完整
-    - cron: "17 6 * * 1"   # 週一 14:17 週補跑
+    - cron: "47 8 * * 1"   # 週一 16:47 週補跑(Gemini 免費額度重置後)
     - cron: "17 2 1 * *"   # 每月 1 日 10:17 月完整
-    - cron: "17 8 1 * *"   # 每月 1 日 16:17 月補跑
+    - cron: "47 8 1 * *"   # 每月 1 日 16:47 月補跑(Gemini 免費額度重置後)
   workflow_dispatch:
     inputs:
       mode:
@@ -58,9 +58,9 @@ jobs:
           if [ "$EVENT" = "schedule" ]; then
             case "$SCHEDULE" in
               "17 0 * * 1") MODE="週完整" ;;
-              "17 6 * * 1") MODE="週補跑" ;;
+              "47 8 * * 1") MODE="週補跑" ;;
               "17 2 1 * *") MODE="月完整" ;;
-              "17 8 1 * *") MODE="月補跑" ;;
+              "47 8 1 * *") MODE="月補跑" ;;
               *) echo "::error::未知的排程:$SCHEDULE"; exit 1 ;;
             esac
           else

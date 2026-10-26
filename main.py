@@ -334,26 +334,28 @@ def fill_missing(cfg: dict, P: dict, llm) -> dict | None:
     rest = [p for p in data["projects"] if not p.get("reused_from")]
     fb = [p for p in rest if p.get("intro_status") != "ai"]
     up = [p for p in rest if p.get("intro_status") == "ai" and p.get("model") in lite]
+    q_fb = [q for q in data["quick_picks"] if q.get("one_liner_status") != "ai" or not q.get("one_liner")]
+    q_up = [q for q in data["quick_picks"] if q.get("one_liner_status") == "ai" and q.get("model") in lite]
     if recopied:
         print(f"重新複製週介紹:{'、'.join(recopied)}")
     if not (recopied or fb or up or q_fb or q_up):
         # 雲端補跑靠「data/ 沒有變動」判斷要不要 commit 與部署,所以這裡完全不寫檔
         print("沒有缺項,不需補跑")
         return None
-    q_fb = [q for q in data["quick_picks"] if q.get("one_liner_status") != "ai" or not q.get("one_liner")]
-    q_up = [q for q in data["quick_picks"] if q.get("one_liner_status") == "ai" and q.get("model") in lite]
     print(f"需要補的:精選 降級 {len(fb)}、輕量 {len(up)};速覽 降級 {len(q_fb)}、輕量 {len(q_up)}")
 
+    improved = []  # 從降級變成 AI、或從輕量模型升級成功的項目
     for p in fb + up:
         upgrade = p in up
         p["readme"] = fetcher.fetch_readme(p["full_name"], cfg["readme_max_chars"])
         s = summarizer.summarize(p, cfg, llm, force=upgrade, exclude=lite if upgrade else None)
         p.pop("readme")
-        if upgrade and (s["intro_status"] != "ai" or s.get("model") in lite):
-            log.info("升級失敗,保留原本內容:%s", p["full_name"])
+        if s["intro_status"] != "ai" or (upgrade and s.get("model") in lite):
+            log.info("%s,保留原本內容:%s", "升級失敗" if upgrade else "仍無法產生介紹", p["full_name"])
             continue
         p.update(s)
         p.pop("reused_from", None)
+        improved.append(p["full_name"])
 
     if q_fb or q_up:
         batch = q_fb + q_up
@@ -363,10 +365,18 @@ def fill_missing(cfg: dict, P: dict, llm) -> dict | None:
         for q in batch:
             q.pop("readme_head", None)
             v = lines[q["full_name"]]
-            if q in q_up and (v["status"] != "ai" or v.get("model") in lite):
-                log.info("升級失敗,保留原本內容:%s", q["full_name"])
+            upgrade = q in q_up
+            if v["status"] != "ai" or (upgrade and v.get("model") in lite):
+                log.info("%s,保留原本內容:%s", "升級失敗" if upgrade else "仍無法產生一句話", q["full_name"])
                 continue
             set_quick_fields(q, v)
+            improved.append(q["full_name"])
+
+    if not (recopied or improved):
+        # 沒有任何改善(例如金鑰錯誤或額度用完):不寫檔、不更新 filled_at,workflow 會跳過 commit 與部署
+        print("補跑沒有任何項目改善,不寫入資料")
+        return None
+    print(f"改善 {len(improved)} 項:{'、'.join(improved)}")
 
     for p in data["projects"]:
         apply_recommend(p, "featured", cfg)
