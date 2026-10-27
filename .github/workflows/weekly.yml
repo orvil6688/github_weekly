@@ -12,8 +12,9 @@ on:
       mode:
         description: 執行模式
         type: choice
-        options: [週完整, 週補跑, 月完整, 月補跑]
-        default: 週完整
+        # 平常升級內容選「週補跑」;只改了網頁樣式選「只重建網頁」;「週完整」會重新挑選本週名單
+        options: [週補跑, 只重建網頁, 週完整, 月完整, 月補跑]
+        default: 週補跑
 
 # 所有執行共用同一組,排隊依序執行,不互相取消(避免同時改 data/ 造成 push 衝突)
 concurrency:
@@ -30,7 +31,7 @@ env:
 
 jobs:
   run:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     environment:
       name: github-pages
@@ -71,13 +72,16 @@ jobs:
             "週補跑") ARGS="--fill-missing" ;;
             "月完整") ARGS="--period monthly" ;;
             "月補跑") ARGS="--period monthly --fill-missing" ;;
+            "只重建網頁") ARGS="" ;;
             *) echo "::error::未知的模式:$MODE"; exit 1 ;;
           esac
           echo "執行模式:$MODE(參數:${ARGS:-無})"
           echo "mode=$MODE" >> "$GITHUB_OUTPUT"
           echo "args=$ARGS" >> "$GITHUB_OUTPUT"
+          echo "rebuild=$([ "$MODE" = "只重建網頁" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
 
       - name: 執行 main.py
+        if: steps.mode.outputs.rebuild != 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -86,13 +90,21 @@ jobs:
 
       - name: 檢查資料是否有變動
         id: changes
+        env:
+          REBUILD: ${{ steps.mode.outputs.rebuild }}
         run: |
-          if [ -z "$(git status --porcelain -- data/)" ]; then
+          if [ "$REBUILD" = "true" ]; then
+            echo "只重建網頁:不抓資料、不呼叫 LLM、不 commit,直接重新部署"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "deploy=true" >> "$GITHUB_OUTPUT"
+          elif [ -z "$(git status --porcelain -- data/)" ]; then
             echo "沒有資料變動(補跑時代表沒有缺項),不 commit、不部署"
             echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "deploy=false" >> "$GITHUB_OUTPUT"
           else
             git status --porcelain -- data/
             echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "deploy=true" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Commit 資料變更
@@ -121,20 +133,20 @@ jobs:
           git push
 
       - name: 產生網頁(所有週次與月份)
-        if: steps.changes.outputs.changed == 'true'
+        if: steps.changes.outputs.deploy == 'true'
         run: python main.py --build-only
 
       - name: 設定 Pages
-        if: steps.changes.outputs.changed == 'true'
+        if: steps.changes.outputs.deploy == 'true'
         uses: actions/configure-pages@v6
 
       - name: 上傳網頁
-        if: steps.changes.outputs.changed == 'true'
+        if: steps.changes.outputs.deploy == 'true'
         uses: actions/upload-pages-artifact@v5
         with:
           path: site
 
       - name: 部署到 GitHub Pages
         id: deploy
-        if: steps.changes.outputs.changed == 'true'
+        if: steps.changes.outputs.deploy == 'true'
         uses: actions/deploy-pages@v5

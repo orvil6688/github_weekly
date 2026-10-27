@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>GitHub 熱門五選 推薦紀錄</title>
+<style>
+{% include "_style.css.j2" %}
+/* ---------- 推薦紀錄 ---------- */
+.period { display: grid; grid-template-columns: 12rem minmax(0, 1fr); gap: 4px 28px; padding: 20px 0; border-bottom: 1px solid var(--rule); }
+.period h3 { margin: 0; font-family: var(--narrow); font-weight: 600; font-size: 1.3rem; line-height: 1.3; }
+.period .range { color: var(--muted); font-size: .875rem; font-family: var(--narrow); font-variant-numeric: tabular-nums; }
+.rows { display: grid; grid-template-columns: 5em minmax(0, 1fr); gap: 6px 12px; margin: 0; }
+.rows dt { color: var(--muted); font-size: .9rem; }
+.rows dd { margin: 0; }
+.rows dd a { color: var(--ink); text-decoration-color: var(--rule); }
+.rows dd a:hover { color: var(--link); }
+.rows .rec a { font-weight: bold; }
+.rows .faint, .rows .faint a { color: var(--muted); }
+.sep::after { content: "、"; color: var(--muted); }
+.sep:last-child::after { content: ""; }
+.go { margin: 10px 0 0; }
+.none { color: var(--muted); padding: 16px 0; margin: 0; }
+@media (max-width: 640px) {
+  .period { grid-template-columns: minmax(0, 1fr); }
+  .rows { grid-template-columns: 4.5em minmax(0, 1fr); }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav class="tabs">
+  <a href="index.html">本週精選</a>
+  <a href="monthly.html">本月精選</a>
+  <a href="history.html" class="right on">推薦紀錄</a>
+</nav>
+
+<header class="top">
+  <h1>推薦紀錄</h1>
+  <p class="facts">每一期挑出的精選與推薦安裝，新的在上面。點「查看這一期」可以看當時的完整介紹。</p>
+</header>
+
+{% for group in groups %}
+<h2 class="section">{{ group.title }}</h2>
+{% for e in group.entries %}
+<section class="period">
+  <div>
+    <h3>{{ e.title }}</h3>
+    <div class="range">{{ e.range }}</div>
+  </div>
+  <div>
+    <dl class="rows">
+      <dt>推薦安裝</dt>
+      <dd class="rec">{% for n, u in e.recommended %}<span class="sep"><a href="{{ u }}" target="_blank" rel="noopener">{{ n }}</a></span>{% else %}<span class="muted">這一期沒有推薦安裝的項目</span>{% endfor %}</dd>
+      <dt>精選</dt>
+      <dd>{% for n, u in e.featured %}<span class="sep"><a href="{{ u }}" target="_blank" rel="noopener">{{ n }}</a></span>{% endfor %}</dd>
+      {% if e.maybe %}
+      <dt class="faint">可能適合</dt>
+      <dd class="faint">{% for n, u in e.maybe %}<span class="sep"><a href="{{ u }}" target="_blank" rel="noopener">{{ n }}</a></span>{% endfor %}</dd>
+      {% endif %}
+    </dl>
+    <p class="go"><a href="archive/{{ e.pid }}.html">查看這一{{ "週" if group.type == "weekly" else "個月" }} ›</a></p>
+  </div>
+</section>
+{% else %}
+<p class="none">{{ group.empty }}</p>
+{% endfor %}
+{% endfor %}
+
+<footer>
+  資料來源：GitHub Trending 與 GitHub API。「推薦安裝」需同時通過 AI 判斷與程式門檻；「可能適合」是速覽中門檻更嚴的提示，不是正式推薦。
+</footer>
+</div>
+</body>
+</html>

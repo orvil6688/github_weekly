@@ -37,6 +37,15 @@ def _period_stars(item: dict) -> str:
     return "—"
 
 
+def _period_gain(item: dict) -> tuple[str, bool]:
+    """左欄價格標用:(數字文字, 是否為估算)。「（估）」改放在說明文字後面,數字本身不換行。"""
+    if item.get("stars_this_week") is not None:
+        return f"+{item['stars_this_week']:,}", False
+    if item.get("stars_this_week_est") is not None:
+        return f"約 +{item['stars_this_week_est']:,}", True
+    return "—", False
+
+
 def _health_class(score) -> str:
     """低於 60(推薦門檻)用警示色,其他維持主要文字色。"""
     return "low" if score is None or score < 60 else "good"
@@ -126,6 +135,7 @@ def _env() -> Environment:
     env = Environment(loader=FileSystemLoader(ROOT / "templates"), autoescape=select_autoescape(["html", "j2"]),
                       trim_blocks=True, lstrip_blocks=True)
     env.globals.update(slot_label=lambda s: SLOT_LABELS.get(s, s), num=_num, period_stars=_period_stars,
+                       period_gain=_period_gain,
                        health_class=_health_class, flag_class=_flag_class, specs=_specs, repo_wbr=_repo_wbr)
     return env
 
@@ -153,6 +163,28 @@ def _render(env, data: dict | None, ptype: str, weeks: list[str], months: list[s
         period_range=_range(pid) if pid else "", generated=_generated(data.get("generated_at")) if data else "")
 
 
+def _history_entry(data: dict) -> dict:
+    """推薦紀錄頁的一期:標題、資料期間、推薦安裝、精選、可能適合(名稱連到 GitHub)。"""
+    pid = _pid(data)
+    c = data.get("coverage")
+    if c:
+        f, t = (datetime.strptime(c[k], "%Y-%m-%d") for k in ("from", "to"))
+        rng = f"{f:%m/%d}–{t:%m/%d}"
+    else:
+        rng = _range(pid)
+
+    def short(items):
+        return [(it["full_name"].split("/")[-1], it["url"]) for it in items]
+
+    projects, quick = data.get("projects", []), data.get("quick_picks", [])
+    return {
+        "pid": pid, "title": _title(pid), "range": rng,
+        "recommended": short([p for p in projects if (p.get("recommend") or {}).get("badge")]),
+        "featured": short(projects),
+        "maybe": short([q for q in quick if (q.get("recommend") or {}).get("maybe_fit")]),
+    }
+
+
 def build_all() -> Path:
     """用現有的週資料與月資料重新產生全部網頁(--build-only 與正常執行的最後一步都用這個)。"""
     env = _env()
@@ -160,6 +192,9 @@ def build_all() -> Path:
     (SITE / "archive").mkdir(parents=True, exist_ok=True)
     wdata = {w: _load(WEEKS, w) for w in weeks}
     mdata = {m: _load(MONTHS, m) for m in months}
+    for old in (SITE / "archive").glob("*.html"):  # 清掉已經沒有對應資料的舊存檔頁
+        if old.stem not in wdata and old.stem not in mdata:
+            old.unlink()
 
     index = _render(env, wdata[weeks[-1]] if weeks else None, "weekly", weeks, months, False)
     (SITE / "index.html").write_text(index, encoding="utf-8")
@@ -169,6 +204,13 @@ def build_all() -> Path:
         (SITE / "archive" / f"{w}.html").write_text(_render(env, d, "weekly", weeks, months, True), encoding="utf-8")
     for m, d in mdata.items():
         (SITE / "archive" / f"{m}.html").write_text(_render(env, d, "monthly", weeks, months, True), encoding="utf-8")
+    groups = [
+        {"type": "weekly", "title": "每週", "empty": "尚無週次紀錄，第一份會在週一產生。",
+         "entries": [_history_entry(wdata[w]) for w in reversed(weeks)]},
+        {"type": "monthly", "title": "每月", "empty": "尚無月度紀錄，第一份會在每月 1 日產生。",
+         "entries": [_history_entry(mdata[m]) for m in reversed(months)]},
+    ]
+    (SITE / "history.html").write_text(env.get_template("history.html.j2").render(groups=groups), encoding="utf-8")
     log.info("網頁已產生:index、monthly 與 %d 個存檔頁", len(weeks) + len(months))
     return SITE / "index.html"
 

@@ -414,7 +414,7 @@ def refresh_reused(data: dict) -> list[str]:
 
 def build_pages() -> None:
     builder.build_all()
-    print("網頁已產生:site/index.html、site/monthly.html")
+    print("網頁已產生:site/index.html、site/monthly.html、site/history.html")
 
 
 # ---------- 報表 ----------
