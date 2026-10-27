@@ -2,27 +2,27 @@
   "entries": [
     {
       "week": "2026-W44",
-      "full_name": "stablyai/orca",
-      "tier": "featured"
-    },
-    {
-      "week": "2026-W44",
       "full_name": "DietrichGebert/ponytail",
       "tier": "featured"
     },
     {
       "week": "2026-W44",
-      "full_name": "debpalash/VoiceStudio",
+      "full_name": "stablyai/orca",
       "tier": "featured"
     },
     {
       "week": "2026-W44",
-      "full_name": "TauricResearch/TradingAgents",
+      "full_name": "HKUDS/DeepTutor",
       "tier": "featured"
     },
     {
       "week": "2026-W44",
-      "full_name": "aicodeking/leanrea",
+      "full_name": "jub0t/Concat",
+      "tier": "featured"
+    },
+    {
+      "week": "2026-W44",
+      "full_name": "mmparko/dsh-purge",
       "tier": "featured"
     },
     {
@@ -32,12 +32,12 @@
     },
     {
       "week": "2026-W44",
-      "full_name": "anomalyco/opencode",
+      "full_name": "Graphify-Labs/graphify",
       "tier": "quick"
     },
     {
       "week": "2026-W44",
-      "full_name": "Graphify-Labs/graphify",
+      "full_name": "anomalyco/opencode",
       "tier": "quick"
     },
     {
@@ -47,32 +47,32 @@
     },
     {
       "week": "2026-W44",
-      "full_name": "pingdotgg/t3code",
+      "full_name": "tashfeenahmed/freellmapi",
       "tier": "quick"
     },
     {
       "week": "2026-W44",
-      "full_name": "jub0t/Concat",
+      "full_name": "heygen-com/hyperframes",
       "tier": "quick"
     },
     {
       "week": "2026-W44",
-      "full_name": "strelov1/freehire",
+      "full_name": "makecindy/cindy",
       "tier": "quick"
     },
     {
       "week": "2026-W44",
-      "full_name": "PC2005-cloud/dsh-pet",
+      "full_name": "TauricResearch/TradingAgents",
       "tier": "quick"
     },
     {
       "week": "2026-W44",
-      "full_name": "anthropics/knowledge-work-plugins",
+      "full_name": "pbakaus/impeccable",
       "tier": "quick"
     },
     {
       "week": "2026-W44",
-      "full_name": "pollen-robotics/microduck",
+      "full_name": "JetBrains/thinkrail",
       "tier": "quick"
     }
   ]
