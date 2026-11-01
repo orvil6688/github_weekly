@@ -1,0 +1,746 @@
+{
+  "period": "2026-10",
+  "period_type": "monthly",
+  "generated_at": "2026-11-01T17:26:45+08:00",
+  "coverage": {
+    "from": "2026-10-02",
+    "to": "2026-11-01"
+  },
+  "source": "trending",
+  "candidate_count": 126,
+  "excluded_count": 6,
+  "projects": [
+    {
+      "rank": 1,
+      "slot": "hot",
+      "matched_interest": null,
+      "category": "開發工具",
+      "category_model": "gemini-3.5-flash",
+      "full_name": "DietrichGebert/ponytail",
+      "url": "https://github.com/DietrichGebert/ponytail",
+      "description_raw": "Makes your AI agent think like the laziest senior dev in the room. The best code is the code you never wrote.",
+      "language": "JavaScript",
+      "license": "MIT",
+      "stars_total": 181723,
+      "stars_this_week": 33792,
+      "stars_this_week_est": null,
+      "health": {
+        "score": 85,
+        "last_push_days": 2,
+        "commits_30d": 145,
+        "open_issues": 146,
+        "contributors": 131,
+        "flags": [
+          "爆發成長"
+        ]
+      },
+      "intro": {
+        "one_liner": "讓 AI 代理像資深工程師般思考，寫出最精簡且有測試的程式碼。",
+        "problem": "一般 AI 工具在寫程式時容易過度設計，常為了簡單功能安裝一堆外掛或寫出幾百行程式碼，浪費許多 Token 與時間。Ponytail 透過提示詞規則規範 AI 代理，讓它優先重用既有程式碼與瀏覽器原生功能。",
+        "features": [
+          "引導 AI 代理寫出極簡程式碼並重用現有元件，顯著降低 Token 消耗與費用",
+          "提供 /ponytail-review 與 /ponytail-audit 功能，自動審查全專案的安全性與潛在 bug",
+          "在 Claude Code 中提供即時統計條，顯示每次任務的花費、Token 數量與時間"
+        ],
+        "audience": "使用 Claude Code 或其他 AI 代理開發專案，希望控制程式碼複雜度與 API 成本的使用者。",
+        "getting_started": "在 Claude Code 視窗中直接輸入指令 `/plugin marketplace add DietrichGebert/ponytail` 與 `/plugin install ponytail@ponytail` 即可完成安裝。",
+        "tech_stack": "Markdown (提示詞規則集)、JavaScript、TypeScript、Python",
+        "why_trending": "機能升級到第 5 版後能顯著減少 45% 的 Token 消耗與 26% 的費用，並且新增了可在 Claude Code 直觀查看花費的即時儀表板功能。"
+      },
+      "practicality": {
+        "difficulty": 1,
+        "windows_ok": "yes",
+        "needs_gpu": "no",
+        "needs_paid_api": "optional",
+        "needs_coding": "none",
+        "verdict": "適合使用 Claude Code 的使用者，複製指令貼上就能用，能直接幫 AI 代理省 Token。"
+      },
+      "ideas_for_me": [
+        {
+          "interest": "AI agent 與 LLM 工具",
+          "idea": "配合平時使用的 Claude Code，讓 AI 代理在幫您撰寫 Python bot 或小工具時自動使用最簡程式碼，避免引入過多不必要的第三方模組。"
+        },
+        {
+          "interest": "瀏覽器擴充與 userscript",
+          "idea": "在開發 Tampermonkey 腳本時，引導 AI 代理優先利用瀏覽器內建的原生 API，打造更輕量、執行速度更快且好維護的腳本。"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "AI 代理",
+          "explain": "能接受目標指令後自動規劃步驟、調用工具並撰寫程式碼的 AI 系統。"
+        },
+        {
+          "term": "Token",
+          "explain": "AI 處理文字與程式碼的基本單位，輸入與輸出的字數越多消耗的 Token 越多，通常會影響呼叫費用。"
+        },
+        {
+          "term": "重用",
+          "explain": "直接拿專案或環境中已經寫好的程式碼或功能來用，不重複重新編寫。"
+        }
+      ],
+      "risk_notes": [],
+      "trial_prompt": "# 任務：試用 GitHub 專案 DietrichGebert/ponytail\n\n專案網址：https://github.com/DietrichGebert/ponytail\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：在 Claude Code 安裝後請 AI 代理寫一段小程式，完成後會看到提示視窗上方顯示 Token 消耗統計條（band）。\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\ponytail` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/DietrichGebert/ponytail.git \"D:\\sandbox\\ponytail\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- ⚠ 這個專案很可能需要付費 API 金鑰：遇到要填金鑰的步驟就停止，先問我，不要自己申請或填入。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
+      "intro_status": "ai",
+      "model": "gemini-3.5-flash",
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "您平時會使用 Claude Code 開發 Python bot 與網頁工具，安裝此外掛只需複製貼上兩行指令，能有效讓您的 AI 代理省下 Token 花費並減少寫出複雜程式碼。",
+        "gate_passed": true,
+        "gate_fail_reasons": [],
+        "badge": true,
+        "has_misuse_risk": false
+      },
+      "reused_from": "2026-W44",
+      "lite_model": false
+    },
+    {
+      "rank": 2,
+      "slot": "hot",
+      "matched_interest": null,
+      "category": "開發工具",
+      "category_model": "gemini-3.5-flash",
+      "full_name": "stablyai/orca",
+      "url": "https://github.com/stablyai/orca",
+      "description_raw": "Orca is the place for working with a fleet of agents (e.g. Grok Bot, Claude Code). Run any coding agent with your own subscription. Available on desktop, mobile and remote runtime.",
+      "language": "TypeScript",
+      "license": "MIT",
+      "stars_total": 111982,
+      "stars_this_week": 30099,
+      "stars_this_week_est": null,
+      "health": {
+        "score": 92,
+        "last_push_days": 0,
+        "commits_30d": 6080,
+        "open_issues": 7855,
+        "contributors": 469,
+        "flags": [
+          "issue 堆積"
+        ]
+      },
+      "intro": {
+        "one_liner": "能在電腦上同時運行與管理多個 AI 代理的桌面應用程式。",
+        "problem": "當你想讓 AI 寫程式時，一次通常只能處理一個任務。Orca 讓你能夠同時叫多個 AI 代理平行工作、比較不同 AI 寫出的程式碼，還能用手機隨時監控進度。",
+        "features": [
+          "支援同時運行多個 AI 代理與獨立的開發環境",
+          "提供手機端 App，離手也能監控進度與回覆 AI",
+          "內建網頁視覺化選取工具（Design Mode），點擊網頁元件即可傳給 AI 修改"
+        ],
+        "audience": "已經在使用 Claude Code 或命令列 AI 工具寫程式，想要同時處理多個開發任務的使用者。",
+        "getting_started": "前往 Orca 官網下載 Windows 安裝檔（.exe），完成安裝後即可開啟軟體，並連結你現有的 Claude Code 等命令列（CLI）AI 工具開始使用。",
+        "tech_stack": "TypeScript, JavaScript, Electron",
+        "why_trending": "解決了開發者在使用 AI 寫程式時，難以同時開多個任務與跨跨工具說明的痛點，並結合手機監控功能大幅提升便利性。"
+      },
+      "practicality": {
+        "difficulty": 2,
+        "windows_ok": "yes",
+        "needs_gpu": "no",
+        "needs_paid_api": "optional",
+        "needs_coding": "light",
+        "verdict": "適合經常使用 Claude Code 的 Windows 使用者下載體驗，但需注意多個 AI 同時運算可能帶來的 API 費用。"
+      },
+      "ideas_for_me": [
+        {
+          "interest": "AI agent 與 LLM 工具",
+          "idea": "同時開啟多個 AI 代理視窗，讓一個 AI 代理幫你寫 Python bot 的主流程，另一個 AI 代理同步寫測試腳本，加速開發效率。"
+        },
+        {
+          "interest": "瀏覽器擴充與 userscript",
+          "idea": "利用 Orca 內建的 Design Mode 點擊網頁中的按鈕或欄位，自動提取 HTML/CSS 資訊並交給 AI 代理，快速為你生成 Tampermonkey 腳本。"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "AI 代理",
+          "explain": "能自主理解指令、執行多步驟任務或編寫程式碼的 AI 工具。"
+        },
+        {
+          "term": "CLI",
+          "explain": "命令列介面，一種透過輸入文字指令（而不是點擊圖示）來操作電腦或程式的方式。"
+        }
+      ],
+      "risk_notes": [
+        {
+          "type": "費用",
+          "scope": "主要用途",
+          "note": "同時開啟多個 AI 代理平行運作，可能會在短時間內加速消耗 Anthropic 或 OpenAI 等付費 API 金鑰的額度。"
+        }
+      ],
+      "trial_prompt": "## ⚠ 注意事項\n- 【費用｜主要用途】同時開啟多個 AI 代理平行運作，可能會在短時間內加速消耗 Anthropic 或 OpenAI 等付費 API 金鑰的額度。\n\n# 任務：試用 GitHub 專案 stablyai/orca\n\n專案網址：https://github.com/stablyai/orca\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：下載並安裝 Windows 桌面應用程式，開啟後連結 Claude Code 順利啟動一個 AI 代理視窗。\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\orca` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/stablyai/orca.git \"D:\\sandbox\\orca\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- ⚠ 這個專案很可能需要付費 API 金鑰：遇到要填金鑰的步驟就停止，先問我，不要自己申請或填入。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
+      "intro_status": "ai",
+      "model": "gemini-3.5-flash",
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "因為你平時就習慣用 Claude Code 開發 Python bot 與 Tampermonkey 腳本，這款提供 Windows 安裝檔的桌面軟體能幫你更有效率地同時管理多個 AI 代理。",
+        "gate_passed": true,
+        "gate_fail_reasons": [],
+        "badge": true,
+        "has_misuse_risk": false
+      },
+      "reused_from": "2026-W44",
+      "lite_model": false
+    },
+    {
+      "rank": 3,
+      "slot": "domain",
+      "matched_interest": "AI agent 與 LLM 工具",
+      "category": "效率工具",
+      "category_model": "gemini-3.5-flash",
+      "full_name": "paperclipai/paperclip",
+      "url": "https://github.com/paperclipai/paperclip",
+      "description_raw": "The open-source app everyone uses to manage agents at work",
+      "language": "TypeScript",
+      "license": "MIT",
+      "stars_total": 109645,
+      "stars_this_week": 14601,
+      "stars_this_week_est": null,
+      "health": {
+        "score": 100,
+        "last_push_days": 0,
+        "commits_30d": 1370,
+        "open_issues": 6632,
+        "contributors": 234,
+        "flags": [
+          "issue 堆積"
+        ]
+      },
+      "intro": {
+        "one_liner": "管理與協調多個 AI 代理團隊的開源看板系統。",
+        "problem": "當同時開啟多個 Claude Code 視窗或 AI 工具時，很容易忘記每個視窗在做什麼且難以追蹤進度。Paperclip 解決了任務指派混亂、AI 執行脈絡遺失以及 API 費用可能意外暴增的問題。",
+        "features": [
+          "將多個 AI 代理整合進類似公司的組織圖與任務看板中管理",
+          "提供 API 費用預算上限控制與自動暫停機制",
+          "支援定期排程任務與自動化工作流程"
+        ],
+        "audience": "需要同時控制多個 AI 工具或 AI 代理、希望自動化執行專案的進階使用者。",
+        "getting_started": "啟動 Node.js 後端服務並打開 React 網頁介面，在看板中指派任務給連線的 AI 代理即可開始。",
+        "tech_stack": "Node.js, React, TypeScript",
+        "why_trending": "能將 Claude Code 等熱門 AI 工具以類似公司組織圖的方式統一控管，並解決分頁過多與費用暴增的痛點。"
+      },
+      "practicality": {
+        "difficulty": 3,
+        "windows_ok": "yes",
+        "needs_gpu": "no",
+        "needs_paid_api": "optional",
+        "needs_coding": "light",
+        "verdict": "適合經常同時開多個 AI 視窗輔助開發的使用者，但在 Windows 上部署需要一點命令列基礎。"
+      },
+      "ideas_for_me": [
+        {
+          "interest": "AI agent 與 LLM 工具",
+          "idea": "你可以把平常透過 Claude Code 開發專案的過程看板化，建立不同的 AI 代理角色（如工程師或測試員），讓它們在背景分工合作並自動回報進度。"
+        },
+        {
+          "interest": "Python 自動化與 bot",
+          "idea": "利用 Paperclip 的排程任務（Routines）功能，讓 AI 代理定期檢查與維護你寫好的 Python 自動化腳本，確保機器人持續正常運作。"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "AI 代理",
+          "explain": "能夠自主理解目標、拆解步驟並執行任務的 AI 程式。"
+        },
+        {
+          "term": "Node.js",
+          "explain": "一種讓電腦可以在瀏覽器外面執行 JavaScript 程式碼的環境。"
+        },
+        {
+          "term": "React",
+          "explain": "用來打造網頁使用者介面的熱門技術框架。"
+        }
+      ],
+      "risk_notes": [
+        {
+          "type": "費用",
+          "scope": "主要用途",
+          "note": "若讓 AI 代理無限制地自動背景執行，在未設定預算警報的情況下可能產生龐大的 API 帳單費用。"
+        }
+      ],
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "這款工具能幫助平常會使用 Claude Code 開發 Python bot 的讀者，將分散的終端機視窗整合到可視化看板中，方便控制開發進度與 API 預算。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "難度 3 但寫程式需求為 light"
+        ],
+        "badge": false,
+        "has_misuse_risk": false
+      },
+      "trial_prompt": "## ⚠ 注意事項\n- 【費用｜主要用途】若讓 AI 代理無限制地自動背景執行，在未設定預算警報的情況下可能產生龐大的 API 帳單費用。\n\n# 任務：試用 GitHub 專案 paperclipai/paperclip\n\n專案網址：https://github.com/paperclipai/paperclip\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：資料不足\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\paperclip` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/paperclipai/paperclip.git \"D:\\sandbox\\paperclip\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- ⚠ 這個專案很可能需要付費 API 金鑰：遇到要填金鑰的步驟就停止，先問我，不要自己申請或填入。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
+      "intro_status": "ai",
+      "model": "gemini-3.5-flash",
+      "lite_model": false
+    },
+    {
+      "rank": 4,
+      "slot": "domain",
+      "matched_interest": "本地網頁小工具",
+      "category": "效率工具",
+      "category_model": "gemini-3.5-flash",
+      "full_name": "DuarteSantos8/openGym",
+      "url": "https://github.com/DuarteSantos8/openGym",
+      "description_raw": "Open-source gym & body-weight tracker, now in the App Store (iPhone + Apple Watch) and as an Android APK. Plan routines, log workouts, see which muscles are trained, import from Strong/Hevy/FitNotes. Self-host it or use it on the phone alone.",
+      "language": "JavaScript",
+      "license": "AGPL-3.0",
+      "stars_total": 18373,
+      "stars_this_week": 16745,
+      "stars_this_week_est": null,
+      "health": {
+        "score": 88,
+        "last_push_days": 0,
+        "commits_30d": 1136,
+        "open_issues": 258,
+        "contributors": 105,
+        "flags": []
+      },
+      "intro": {
+        "one_liner": "開源且可自架自管的健身與體重追蹤工具",
+        "problem": "許多健身 App 會將個人資料強制存放在廠商伺服器，並需要月費訂閱或有廣告干擾。openGym 讓使用者能完全掌控自己的運動數據，解決數據隱私與費用問題。它提供跨裝置同步、離線記錄與自訂訓練計畫功能。",
+        "features": [
+          "內建超過 5,600 種訓練動作與動態視覺化肌肉地圖",
+          "支援跨裝置通行密鑰（Passkey）登入與離線使用",
+          "整合選配的 AI 教練與 MCP 伺服器進行智慧訓練規劃"
+        ],
+        "audience": "重視資料隱私、不想付訂閱費，且想詳細記錄重訓數據與體重變化的健身愛好者。",
+        "getting_started": "可直接開啟官方線上 Demo 體驗，或是下載 iOS / Android 手機 App 即可離線使用；若想自架伺服器，使用 Docker 啟動容器後打開瀏覽器登入即可。",
+        "tech_stack": "React 19, Vite, Node.js, Docker, Capacitor",
+        "why_trending": "因完全開源免費、無廣告訂閱，且支援 Docker 自架、通行密鑰同步與 AI 代理（MCP）整合而受到健身與自架服務社羣熱烈關注。"
+      },
+      "practicality": {
+        "difficulty": 2,
+        "windows_ok": "yes",
+        "needs_gpu": "no",
+        "needs_paid_api": "optional",
+        "needs_coding": "none",
+        "verdict": "很適合直接下載手機 App 使用，若想自架只需照著 Docker 步驟操作即可。"
+      },
+      "ideas_for_me": [
+        {
+          "interest": "運動數據分析",
+          "idea": "匯出 openGym 的 JSON 或 CSV 健身紀錄，使用 Python 腳本分析個人各肌羣的每週訓練量與力量成長曲線。"
+        },
+        {
+          "interest": "AI agent 與 LLM 工具",
+          "idea": "結合專案提供的 MCP 伺服器與 Claude Desktop 等 AI 代理，自動讀取你的歷史訓練紀錄並提供重訓課表調整建議。"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "Docker",
+          "explain": "一種將應用程式打包成獨立容器的工具，讓軟體不需要複雜設定就能在電腦上快速啟動。"
+        },
+        {
+          "term": "通行密鑰",
+          "explain": "使用手機指紋或臉部辨識進行登入的技術，無需記憶傳統密碼且更安全。"
+        },
+        {
+          "term": "MCP",
+          "explain": "讓 AI 代理機能安全連接並存取外部應用程式或資料庫資料的通訊協定。"
+        }
+      ],
+      "risk_notes": [
+        {
+          "type": "費用",
+          "scope": "主要用途",
+          "note": "若自行啟動選配的 AI 功能並綁定第三方付費 API 金鑰，頻繁呼叫可能會產生 API 費用。"
+        }
+      ],
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "這款工具提供現成的 App 可直接使用，並支援匯出資料讓你用 Python 進行運動數據分析。",
+        "gate_passed": true,
+        "gate_fail_reasons": [],
+        "badge": true,
+        "has_misuse_risk": false
+      },
+      "trial_prompt": "## ⚠ 注意事項\n- 【費用｜主要用途】若自行啟動選配的 AI 功能並綁定第三方付費 API 金鑰，頻繁呼叫可能會產生 API 費用。\n\n# 任務：試用 GitHub 專案 DuarteSantos8/openGym\n\n專案網址：https://github.com/DuarteSantos8/openGym\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：開啟官方 Live demo 網頁，瀏覽預載範例資料的課表、動作解剖圖與歷史訓練圖表。\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\openGym` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/DuarteSantos8/openGym.git \"D:\\sandbox\\openGym\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- ⚠ 這個專案很可能需要付費 API 金鑰：遇到要填金鑰的步驟就停止，先問我，不要自己申請或填入。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
+      "intro_status": "ai",
+      "model": "gemini-3.5-flash",
+      "lite_model": false
+    },
+    {
+      "rank": 5,
+      "slot": "rising",
+      "matched_interest": null,
+      "category": "遊戲與圖形",
+      "category_model": "gemini-3.5-flash",
+      "full_name": "ly05010419/MacNativeGames",
+      "url": "https://github.com/ly05010419/MacNativeGames",
+      "description_raw": "Play your own Tears of the Kingdom and Breath of the Wild natively on Apple silicon Mac, iPhone and iPad. Not an emulator: the game's ARM64 code runs directly, NVN rebuilt on Metal. Bring your own game.",
+      "language": "C",
+      "license": "MIT",
+      "stars_total": 6724,
+      "stars_this_week": null,
+      "stars_this_week_est": 14408,
+      "health": {
+        "score": 90,
+        "last_push_days": 0,
+        "commits_30d": 1296,
+        "open_issues": 303,
+        "contributors": 91,
+        "flags": []
+      },
+      "intro": {
+        "one_liner": "把任天堂 Switch 遊戲直接在蘋果電腦和手機上執行的技術探索專案",
+        "problem": "過去在蘋果裝置上玩 Switch 遊戲多半得靠模擬器，這個專案希望探討能不能不透過模擬器，直接把遊戲程式碼跑在蘋果晶片上，並把遊戲畫面轉成蘋果的繪圖技術來重建。",
+        "features": [
+          "支援《薩爾達傳說：王國之淚》與《曠野之息》等熱門遊戲在 Mac、iPhone 和 iPad 上原生執行",
+          "利用腳本把玩家自備的遊戲檔案和金鑰直接打包成 Mac 應用程式或未簽名的手機安裝檔",
+          "內建 AI 助理專用的安裝指南，可透過 Claude Code 等工具自動化完成繁瑣的打包與測試步驟"
+        ],
+        "audience": "擁有蘋果晶片電腦或裝置（Mac/iPhone/iPad）、備有正版 Switch 遊戲檔案與金鑰，且熟悉 AI 助理（如 Claude Code）操作的玩家",
+        "getting_started": "準備好你自己的遊戲檔案（XCI 或 NSP）與金鑰檔案，透過 Claude Code 打開專案並讓 AI 助理按照安裝指南自動幫你打包和安裝",
+        "tech_stack": "C, Objective-C, Python, Metal",
+        "why_trending": "因為它突破性地讓 Switch 遊戲直接跑在蘋果晶片上而不是靠傳統模擬器，且直接結合 AI 助理（Claude Code）來處理複雜的安裝流程而受到關注"
+      },
+      "practicality": {
+        "difficulty": 3,
+        "windows_ok": "no",
+        "needs_gpu": "yes",
+        "needs_paid_api": "unknown",
+        "needs_coding": "none",
+        "verdict": "因為需要 Mac 等蘋果裝置、正版遊戲導出檔，且 Windows 電腦完全無法使用，對 Windows 讀者來說不值得安裝"
+      },
+      "ideas_for_me": [],
+      "glossary": [
+        {
+          "term": "Metal",
+          "explain": "蘋果裝置專用的圖形顯示與運算技術，用來讓遊戲畫面跑得更順暢"
+        },
+        {
+          "term": "模擬器",
+          "explain": "透過軟體在一個系統上模擬出另一個主機的環境來執行遊戲的工具"
+        }
+      ],
+      "risk_notes": [
+        {
+          "type": "版權",
+          "scope": "主要用途",
+          "note": "需要玩家自行從合法的 Nintendo Switch 主機導出遊戲檔案與金鑰，若非自行合法取得可能涉及版權爭議"
+        }
+      ],
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "讀者使用的是 Windows 電腦，而此專案僅支援蘋果的 Mac、iPhone 與 iPad 裝置，因此不值得安裝。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "Windows 支援為 no",
+          "付費 API 為 unknown",
+          "主要用途有版權風險"
+        ],
+        "badge": false,
+        "has_misuse_risk": false
+      },
+      "trial_prompt": "## ⚠ 注意事項\n- 【版權｜主要用途】需要玩家自行從合法的 Nintendo Switch 主機導出遊戲檔案與金鑰，若非自行合法取得可能涉及版權爭議\n\n# 任務：試用 GitHub 專案 ly05010419/MacNativeGames\n\n專案網址：https://github.com/ly05010419/MacNativeGames\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：準備好正版遊戲檔案與 prod.keys 檔，透過 AI 助理讀取安裝指南並開始打包與安裝遊戲 App\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\MacNativeGames` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/ly05010419/MacNativeGames.git \"D:\\sandbox\\MacNativeGames\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
+      "intro_status": "ai",
+      "model": "gemini-flash-lite-latest",
+      "lite_model": true
+    }
+  ],
+  "quick_picks": [
+    {
+      "full_name": "affaan-m/ECC",
+      "url": "https://github.com/affaan-m/ECC",
+      "description_raw": "The agent harness performance optimization system. Skills, instincts, memory, security, and research-first development for Claude Code, Codex, Opencode, Cursor and beyond.",
+      "language": "JavaScript",
+      "category": "開發工具",
+      "category_model": "gemini-3.5-flash",
+      "stars_total": 294300,
+      "stars_this_week": 25494,
+      "stars_this_week_est": null,
+      "health_score": 96,
+      "flags": [
+        "爆發成長"
+      ],
+      "one_liner": "強化 Claude Code 等 AI 代理效能的系統，提供技能、記憶與安全機制。",
+      "risk_flag": null,
+      "difficulty": 3,
+      "windows_ok": "yes",
+      "needs_paid_api": "optional",
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "讀者經常使用 Claude Code 開發專案，安裝此系統有助於進一步優化 AI 代理的效能與記憶功能。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "難度 3 > 2"
+        ],
+        "maybe_fit": false
+      },
+      "model": "gemini-flash-lite-latest",
+      "one_liner_status": "ai",
+      "lite_model": true
+    },
+    {
+      "full_name": "debpalash/VoiceStudio",
+      "url": "https://github.com/debpalash/VoiceStudio",
+      "description_raw": "VoiceStudio is the open-source, fully-local ElevenLabs alternative — voice cloning, voice design, video dubbing, dictation, transcription & audiobook creation in 646 languages.",
+      "language": "Python",
+      "category": "AI 與 LLM",
+      "category_model": "gemini-3.5-flash",
+      "stars_total": 97190,
+      "stars_this_week": 47234,
+      "stars_this_week_est": null,
+      "health_score": 88,
+      "flags": [
+        "成長異常"
+      ],
+      "one_liner": "可在本機運行的開源 AI 語音工作室，支援語音複製、影片配音與朗讀。",
+      "risk_flag": "冒用他人聲音或肖像",
+      "difficulty": 2,
+      "windows_ok": "yes",
+      "needs_paid_api": "no",
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "讀者的興趣清單集中在自動化、爬蟲與交易，與語音複製和影片配音的關聯性較低。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "成長異常",
+          "有風險標籤「冒用他人聲音或肖像」"
+        ],
+        "maybe_fit": false
+      },
+      "model": "gemini-flash-lite-latest",
+      "one_liner_status": "ai",
+      "lite_model": true
+    },
+    {
+      "full_name": "NationalSecurityAgency/ghidra",
+      "url": "https://github.com/NationalSecurityAgency/ghidra",
+      "description_raw": "Ghidra is a software reverse engineering (SRE) framework",
+      "language": "Java",
+      "category": "資安",
+      "category_model": "gemini-3.5-flash",
+      "stars_total": 96589,
+      "stars_this_week": 16685,
+      "stars_this_week_est": null,
+      "health_score": 96,
+      "flags": [],
+      "one_liner": "由美國國家安全局開發的軟體逆向工程與程式碼分析框架。",
+      "risk_flag": "反向工程或破解",
+      "difficulty": 5,
+      "windows_ok": "yes",
+      "needs_paid_api": "no",
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "此專案為專業逆向工程工具，難度高且與讀者現有的 Python 與 AI 開發興趣不直接相關。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "難度 5 > 2",
+          "有風險標籤「反向工程或破解」"
+        ],
+        "maybe_fit": false
+      },
+      "model": "gemini-flash-lite-latest",
+      "one_liner_status": "ai",
+      "lite_model": true
+    },
+    {
+      "full_name": "heygen-com/hyperframes",
+      "url": "https://github.com/heygen-com/hyperframes",
+      "description_raw": "Write HTML. Render video. Built for agents.",
+      "language": "TypeScript",
+      "category": "前端與網頁",
+      "category_model": "gemini-3.5-flash",
+      "stars_total": 76736,
+      "stars_this_week": 22303,
+      "stars_this_week_est": null,
+      "health_score": 89,
+      "flags": [],
+      "one_liner": "透過寫 HTML 程式碼來自動渲染影片，專為 AI 代理設計的工具。",
+      "risk_flag": null,
+      "difficulty": 3,
+      "windows_ok": "yes",
+      "needs_paid_api": "unknown",
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "結合了讀者熟悉的 HTML 技術與 AI 代理開發，適合用來製作自動化影片或網頁小工具。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "付費 API 為 unknown",
+          "難度 3 > 2"
+        ],
+        "maybe_fit": false
+      },
+      "model": "gemini-flash-lite-latest",
+      "one_liner_status": "ai",
+      "lite_model": true
+    },
+    {
+      "full_name": "tashfeenahmed/freellmapi",
+      "url": "https://github.com/tashfeenahmed/freellmapi",
+      "description_raw": "7.4 billion tokens per month. 34 free LLM providers. 635 free model endpoints. All behind one /v1 endpoint, plus any custom OpenAI-compatible endpoint. Smart routing, automatic failover, encrypted keys. Personal experimentation only.",
+      "language": "TypeScript",
+      "category": "AI 與 LLM",
+      "category_model": "gemini-3.5-flash",
+      "stars_total": 45341,
+      "stars_this_week": 15643,
+      "stars_this_week_est": null,
+      "health_score": 93,
+      "flags": [],
+      "one_liner": "整合數十個免費大型語言模型供應商的 API 聚合與智慧路由工具。",
+      "risk_flag": "可能產生費用",
+      "difficulty": 3,
+      "windows_ok": "yes",
+      "needs_paid_api": "optional",
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "讀者經常開發 LLM 工具與 Python bot，此工具能提供大量免費的 AI 模型額度進行實驗。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "難度 3 > 2",
+          "有風險標籤「可能產生費用」"
+        ],
+        "maybe_fit": false
+      },
+      "model": "gemini-flash-lite-latest",
+      "one_liner_status": "ai",
+      "lite_model": true
+    },
+    {
+      "full_name": "pingdotgg/t3code",
+      "url": "https://github.com/pingdotgg/t3code",
+      "description_raw": "",
+      "language": "TypeScript",
+      "category": "開發工具",
+      "category_model": "gemini-3.5-flash",
+      "stars_total": 36235,
+      "stars_this_week": 9973,
+      "stars_this_week_est": null,
+      "health_score": 100,
+      "flags": [
+        "issue 堆積"
+      ],
+      "one_liner": "讓你透過手機與桌面 App 遠端掌控電腦上各種 AI 代理的控制介面。",
+      "risk_flag": null,
+      "difficulty": 2,
+      "windows_ok": "yes",
+      "needs_paid_api": "optional",
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "支援讀者正在使用的 Claude Code，能提供更方便的跨裝置介面來管理 AI 代理。",
+        "gate_passed": true,
+        "gate_fail_reasons": [],
+        "maybe_fit": true
+      },
+      "model": "gemini-flash-lite-latest",
+      "one_liner_status": "ai",
+      "lite_model": true
+    },
+    {
+      "full_name": "xerj-org/xerj",
+      "url": "https://github.com/xerj-org/xerj",
+      "description_raw": "AI search engine and MCP server for bots and agents. One Rust binary indexes code, docs, logs, JSONL/CSV and PDFs for BM25 full-text, vector and hybrid search, code search without grep, agent memory and RAG. Elasticsearch-compatible API; Corpus Hub serves hundreds of reference memory corpora.",
+      "language": "Rust",
+      "category": "開發工具",
+      "category_model": "gemini-3.5-flash",
+      "stars_total": 18506,
+      "stars_this_week": 16135,
+      "stars_this_week_est": null,
+      "health_score": 89,
+      "flags": [],
+      "one_liner": "專為 AI 代理設計的本地搜尋引擎與記憶伺服器，支援多種文件索引。",
+      "risk_flag": null,
+      "difficulty": 2,
+      "windows_ok": "yes",
+      "needs_paid_api": "no",
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "適合為讀者日常開發的 AI 代理提供強大的本地程式碼與文件檢索與記憶功能。",
+        "gate_passed": true,
+        "gate_fail_reasons": [],
+        "maybe_fit": true
+      },
+      "model": "gemini-flash-lite-latest",
+      "one_liner_status": "ai",
+      "lite_model": true
+    },
+    {
+      "full_name": "pbakaus/impeccable",
+      "url": "https://github.com/pbakaus/impeccable",
+      "description_raw": "The design vocabulary for your coding agent. Steer with polish and bolder, review with critique and audit, catch AI slop before it ships.",
+      "language": "Rust",
+      "category": "開發工具",
+      "category_model": "gemini-3.5-flash",
+      "stars_total": 98681,
+      "stars_this_week": 25479,
+      "stars_this_week_est": null,
+      "health_score": 82,
+      "flags": [],
+      "one_liner": "為你的 AI 程式碼代理提供設計規範，避免產出千篇一律的 AI 樣板網頁。",
+      "risk_flag": null,
+      "difficulty": 2,
+      "windows_ok": "yes",
+      "needs_paid_api": "optional",
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "讀者常透過 Claude Code 開發本地網頁小工具，此工具能協助 AI 代理打造出更有質感的網頁介面。",
+        "gate_passed": true,
+        "gate_fail_reasons": [],
+        "maybe_fit": true
+      },
+      "model": "gemini-flash-lite-latest",
+      "one_liner_status": "ai",
+      "lite_model": true
+    },
+    {
+      "full_name": "HKUDS/DeepTutor",
+      "url": "https://github.com/HKUDS/DeepTutor",
+      "description_raw": "DeepTutor: Lifelong Personalized Tutoring. https://deeptutor.info/.",
+      "language": "Python",
+      "category": "AI 與 LLM",
+      "category_model": "gemini-3.5-flash",
+      "stars_total": 53204,
+      "stars_this_week": 12117,
+      "stars_this_week_est": null,
+      "health_score": 96,
+      "flags": [],
+      "one_liner": "提供終身個人化導學與互動學習體驗的 AI 代理教學系統。",
+      "risk_flag": null,
+      "difficulty": 3,
+      "windows_ok": "unknown",
+      "needs_paid_api": "unknown",
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "這是一個偏向教育應用的 AI 導學系統，與讀者偏好的自動化、爬蟲與交易工具無直接關聯。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "Windows 支援為 unknown",
+          "付費 API 為 unknown",
+          "難度 3 > 2"
+        ],
+        "maybe_fit": false
+      },
+      "model": "gemini-flash-lite-latest",
+      "one_liner_status": "ai",
+      "lite_model": true
+    },
+    {
+      "full_name": "rohitg00/ai-engineering-from-scratch",
+      "url": "https://github.com/rohitg00/ai-engineering-from-scratch",
+      "description_raw": "Learn AI Engineering! Learn it. Build it. Ship it for others.",
+      "language": "Python",
+      "category": "AI 與 LLM",
+      "category_model": "gemini-3.5-flash",
+      "stars_total": 76143,
+      "stars_this_week": 14370,
+      "stars_this_week_est": null,
+      "health_score": 90,
+      "flags": [],
+      "one_liner": "從零開始學習 AI 工程的開源課程，包含模型內部原理與代理運行實作。",
+      "risk_flag": null,
+      "difficulty": 2,
+      "windows_ok": "yes",
+      "needs_paid_api": "optional",
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "讀者對 AI 代理與 LLM 工具高度感興趣，此開源課程能幫助非工程師背景的讀者深入理解相關技術。",
+        "gate_passed": true,
+        "gate_fail_reasons": [],
+        "maybe_fit": true
+      },
+      "model": "gemini-flash-lite-latest",
+      "one_liner_status": "ai",
+      "lite_model": true
+    }
+  ]
+}
