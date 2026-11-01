@@ -88,8 +88,8 @@
         "llm_reason": "您平時會使用 Claude Code 開發 Python bot 與網頁工具，安裝此外掛只需複製貼上兩行指令，能有效讓您的 AI 代理省下 Token 花費並減少寫出複雜程式碼。",
         "gate_passed": true,
         "gate_fail_reasons": [],
-        "badge": true,
-        "has_misuse_risk": false
+        "has_misuse_risk": false,
+        "badge": true
       },
       "reused_from": "2026-W44",
       "lite_model": false
@@ -174,8 +174,8 @@
         "llm_reason": "因為你平時就習慣用 Claude Code 開發 Python bot 與 Tampermonkey 腳本，這款提供 Windows 安裝檔的桌面軟體能幫你更有效率地同時管理多個 AI 代理。",
         "gate_passed": true,
         "gate_fail_reasons": [],
-        "badge": true,
-        "has_misuse_risk": false
+        "has_misuse_risk": false,
+        "badge": true
       },
       "reused_from": "2026-W44",
       "lite_model": false
@@ -263,8 +263,8 @@
         "gate_fail_reasons": [
           "難度 3 但寫程式需求為 light"
         ],
-        "badge": false,
-        "has_misuse_risk": false
+        "has_misuse_risk": false,
+        "badge": false
       },
       "trial_prompt": "## ⚠ 注意事項\n- 【費用｜主要用途】若讓 AI 代理無限制地自動背景執行，在未設定預算警報的情況下可能產生龐大的 API 帳單費用。\n\n# 任務：試用 GitHub 專案 paperclipai/paperclip\n\n專案網址：https://github.com/paperclipai/paperclip\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：資料不足\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\paperclip` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/paperclipai/paperclip.git \"D:\\sandbox\\paperclip\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- ⚠ 這個專案很可能需要付費 API 金鑰：遇到要填金鑰的步驟就停止，先問我，不要自己申請或填入。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
       "intro_status": "ai",
@@ -350,8 +350,8 @@
         "llm_reason": "這款工具提供現成的 App 可直接使用，並支援匯出資料讓你用 Python 進行運動數據分析。",
         "gate_passed": true,
         "gate_fail_reasons": [],
-        "badge": true,
-        "has_misuse_risk": false
+        "has_misuse_risk": false,
+        "badge": true
       },
       "trial_prompt": "## ⚠ 注意事項\n- 【費用｜主要用途】若自行啟動選配的 AI 功能並綁定第三方付費 API 金鑰，頻繁呼叫可能會產生 API 費用。\n\n# 任務：試用 GitHub 專案 DuarteSantos8/openGym\n\n專案網址：https://github.com/DuarteSantos8/openGym\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：開啟官方 Live demo 網頁，瀏覽預載範例資料的課表、動作解剖圖與歷史訓練圖表。\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\openGym` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/DuarteSantos8/openGym.git \"D:\\sandbox\\openGym\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- ⚠ 這個專案很可能需要付費 API 金鑰：遇到要填金鑰的步驟就停止，先問我，不要自己申請或填入。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
       "intro_status": "ai",
@@ -381,60 +381,68 @@
         "flags": []
       },
       "intro": {
-        "one_liner": "把任天堂 Switch 遊戲直接在蘋果電腦和手機上執行的技術探索專案",
-        "problem": "過去在蘋果裝置上玩 Switch 遊戲多半得靠模擬器，這個專案希望探討能不能不透過模擬器，直接把遊戲程式碼跑在蘋果晶片上，並把遊戲畫面轉成蘋果的繪圖技術來重建。",
+        "one_liner": "讓 Switch 與 PC 遊戲原生在 Mac/iOS 執行的移植技術專案",
+        "problem": "解決 Switch 遊戲在蘋果設備上透過模擬器執行時效能與耗電不佳的問題。專案將遊戲繪圖介面重構為 Metal，使遊戲程式碼能直接在蘋果晶片上高效率原生運作。",
         "features": [
-          "支援《薩爾達傳說：王國之淚》與《曠野之息》等熱門遊戲在 Mac、iPhone 和 iPad 上原生執行",
-          "利用腳本把玩家自備的遊戲檔案和金鑰直接打包成 Mac 應用程式或未簽名的手機安裝檔",
-          "內建 AI 助理專用的安裝指南，可透過 Claude Code 等工具自動化完成繁瑣的打包與測試步驟"
+          "將 Switch 的 NVN 繪圖介面轉譯為蘋果 Metal 介面",
+          "支援在 Mac、iPhone 與 iPad 上原生執行遊戲",
+          "提供 Claude Code 專用的 AI 代理自動編譯安裝技能"
         ],
-        "audience": "擁有蘋果晶片電腦或裝置（Mac/iPhone/iPad）、備有正版 Switch 遊戲檔案與金鑰，且熟悉 AI 助理（如 Claude Code）操作的玩家",
-        "getting_started": "準備好你自己的遊戲檔案（XCI 或 NSP）與金鑰檔案，透過 Claude Code 打開專案並讓 AI 助理按照安裝指南自動幫你打包和安裝",
-        "tech_stack": "C, Objective-C, Python, Metal",
-        "why_trending": "因為它突破性地讓 Switch 遊戲直接跑在蘋果晶片上而不是靠傳統模擬器，且直接結合 AI 助理（Claude Code）來處理複雜的安裝流程而受到關注"
+        "audience": "擁有 Apple Silicon Mac 或 iOS 設備，且想體驗原生移植遊戲的玩家與技術探索者",
+        "getting_started": "需在 Mac 上準備正版遊戲檔與系統金鑰，並透過 Claude Code 載入專案內建的 Skill 指令自動執行編譯安裝",
+        "tech_stack": "C, Metal, ARM64, Python, Claude Code Skills",
+        "why_trending": "成功實現在蘋果晶片上免模擬器原生運行《薩爾達傳說：王國之淚》等大作，並導入 Claude Code AI 代理自動編譯機制"
       },
       "practicality": {
-        "difficulty": 3,
+        "difficulty": 4,
         "windows_ok": "no",
         "needs_gpu": "yes",
-        "needs_paid_api": "unknown",
-        "needs_coding": "none",
-        "verdict": "因為需要 Mac 等蘋果裝置、正版遊戲導出檔，且 Windows 電腦完全無法使用，對 Windows 讀者來說不值得安裝"
+        "needs_paid_api": "optional",
+        "needs_coding": "light",
+        "verdict": "不適用於 Windows 使用者；本專案僅支援蘋果晶片設備，且編譯流程與遊戲檔案準備較複雜。"
       },
-      "ideas_for_me": [],
+      "ideas_for_me": [
+        {
+          "interest": "AI agent 與 LLM 工具",
+          "idea": "可以參考該專案中 `.claude/skills` 的設定方式，學習如何為 Claude Code 撰寫客製化的 Skill 指令，讓 AI 代理能夠自動幫你執行本地端多步驟的環境建置或檔案處理流程。"
+        }
+      ],
       "glossary": [
         {
-          "term": "Metal",
-          "explain": "蘋果裝置專用的圖形顯示與運算技術，用來讓遊戲畫面跑得更順暢"
+          "term": "AI 代理",
+          "explain": "機能高於一般對話模型、能夠自主規劃並執行多步驟任務的 AI 助手。"
         },
         {
-          "term": "模擬器",
-          "explain": "透過軟體在一個系統上模擬出另一個主機的環境來執行遊戲的工具"
+          "term": "Metal",
+          "explain": "蘋果專用的高效能圖像渲染技術介面，類似於 Windows 的 DirectX。"
+        },
+        {
+          "term": "ARM64",
+          "explain": "一種微處理器架構，Apple Silicon 晶片與 Nintendo Switch 皆採用此架構。"
         }
       ],
       "risk_notes": [
         {
           "type": "版權",
-          "scope": "主要用途",
-          "note": "需要玩家自行從合法的 Nintendo Switch 主機導出遊戲檔案與金鑰，若非自行合法取得可能涉及版權爭議"
+          "scope": "不當使用",
+          "note": "若使用非自行從實體 Switch 主機導出的遊戲 ROM 或金鑰檔案，會涉及侵害著作權的法律風險。"
         }
       ],
       "recommend": {
         "llm_says": false,
-        "llm_reason": "讀者使用的是 Windows 電腦，而此專案僅支援蘋果的 Mac、iPhone 與 iPad 裝置，因此不值得安裝。",
+        "llm_reason": "因為您使用的是 Windows 電腦，而此專案僅支援在 Mac 及 iOS 蘋果晶片設備上編譯與執行，無法在您的系統上運作。",
         "gate_passed": false,
         "gate_fail_reasons": [
           "Windows 支援為 no",
-          "付費 API 為 unknown",
-          "主要用途有版權風險"
+          "難度 4 > 3"
         ],
         "badge": false,
-        "has_misuse_risk": false
+        "has_misuse_risk": true
       },
-      "trial_prompt": "## ⚠ 注意事項\n- 【版權｜主要用途】需要玩家自行從合法的 Nintendo Switch 主機導出遊戲檔案與金鑰，若非自行合法取得可能涉及版權爭議\n\n# 任務：試用 GitHub 專案 ly05010419/MacNativeGames\n\n專案網址：https://github.com/ly05010419/MacNativeGames\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：準備好正版遊戲檔案與 prod.keys 檔，透過 AI 助理讀取安裝指南並開始打包與安裝遊戲 App\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\MacNativeGames` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/ly05010419/MacNativeGames.git \"D:\\sandbox\\MacNativeGames\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
+      "trial_prompt": "## ⚠ 注意事項\n- 【版權｜不當使用】若使用非自行從實體 Switch 主機導出的遊戲 ROM 或金鑰檔案，會涉及侵害著作權的法律風險。\n\n# 任務：試用 GitHub 專案 ly05010419/MacNativeGames\n\n專案網址：https://github.com/ly05010419/MacNativeGames\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：資料不足\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\MacNativeGames` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/ly05010419/MacNativeGames.git \"D:\\sandbox\\MacNativeGames\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- ⚠ 這個專案很可能需要付費 API 金鑰：遇到要填金鑰的步驟就停止，先問我，不要自己申請或填入。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
       "intro_status": "ai",
-      "model": "gemini-flash-lite-latest",
-      "lite_model": true
+      "model": "gemini-3.5-flash",
+      "lite_model": false
     }
   ],
   "quick_picks": [
@@ -452,23 +460,23 @@
       "flags": [
         "爆發成長"
       ],
-      "one_liner": "強化 Claude Code 等 AI 代理效能的系統，提供技能、記憶與安全機制。",
+      "one_liner": "專為 Claude Code 等工具設計的 AI 代理性能優化與能力擴充系統。",
       "risk_flag": null,
       "difficulty": 3,
       "windows_ok": "yes",
       "needs_paid_api": "optional",
       "recommend": {
         "llm_says": true,
-        "llm_reason": "讀者經常使用 Claude Code 開發專案，安裝此系統有助於進一步優化 AI 代理的效能與記憶功能。",
+        "llm_reason": "讀者使用 Claude Code 開發，此系統能擴充並優化其 AI 代理的工作流程。",
         "gate_passed": false,
         "gate_fail_reasons": [
           "難度 3 > 2"
         ],
         "maybe_fit": false
       },
-      "model": "gemini-flash-lite-latest",
+      "model": "gemini-3.5-flash",
       "one_liner_status": "ai",
-      "lite_model": true
+      "lite_model": false
     },
     {
       "full_name": "debpalash/VoiceStudio",
@@ -484,24 +492,24 @@
       "flags": [
         "成長異常"
       ],
-      "one_liner": "可在本機運行的開源 AI 語音工作室，支援語音複製、影片配音與朗讀。",
-      "risk_flag": "冒用他人聲音或肖像",
+      "one_liner": "可在本地執行的語音複製、配音與逐字稿多功能 AI 語音工具。",
+      "risk_flag": "隱私疑慮",
       "difficulty": 2,
       "windows_ok": "yes",
       "needs_paid_api": "no",
       "recommend": {
         "llm_says": false,
-        "llm_reason": "讀者的興趣清單集中在自動化、爬蟲與交易，與語音複製和影片配音的關聯性較低。",
+        "llm_reason": "成長數據異常且非讀者主要關注的 Python 自動化或網頁開發領域。",
         "gate_passed": false,
         "gate_fail_reasons": [
           "成長異常",
-          "有風險標籤「冒用他人聲音或肖像」"
+          "有風險標籤「隱私疑慮」"
         ],
         "maybe_fit": false
       },
-      "model": "gemini-flash-lite-latest",
+      "model": "gemini-3.5-flash",
       "one_liner_status": "ai",
-      "lite_model": true
+      "lite_model": false
     },
     {
       "full_name": "NationalSecurityAgency/ghidra",
@@ -515,24 +523,24 @@
       "stars_this_week_est": null,
       "health_score": 96,
       "flags": [],
-      "one_liner": "由美國國家安全局開發的軟體逆向工程與程式碼分析框架。",
-      "risk_flag": "反向工程或破解",
+      "one_liner": "美國國安局開發的軟體逆向工程工具，用於分析與反編譯程式碼。",
+      "risk_flag": "破解疑慮",
       "difficulty": 5,
       "windows_ok": "yes",
       "needs_paid_api": "no",
       "recommend": {
         "llm_says": false,
-        "llm_reason": "此專案為專業逆向工程工具，難度高且與讀者現有的 Python 與 AI 開發興趣不直接相關。",
+        "llm_reason": "屬於高度專業的軟體逆向工程工具，不符合非工程師讀者的日常開發需求。",
         "gate_passed": false,
         "gate_fail_reasons": [
           "難度 5 > 2",
-          "有風險標籤「反向工程或破解」"
+          "有風險標籤「破解疑慮」"
         ],
         "maybe_fit": false
       },
-      "model": "gemini-flash-lite-latest",
+      "model": "gemini-3.5-flash",
       "one_liner_status": "ai",
-      "lite_model": true
+      "lite_model": false
     },
     {
       "full_name": "heygen-com/hyperframes",
@@ -546,24 +554,21 @@
       "stars_this_week_est": null,
       "health_score": 89,
       "flags": [],
-      "one_liner": "透過寫 HTML 程式碼來自動渲染影片，專為 AI 代理設計的工具。",
+      "one_liner": "讓使用者與 AI 代理能透過編寫 HTML 語法來渲染並生成影片。",
       "risk_flag": null,
-      "difficulty": 3,
+      "difficulty": 2,
       "windows_ok": "yes",
-      "needs_paid_api": "unknown",
+      "needs_paid_api": "optional",
       "recommend": {
         "llm_says": true,
-        "llm_reason": "結合了讀者熟悉的 HTML 技術與 AI 代理開發，適合用來製作自動化影片或網頁小工具。",
-        "gate_passed": false,
-        "gate_fail_reasons": [
-          "付費 API 為 unknown",
-          "難度 3 > 2"
-        ],
-        "maybe_fit": false
+        "llm_reason": "結合讀者對 HTML/JS 與 AI 代理的興趣，提供簡單的網頁轉影片製作工具。",
+        "gate_passed": true,
+        "gate_fail_reasons": [],
+        "maybe_fit": true
       },
-      "model": "gemini-flash-lite-latest",
+      "model": "gemini-3.5-flash",
       "one_liner_status": "ai",
-      "lite_model": true
+      "lite_model": false
     },
     {
       "full_name": "tashfeenahmed/freellmapi",
@@ -577,24 +582,21 @@
       "stars_this_week_est": null,
       "health_score": 93,
       "flags": [],
-      "one_liner": "整合數十個免費大型語言模型供應商的 API 聚合與智慧路由工具。",
-      "risk_flag": "可能產生費用",
-      "difficulty": 3,
+      "one_liner": "整合多家免費 LLM 服務的統一 API 網關與智慧路由工具。",
+      "risk_flag": null,
+      "difficulty": 2,
       "windows_ok": "yes",
-      "needs_paid_api": "optional",
+      "needs_paid_api": "no",
       "recommend": {
         "llm_says": true,
-        "llm_reason": "讀者經常開發 LLM 工具與 Python bot，此工具能提供大量免費的 AI 模型額度進行實驗。",
-        "gate_passed": false,
-        "gate_fail_reasons": [
-          "難度 3 > 2",
-          "有風險標籤「可能產生費用」"
-        ],
-        "maybe_fit": false
+        "llm_reason": "提供 Windows 軟體且整合免費 API，方便讀者開發 Python bot 與 LLM 工具。",
+        "gate_passed": true,
+        "gate_fail_reasons": [],
+        "maybe_fit": true
       },
-      "model": "gemini-flash-lite-latest",
+      "model": "gemini-3.5-flash",
       "one_liner_status": "ai",
-      "lite_model": true
+      "lite_model": false
     },
     {
       "full_name": "pingdotgg/t3code",
@@ -610,21 +612,21 @@
       "flags": [
         "issue 堆積"
       ],
-      "one_liner": "讓你透過手機與桌面 App 遠端掌控電腦上各種 AI 代理的控制介面。",
+      "one_liner": "可從手機或桌面端跨平台控制本地 Claude Code 等 AI 代理的介面。",
       "risk_flag": null,
       "difficulty": 2,
       "windows_ok": "yes",
       "needs_paid_api": "optional",
       "recommend": {
         "llm_says": true,
-        "llm_reason": "支援讀者正在使用的 Claude Code，能提供更方便的跨裝置介面來管理 AI 代理。",
+        "llm_reason": "讀者常使用 Windows 電腦與 Claude Code，可直接以視覺化介面操作 AI 代理。",
         "gate_passed": true,
         "gate_fail_reasons": [],
         "maybe_fit": true
       },
-      "model": "gemini-flash-lite-latest",
+      "model": "gemini-3.5-flash",
       "one_liner_status": "ai",
-      "lite_model": true
+      "lite_model": false
     },
     {
       "full_name": "xerj-org/xerj",
@@ -638,21 +640,23 @@
       "stars_this_week_est": null,
       "health_score": 89,
       "flags": [],
-      "one_liner": "專為 AI 代理設計的本地搜尋引擎與記憶伺服器，支援多種文件索引。",
+      "one_liner": "單一執行檔的本地搜尋引擎與 MCP 伺服器，為 AI 代理提供檢索記憶。",
       "risk_flag": null,
-      "difficulty": 2,
+      "difficulty": 3,
       "windows_ok": "yes",
       "needs_paid_api": "no",
       "recommend": {
         "llm_says": true,
-        "llm_reason": "適合為讀者日常開發的 AI 代理提供強大的本地程式碼與文件檢索與記憶功能。",
-        "gate_passed": true,
-        "gate_fail_reasons": [],
-        "maybe_fit": true
+        "llm_reason": "可以作為 MCP 伺服器配合 Claude Code 使用，幫助讀者搜尋與檢索爬蟲資料。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "難度 3 > 2"
+        ],
+        "maybe_fit": false
       },
-      "model": "gemini-flash-lite-latest",
+      "model": "gemini-3.5-flash",
       "one_liner_status": "ai",
-      "lite_model": true
+      "lite_model": false
     },
     {
       "full_name": "pbakaus/impeccable",
@@ -666,21 +670,21 @@
       "stars_this_week_est": null,
       "health_score": 82,
       "flags": [],
-      "one_liner": "為你的 AI 程式碼代理提供設計規範，避免產出千篇一律的 AI 樣板網頁。",
+      "one_liner": "專為 AI 代理設計的 UI/UX 設計指令集，提升生成網頁的質感。",
       "risk_flag": null,
       "difficulty": 2,
       "windows_ok": "yes",
-      "needs_paid_api": "optional",
+      "needs_paid_api": "no",
       "recommend": {
         "llm_says": true,
-        "llm_reason": "讀者常透過 Claude Code 開發本地網頁小工具，此工具能協助 AI 代理打造出更有質感的網頁介面。",
+        "llm_reason": "適合讀者使用 Claude Code 開發本地網頁小工具時，指引 AI 代理設計良好的介面。",
         "gate_passed": true,
         "gate_fail_reasons": [],
         "maybe_fit": true
       },
-      "model": "gemini-flash-lite-latest",
+      "model": "gemini-3.5-flash",
       "one_liner_status": "ai",
-      "lite_model": true
+      "lite_model": false
     },
     {
       "full_name": "HKUDS/DeepTutor",
@@ -694,25 +698,24 @@
       "stars_this_week_est": null,
       "health_score": 96,
       "flags": [],
-      "one_liner": "提供終身個人化導學與互動學習體驗的 AI 代理教學系統。",
+      "one_liner": "官方描述不足，為一套著重於終身個人化教學的 AI 家教系統框架。",
       "risk_flag": null,
-      "difficulty": 3,
-      "windows_ok": "unknown",
+      "difficulty": 4,
+      "windows_ok": "yes",
       "needs_paid_api": "unknown",
       "recommend": {
         "llm_says": false,
-        "llm_reason": "這是一個偏向教育應用的 AI 導學系統，與讀者偏好的自動化、爬蟲與交易工具無直接關聯。",
+        "llm_reason": "為學術研究性質的家教系統框架，缺乏簡單的安裝步驟，不符合即裝即用需求。",
         "gate_passed": false,
         "gate_fail_reasons": [
-          "Windows 支援為 unknown",
           "付費 API 為 unknown",
-          "難度 3 > 2"
+          "難度 4 > 2"
         ],
         "maybe_fit": false
       },
-      "model": "gemini-flash-lite-latest",
+      "model": "gemini-3.5-flash",
       "one_liner_status": "ai",
-      "lite_model": true
+      "lite_model": false
     },
     {
       "full_name": "rohitg00/ai-engineering-from-scratch",
@@ -726,21 +729,24 @@
       "stars_this_week_est": null,
       "health_score": 90,
       "flags": [],
-      "one_liner": "從零開始學習 AI 工程的開源課程，包含模型內部原理與代理運行實作。",
+      "one_liner": "從零開始學習與實作 AI 工程、模型內部原理及 AI 代理運作的開源課程。",
       "risk_flag": null,
-      "difficulty": 2,
+      "difficulty": 4,
       "windows_ok": "yes",
       "needs_paid_api": "optional",
       "recommend": {
-        "llm_says": true,
-        "llm_reason": "讀者對 AI 代理與 LLM 工具高度感興趣，此開源課程能幫助非工程師背景的讀者深入理解相關技術。",
-        "gate_passed": true,
-        "gate_fail_reasons": [],
-        "maybe_fit": true
+        "llm_says": false,
+        "llm_reason": "內容偏重底層程式碼與演算法實作，對非工程師而言學習門檻過高。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "難度 4 > 2"
+        ],
+        "maybe_fit": false
       },
-      "model": "gemini-flash-lite-latest",
+      "model": "gemini-3.5-flash",
       "one_liner_status": "ai",
-      "lite_model": true
+      "lite_model": false
     }
-  ]
+  ],
+  "filled_at": "2026-11-01T23:29:53+08:00"
 }
