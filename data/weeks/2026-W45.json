@@ -1,0 +1,714 @@
+{
+  "period": "2026-W45",
+  "period_type": "weekly",
+  "generated_at": "2026-11-02T14:09:35+08:00",
+  "coverage": {
+    "from": "2026-10-26",
+    "to": "2026-11-02"
+  },
+  "source": "trending",
+  "candidate_count": 121,
+  "excluded_count": 9,
+  "projects": [
+    {
+      "rank": 1,
+      "slot": "hot",
+      "matched_interest": null,
+      "category": "開發工具",
+      "category_model": "gemini-3.5-flash",
+      "full_name": "pbakaus/impeccable",
+      "url": "https://github.com/pbakaus/impeccable",
+      "description_raw": "The design vocabulary for your coding agent. Steer with polish and bolder, review with critique and audit, catch AI slop before it ships.",
+      "language": "Rust",
+      "license": "Apache-2.0",
+      "stars_total": 99632,
+      "stars_this_week": 12017,
+      "stars_this_week_est": null,
+      "health": {
+        "score": 82,
+        "last_push_days": 0,
+        "commits_30d": 475,
+        "open_issues": 61,
+        "contributors": 58,
+        "flags": []
+      },
+      "intro": {
+        "one_liner": "讓 Claude Code 等 AI 代理幫你設計出美觀網頁介面的工具擴充",
+        "problem": "使用 AI 代理生成網頁介面時，AI 經常產出一模一樣、缺乏特色且設計感差的範本風格。這個專案提供一套視覺設計指令集與自動檢查機制，防止 AI 產出品質不良的介面。",
+        "features": [
+          "提供 24 種設計斜線指令，可讓 AI 代理針對指定元件調整風格或配色",
+          "內建 62 條自動檢查規則，能找出排版過於擁擠、對比度不足等常見介面瑕疵",
+          "支援即時網頁預覽與點擊替換，可在瀏覽器中直接切換並套用不同視覺方案"
+        ],
+        "audience": "使用 Claude Code、Cursor 或 GitHub Copilot 等 AI 代理開發網頁的軟體開發者與個人創作者",
+        "getting_started": "在專案資料夾的終端機執行安裝指令，或透過 Claude Code 外掛市集搜尋安裝，重新載入後在對話輸入 `/impeccable init` 即可開始使用。",
+        "tech_stack": "Rust, JavaScript, TypeScript",
+        "why_trending": "解決了目前 LLM 生成網頁時極易產出同質化、廉價感視覺（AI slop）的普遍痛點，一週內獲破萬星星。"
+      },
+      "practicality": {
+        "difficulty": 2,
+        "windows_ok": "yes",
+        "needs_gpu": "no",
+        "needs_paid_api": "no",
+        "needs_coding": "none",
+        "verdict": "相當適合非工程師使用，直接在 Claude Code 的對話框輸入指令即可改善網頁外觀。"
+      },
+      "ideas_for_me": [
+        {
+          "interest": "AI agent 與 LLM 工具",
+          "idea": "整合進現有的 Claude Code 環境中，將原本只能寫基礎 HTML/CSS 的 AI 代理升級為懂視覺層次與排版美感的設計助手。"
+        },
+        {
+          "interest": "本地網頁小工具",
+          "idea": "在使用 Claude Code 開發本地網頁工具時，輸入 `/impeccable polish` 或 `/impeccable bolder` 指令，讓 AI 代理快速修飾介面按鈕與配色，提升小工具的整體質感。"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "AI 代理",
+          "explain": "能理解自然語言指令並自主操作檔案、執行程式碼來幫你完成任務的智慧系統（如 Claude Code）。"
+        },
+        {
+          "term": "終端機",
+          "explain": "電腦中用來輸入純文字指令操作系統或安裝套件的視窗介面。"
+        }
+      ],
+      "risk_notes": [],
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "因為您平常會透過 Claude Code 開發本地網頁小工具，這款工具能直接嵌入 Claude Code，免寫複雜程式碼就能讓生成的網頁介面大幅提升美感。",
+        "gate_passed": true,
+        "gate_fail_reasons": [],
+        "badge": true,
+        "has_misuse_risk": false
+      },
+      "trial_prompt": "# 任務：試用 GitHub 專案 pbakaus/impeccable\n\n專案網址：https://github.com/pbakaus/impeccable\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：在專案根目錄執行 `npx impeccable install` 完成安裝後，於 Claude Code 輸入 `/impeccable critique the pricing cards`，即可看到 AI 代理針對介面進行優化評分與給出修改建議。\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\impeccable` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/pbakaus/impeccable.git \"D:\\sandbox\\impeccable\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
+      "intro_status": "ai",
+      "model": "gemini-3.5-flash",
+      "lite_model": false
+    },
+    {
+      "rank": 2,
+      "slot": "hot",
+      "matched_interest": null,
+      "category": "開發工具",
+      "category_model": "gemini-3.5-flash",
+      "full_name": "Nutlope/hallmark",
+      "url": "https://github.com/Nutlope/hallmark",
+      "description_raw": "Anti-AI-slop design skill for Claude Code, Cursor, and Codex.",
+      "language": "CSS",
+      "license": "MIT",
+      "stars_total": 45147,
+      "stars_this_week": 11566,
+      "stars_this_week_est": null,
+      "health": {
+        "score": 59,
+        "last_push_days": 3,
+        "commits_30d": 58,
+        "open_issues": 75,
+        "contributors": 7,
+        "flags": [
+          "沒有正式版本"
+        ]
+      },
+      "intro": {
+        "one_liner": "讓 Claude Code 幫你做網頁時，不再生成呆板俗氣的 AI 樣式。",
+        "problem": "使用 AI 生成網頁時，常出現排版呆板、色彩突兀或樣式重複等俗稱「AI 罐頭感」的設計問題。這個工具能為 AI 設定嚴格的設計規範與風格主題，確保產出的網頁具備專業視覺質感。",
+        "features": [
+          "提供 50 種不同材質與風格的視覺主題供選擇",
+          "自動進行設計檢查，修正視覺對比度與響應式排版等細節問題",
+          "支援對既有網頁進行重新設計或品質稽核"
+        ],
+        "audience": "習慣使用 Claude Code、Cursor 等工具來製作網頁或前端介面的使用者。",
+        "getting_started": "在 Claude Code 中使用 Plugin 命令安裝外掛，之後在對話中輸入需求並加上「/hallmark」，AI 代理就會自動套用優化後的設計規則。",
+        "tech_stack": "Node.js, HTML, CSS, JavaScript, Puppeteer",
+        "why_trending": "近期使用 AI 開發網頁的人數大增，但 AI 產出的畫面往往過於相似且缺乏質感，該專案提供了極佳的介面優化解決方案。"
+      },
+      "practicality": {
+        "difficulty": 2,
+        "windows_ok": "yes",
+        "needs_gpu": "no",
+        "needs_paid_api": "no",
+        "needs_coding": "none",
+        "verdict": "適合常用 Claude Code 生成網頁介面的非工程師，安裝步驟簡單且能顯著提升畫面質感。"
+      },
+      "ideas_for_me": [
+        {
+          "interest": "本地網頁小工具",
+          "idea": "在透過 Claude Code 寫本地網頁小工具時，加上 Hallmark 指令，讓 AI 生成出具有現代感排版與好讀視覺風格的控制面板。"
+        },
+        {
+          "interest": "AI agent 與 LLM 工具",
+          "idea": "配合 Claude Code 這類 AI 代理工具，在讓 AI 輸出網頁程式碼時自動進行質感稽核，確保介面沒有常見的 AI 罐頭設計瑕疵。"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "AI 代理",
+          "explain": "能自主執行任務、呼叫工具並協助完成特定目標的 AI 系統。"
+        },
+        {
+          "term": "響應式排版",
+          "explain": "讓網頁能根據電腦、手機或平板等不同螢幕尺寸，自動調整畫面佈局與比例的設計方式。"
+        }
+      ],
+      "risk_notes": [],
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "這項工具非常適合你，因為你經常透過 Claude Code 開發本地網頁小工具，安裝後能直接讓 AI 自動產出精美且不落俗套的網頁介面。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "健康度 59 < 60"
+        ],
+        "badge": false,
+        "has_misuse_risk": false
+      },
+      "trial_prompt": "# 任務：試用 GitHub 專案 Nutlope/hallmark\n\n專案網址：https://github.com/Nutlope/hallmark\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：在 Claude Code 輸入 `/hallmark <prompt>` 描述想做的網頁，會看到 AI 選用主題並產生符合設計規範且無視覺瑕疵的 HTML 與 CSS 網頁。\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\hallmark` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/Nutlope/hallmark.git \"D:\\sandbox\\hallmark\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
+      "intro_status": "ai",
+      "model": "gemini-3.5-flash",
+      "lite_model": false
+    },
+    {
+      "rank": 3,
+      "slot": "domain",
+      "matched_interest": "AI agent 與 LLM 工具",
+      "category": "AI 與 LLM",
+      "category_model": "gemini-3.5-flash",
+      "full_name": "thedotmack/claude-mem",
+      "url": "https://github.com/thedotmack/claude-mem",
+      "description_raw": "Persistent Context Across Sessions for Every Agent –  Captures everything your agent does during sessions, compresses it with AI, and injects relevant context back into future sessions. Works with Claude Code, OpenClaw, Codex, Gemini, Hermes, Copilot, OpenCode + More",
+      "language": "TypeScript",
+      "license": "Apache-2.0",
+      "stars_total": 109717,
+      "stars_this_week": 5852,
+      "stars_this_week_est": null,
+      "health": {
+        "score": 92,
+        "last_push_days": 0,
+        "commits_30d": 817,
+        "open_issues": 176,
+        "contributors": 300,
+        "flags": []
+      },
+      "intro": {
+        "one_liner": "讓 Claude Code 擁有跨對話長期記憶的外掛工具",
+        "problem": "每次關閉或重啟 Claude Code 對話時，AI 盲目忘記之前討論過的事項與程式碼修改細節。這個專案能自動壓縮並儲存歷史歷程，在下次開啟對話時自動帶入相關背景。",
+        "features": [
+          "自動記錄跨對話的操作與紀錄並產生摘要",
+          "提供自然語言搜尋功能，輕鬆查詢歷史決策與程式變更",
+          "內建網頁端視圖介面，方便隨時檢視專案進度與記憶庫"
+        ],
+        "audience": "經常使用 Claude Code 輔助開發，希望 AI 能持續記住專案細節與背景的使用者",
+        "getting_started": "在 Claude Code 內輸入外掛 marketplace 安裝指令，或在命令提示字元執行單一安裝指令後重新啟動即可使用",
+        "tech_stack": "TypeScript, JavaScript, SQLite, ChromaDB",
+        "why_trending": "隨著 Claude Code 流行，開發者極度需要解決 AI 代理在多次對話後缺乏長期記憶與上下文遺失的問題"
+      },
+      "practicality": {
+        "difficulty": 2,
+        "windows_ok": "yes",
+        "needs_gpu": "no",
+        "needs_paid_api": "optional",
+        "needs_coding": "none",
+        "verdict": "非常適合使用 Claude Code 的讀者試用，能顯著改善 AI 重複忘記專案背景的問題。"
+      },
+      "ideas_for_me": [
+        {
+          "interest": "AI agent 與 LLM 工具",
+          "idea": "在利用 Claude Code 進行長期的 AI 專案開發時，讓 AI 代理自動記住過去的程式架構決策與除錯歷程，不必每次開新視窗都重新貼上記錄。"
+        },
+        {
+          "interest": "Python 自動化與 bot",
+          "idea": "協助記錄 Python bot 的開發演進過程與 API 串接邏輯，確保 Claude Code 在維護或新增功能時不會弄亂舊有運作邏輯。"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "AI 代理",
+          "explain": "能夠接收指令、自動規劃步驟並執行任務的 AI 系統（如 Claude Code）。"
+        }
+      ],
+      "risk_notes": [
+        {
+          "type": "隱私",
+          "scope": "主要用途",
+          "note": "工具會自動紀錄對話與工具操作細節，若輸入密碼或敏感資料可能被存入記憶庫，需使用 private 標籤屏蔽。"
+        },
+        {
+          "type": "費用",
+          "scope": "主要用途",
+          "note": "30 天免費試用結束後，若選擇切換為第三方 API 金鑰，頻繁呼叫可能會產生額外 API 費用。"
+        }
+      ],
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "您主要透過 Claude Code 開發 Python bot 與網頁工具，這款外掛能直接整合至您的工作流程中，讓 AI 記住歷史開發脈絡。",
+        "gate_passed": true,
+        "gate_fail_reasons": [],
+        "badge": true,
+        "has_misuse_risk": false
+      },
+      "trial_prompt": "## ⚠ 注意事項\n- 【隱私｜主要用途】工具會自動紀錄對話與工具操作細節，若輸入密碼或敏感資料可能被存入記憶庫，需使用 private 標籤屏蔽。\n- 【費用｜主要用途】30 天免費試用結束後，若選擇切換為第三方 API 金鑰，頻繁呼叫可能會產生額外 API 費用。\n\n# 任務：試用 GitHub 專案 thedotmack/claude-mem\n\n專案網址：https://github.com/thedotmack/claude-mem\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：執行安裝指令並重啟 Claude Code 後，新對話將會自動提示已成功注入歷史記憶上下文。\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\claude-mem` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/thedotmack/claude-mem.git \"D:\\sandbox\\claude-mem\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- ⚠ 這個專案很可能需要付費 API 金鑰：遇到要填金鑰的步驟就停止，先問我，不要自己申請或填入。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
+      "intro_status": "ai",
+      "model": "gemini-3.5-flash",
+      "lite_model": false
+    },
+    {
+      "rank": 4,
+      "slot": "domain",
+      "matched_interest": "本地網頁小工具",
+      "category": "效率工具",
+      "category_model": "gemini-3.5-flash",
+      "full_name": "anomalyco/hex",
+      "url": "https://github.com/anomalyco/hex",
+      "description_raw": "Local voice dictation for mac, windows and linux",
+      "language": "Rust",
+      "license": "MIT",
+      "stars_total": 3542,
+      "stars_this_week": null,
+      "stars_this_week_est": 8253,
+      "health": {
+        "score": 78,
+        "last_push_days": 0,
+        "commits_30d": 1022,
+        "open_issues": 75,
+        "contributors": 23,
+        "flags": []
+      },
+      "intro": {
+        "one_liner": "離線運作的跨平台語音輸入工具，按住按鍵說話即可自動轉成文字並貼上。",
+        "problem": "在電腦上打字速度不夠快，或是使用線上語音轉文字服務時擔心個人隱私外洩。Hex 能在電腦本地端進行語音辨識，並將識別出的文字直接貼到當前開啟的任何應用程式中。",
+        "features": [
+          "按住快捷鍵說話，放開後自動將語音轉為文字並貼上",
+          "完全在本地端運作，首次下載語音模型後即可離線使用",
+          "提供 Windows 專用安裝檔，安裝後即可直接使用"
+        ],
+        "audience": "偏好用語音輸入文字、重視資料隱私、希望提升文字輸入效率的 Windows 使用者。",
+        "getting_started": "到下載頁面取得 Windows 的 Installer 安裝檔並執行安裝。第一次啟動時程式會自動下載語音模型，之後只需在任何能打字的地方按住快捷鍵並對麥克風說話，放開按鍵文字就會自動貼上。",
+        "tech_stack": "Rust, Swift, JavaScript",
+        "why_trending": "資料不足"
+      },
+      "practicality": {
+        "difficulty": 1,
+        "windows_ok": "yes",
+        "needs_gpu": "unknown",
+        "needs_paid_api": "no",
+        "needs_coding": "none",
+        "verdict": "非常適合非工程師，有提供現成的 Windows 安裝檔，無需寫程式即可直接使用。"
+      },
+      "ideas_for_me": [
+        {
+          "interest": "AI agent 與 LLM 工具",
+          "idea": "在使用 Claude Code 等 AI 代理開發工具或溝通時，可以用 Hex 按住快捷鍵直接口述提示詞（Prompt），自動轉為文字貼入對話框，大幅提升與 AI 溝通的效率。"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "語音模型",
+          "explain": "經由大量語音資料訓練出來的電腦檔案，讓軟體能在離線狀態下辨識聲音並轉成文字。"
+        }
+      ],
+      "risk_notes": [],
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "這個專案提供 Windows 安裝檔且無需撰寫程式碼，適合偏好下載即用的你，可以用來口述輸入提示詞給 Claude Code 或撰寫腳本說明。",
+        "gate_passed": true,
+        "gate_fail_reasons": [],
+        "badge": true,
+        "has_misuse_risk": false
+      },
+      "trial_prompt": "# 任務：試用 GitHub 專案 anomalyco/hex\n\n專案網址：https://github.com/anomalyco/hex\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：執行 Windows 安裝檔並開啟程式，在任何文字編輯器中按住快捷鍵對麥克風說一句話，放開後能看到語音轉成的文字自動貼在畫面上。\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\hex` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/anomalyco/hex.git \"D:\\sandbox\\hex\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
+      "intro_status": "ai",
+      "model": "gemini-3.5-flash",
+      "lite_model": false
+    },
+    {
+      "rank": 5,
+      "slot": "rising",
+      "matched_interest": null,
+      "category": "遊戲與圖形",
+      "category_model": "gemini-3.5-flash",
+      "full_name": "LNPANDY/NX2Apple",
+      "url": "https://github.com/LNPANDY/NX2Apple",
+      "description_raw": "Play your own Switch games on iPhone/iPad — one-click macOS app, no terminal. | 把 Switch 遊戲裝進 iPhone：圖形介面一鍵構建，不用命令列。Bring your own game.",
+      "language": "Swift",
+      "license": "MIT",
+      "stars_total": 2789,
+      "stars_this_week": null,
+      "stars_this_week_est": 1626,
+      "health": {
+        "score": 83,
+        "last_push_days": 0,
+        "commits_30d": 955,
+        "open_issues": 90,
+        "contributors": 13,
+        "flags": []
+      },
+      "intro": {
+        "one_liner": "將 Switch 遊戲轉譯成 Mac 與 iPhone 原生執行的工具",
+        "problem": "解決想在蘋果裝置上順暢遊玩 Switch 遊戲的需求。它並非傳統模擬器，而是把遊戲重新轉譯為 Apple Silicon 晶片能原生執行的格式，獲得更高的執行效能。",
+        "features": [
+          "提供全圖形化介面（Launcher），滑鼠點擊即可完成遊戲建置與安裝",
+          "支援透過 iCloud Drive 跨裝置同步 Mac 與 iPhone 的遊戲存檔",
+          "提供 iPhone/iPad 專用介面，支援螢幕觸控與連接藍牙遊戲手把"
+        ],
+        "audience": "擁有 Apple Silicon Mac 與 iPhone/iPad，且手頭有自備 Switch 遊戲檔案與金鑰的玩家",
+        "getting_started": "在 Apple Silicon Mac 下載並解壓縮軟體，首次按右鍵開啟後跟隨設定精靈安裝 Xcode 等需求元件，匯入自備的遊戲檔案與金鑰即可開始建置",
+        "tech_stack": "Swift, Python, Shell",
+        "why_trending": "資料不足"
+      },
+      "practicality": {
+        "difficulty": 4,
+        "windows_ok": "no",
+        "needs_gpu": "no",
+        "needs_paid_api": "no",
+        "needs_coding": "none",
+        "verdict": "不適合 Windows 使用者，且建置過程需自備遊戲與金鑰檔案，需注意相關版權風險"
+      },
+      "ideas_for_me": [],
+      "glossary": [
+        {
+          "term": "Apple Silicon",
+          "explain": "蘋果公司為 Mac 電腦自行研發的 M 系列晶片。"
+        },
+        {
+          "term": "Xcode",
+          "explain": "蘋果官方提供的軟體開發工具，用來編譯與安裝 iOS 及 macOS 應用程式。"
+        }
+      ],
+      "risk_notes": [
+        {
+          "type": "版權",
+          "scope": "主要用途",
+          "note": "執行過程需要獲取 Switch 遊戲備份檔（NSP/XCI）與金鑰檔（prod.keys），若使用非授權來源檔案可能構成版權侵權風險。"
+        }
+      ],
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "您使用的是 Windows 電腦，但此軟體強制要求在 Apple Silicon Mac 與 iOS 裝置上才能建置與執行。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "Windows 支援為 no",
+          "難度 4 > 3",
+          "主要用途有版權風險"
+        ],
+        "badge": false,
+        "has_misuse_risk": false
+      },
+      "trial_prompt": "## ⚠ 注意事項\n- 【版權｜主要用途】執行過程需要獲取 Switch 遊戲備份檔（NSP/XCI）與金鑰檔（prod.keys），若使用非授權來源檔案可能構成版權侵權風險。\n\n# 任務：試用 GitHub 專案 LNPANDY/NX2Apple\n\n專案網址：https://github.com/LNPANDY/NX2Apple\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：下載軟體後跟隨指引匯入遊戲與金鑰完成建置，在遊戲庫看到封面並成功啟動遊戲\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\NX2Apple` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/LNPANDY/NX2Apple.git \"D:\\sandbox\\NX2Apple\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
+      "intro_status": "ai",
+      "model": "gemini-3.5-flash",
+      "lite_model": false
+    }
+  ],
+  "quick_picks": [
+    {
+      "full_name": "pingdotgg/t3code",
+      "url": "https://github.com/pingdotgg/t3code",
+      "description_raw": "",
+      "language": "TypeScript",
+      "category": "開發工具",
+      "category_model": "gemini-3.5-flash",
+      "stars_total": 38646,
+      "stars_this_week": 6926,
+      "stars_this_week_est": null,
+      "health_score": 100,
+      "flags": [
+        "issue 堆積"
+      ],
+      "one_liner": "一個可以用手機網頁或電腦集中控制多個 AI 代理工具的控制介面。",
+      "risk_flag": null,
+      "difficulty": 3,
+      "windows_ok": "yes",
+      "needs_paid_api": "optional",
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "這能讓你透過多種介面集中管理並控制你正在使用的 Claude Code 與其他 AI 代理工具。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "難度 3 > 2"
+        ],
+        "maybe_fit": false
+      },
+      "model": "gemini-flash-lite-latest",
+      "one_liner_status": "ai",
+      "lite_model": true
+    },
+    {
+      "full_name": "milind-soni/OpenMausBot",
+      "url": "https://github.com/milind-soni/OpenMausBot",
+      "description_raw": "Open-source Grok Bot alternative with a virtual machine that bots can use",
+      "language": "TypeScript",
+      "category": "AI 與 LLM",
+      "category_model": "gemini-3.5-flash",
+      "stars_total": 10786,
+      "stars_this_week": 4793,
+      "stars_this_week_est": null,
+      "health_score": 93,
+      "flags": [
+        "issue 堆積"
+      ],
+      "one_liner": "具備專屬虛擬機器與瀏覽器的開源 AI 聊天與代理人協作應用程式。",
+      "risk_flag": null,
+      "difficulty": 3,
+      "windows_ok": "yes",
+      "needs_paid_api": "optional",
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "它結合了你感興趣的 AI 代理與自動化操作，讓你在本地電腦上管理多個 AI 助手。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "難度 3 > 2"
+        ],
+        "maybe_fit": false
+      },
+      "model": "gemini-flash-lite-latest",
+      "one_liner_status": "ai",
+      "lite_model": true
+    },
+    {
+      "full_name": "YuJunZhiXue/dsh-purge",
+      "url": "https://github.com/YuJunZhiXue/dsh-purge",
+      "description_raw": "DeepSeek Harness 破甲：讓所有模型都能破甲，不同模型可換不同提示詞；預設提示詞面向國模「小碼醬」。Jailbreak for every model — swap prompts per model. 求 Star 收藏 ⭐ 如要二開，請檢視署名要求部分",
+      "language": "JavaScript",
+      "category": "資安",
+      "category_model": "gemini-3.5-flash",
+      "stars_total": 15625,
+      "stars_this_week": 6644,
+      "stars_this_week_est": null,
+      "health_score": 76,
+      "flags": [],
+      "one_liner": "用於修改模型提示詞與解除安全限制的資安紅隊工具。",
+      "risk_flag": "破解疑慮",
+      "difficulty": 4,
+      "windows_ok": "yes",
+      "needs_paid_api": "no",
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "這偏向資安與模型越獄研究，與你偏好的自動化、爬蟲與小工具開發關聯較低。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "難度 4 > 2",
+          "有風險標籤「破解疑慮」"
+        ],
+        "maybe_fit": false
+      },
+      "model": "gemini-flash-lite-latest",
+      "one_liner_status": "ai",
+      "lite_model": true
+    },
+    {
+      "full_name": "openai/codex",
+      "url": "https://github.com/openai/codex",
+      "description_raw": "Lightweight coding agent that runs in your terminal",
+      "language": "Rust",
+      "category": "開發工具",
+      "category_model": "gemini-3.5-flash",
+      "stars_total": 132783,
+      "stars_this_week": 2011,
+      "stars_this_week_est": null,
+      "health_score": 100,
+      "flags": [
+        "issue 堆積"
+      ],
+      "one_liner": "直接在終端機內執行的 OpenAI 輕量級程式碼編寫 AI 代理。",
+      "risk_flag": null,
+      "difficulty": 2,
+      "windows_ok": "yes",
+      "needs_paid_api": "yes",
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "它類似於你平常使用的 Claude Code，能幫你在終端機快速進行自動化與程式開發。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "付費 API 為 yes"
+        ],
+        "maybe_fit": false
+      },
+      "model": "gemini-flash-lite-latest",
+      "one_liner_status": "ai",
+      "lite_model": true
+    },
+    {
+      "full_name": "gitroomhq/postiz-app",
+      "url": "https://github.com/gitroomhq/postiz-app",
+      "description_raw": "📨 The ultimate agentic social media scheduling tool 🤖",
+      "language": "TypeScript",
+      "category": "效率工具",
+      "category_model": "gemini-3.5-flash",
+      "stars_total": 40621,
+      "stars_this_week": 2824,
+      "stars_this_week_est": null,
+      "health_score": 89,
+      "flags": [],
+      "one_liner": "結合 AI 代理的開源社羣媒體內容排程與自動化發布管理工具。",
+      "risk_flag": null,
+      "difficulty": 4,
+      "windows_ok": "wsl",
+      "needs_paid_api": "optional",
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "符合你對 Python 自動化與 bot 的興趣，可以用來自動排程與發布社羣內容。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "Windows 支援為 wsl",
+          "難度 4 > 2"
+        ],
+        "maybe_fit": false
+      },
+      "model": "gemini-flash-lite-latest",
+      "one_liner_status": "ai",
+      "lite_model": true
+    },
+    {
+      "full_name": "lightpanda-io/browser",
+      "url": "https://github.com/lightpanda-io/browser",
+      "description_raw": "Lightpanda: the headless browser designed for AI and automation",
+      "language": "Zig",
+      "category": "資料與爬蟲",
+      "category_model": "gemini-3.5-flash",
+      "stars_total": 40445,
+      "stars_this_week": null,
+      "stars_this_week_est": 5775,
+      "health_score": 77,
+      "flags": [],
+      "one_liner": "專為 AI 代理與網頁自動化打造、速度極快的無頭瀏覽器。",
+      "risk_flag": null,
+      "difficulty": 3,
+      "windows_ok": "unknown",
+      "needs_paid_api": "no",
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "這非常適合用來提升你未來在網頁爬蟲與資料擷取時的執行效能與速度。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "Windows 支援為 unknown",
+          "難度 3 > 2"
+        ],
+        "maybe_fit": false
+      },
+      "model": "gemini-flash-lite-latest",
+      "one_liner_status": "ai",
+      "lite_model": true
+    },
+    {
+      "full_name": "AgriciDaniel/claude-seo",
+      "url": "https://github.com/AgriciDaniel/claude-seo",
+      "description_raw": "Universal SEO skill for Claude Code. 26 sub-skills + 19 sub-agents covering technical SEO, E-E-A-T, schema, GEO/AEO, agent readiness (Lighthouse Agentic Browsing, WebMCP, llms.txt), backlinks, local SEO, e-commerce, international SEO, Google APIs, and PDF/Excel reporting. 9 optional extensions for live SEO data.",
+      "language": "Python",
+      "category": "效率工具",
+      "category_model": "gemini-3.5-flash",
+      "stars_total": 25656,
+      "stars_this_week": 5034,
+      "stars_this_week_est": null,
+      "health_score": 83,
+      "flags": [],
+      "one_liner": "專為 Claude Code 設計的開源 SEO 檢測與行銷自動化外掛工具。",
+      "risk_flag": null,
+      "difficulty": 2,
+      "windows_ok": "yes",
+      "needs_paid_api": "optional",
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "身為 Claude Code 使用者，這個外掛能直接在你的開發環境中提供完整的網站優化分析。",
+        "gate_passed": true,
+        "gate_fail_reasons": [],
+        "maybe_fit": true
+      },
+      "model": "gemini-flash-lite-latest",
+      "one_liner_status": "ai",
+      "lite_model": true
+    },
+    {
+      "full_name": "Leonxlnx/taste-skill",
+      "url": "https://github.com/Leonxlnx/taste-skill",
+      "description_raw": "Agent skills that give coding agents taste: art direction, reference images and a browser check instead of generic AI pages",
+      "language": "JavaScript",
+      "category": "前端與網頁",
+      "category_model": "gemini-3.5-flash",
+      "stars_total": 108018,
+      "stars_this_week": 5336,
+      "stars_this_week_est": null,
+      "health_score": 79,
+      "flags": [
+        "jakubkrehel/skills 的替代方案"
+      ],
+      "one_liner": "賦予程式 AI 代理良好視覺美感與前端設計能力的擴充技能包。",
+      "risk_flag": null,
+      "difficulty": 2,
+      "windows_ok": "yes",
+      "needs_paid_api": "no",
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "它可以提升你用 Claude Code 開發本地網頁小工具時的視覺設計與前端介面質感。",
+        "gate_passed": true,
+        "gate_fail_reasons": [],
+        "maybe_fit": true
+      },
+      "model": "gemini-flash-lite-latest",
+      "one_liner_status": "ai",
+      "lite_model": true
+    },
+    {
+      "full_name": "Renhuai123/ziwei-doushu",
+      "url": "https://github.com/Renhuai123/ziwei-doushu",
+      "description_raw": "紫微斗數開源排盤引擎 — 基於倪海廈《天紀》體系，含完整排盤演算法、四化系統、格局知識庫、古籍原文資料",
+      "language": "TypeScript",
+      "category": "其他",
+      "category_model": "gemini-3.5-flash",
+      "stars_total": 13483,
+      "stars_this_week": 5566,
+      "stars_this_week_est": null,
+      "health_score": 76,
+      "flags": [],
+      "one_liner": "基於倪海廈《天紀》體系的紫微斗數開源排盤引擎與超大型數據集。",
+      "risk_flag": null,
+      "difficulty": 3,
+      "windows_ok": "yes",
+      "needs_paid_api": "no",
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "該專案主要為傳統命理排盤與資料集，與你的 Python bot 或自動化興趣交集不大。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "難度 3 > 2"
+        ],
+        "maybe_fit": false
+      },
+      "model": "gemini-flash-lite-latest",
+      "one_liner_status": "ai",
+      "lite_model": true
+    },
+    {
+      "full_name": "CopilotKit/OpenBot",
+      "url": "https://github.com/CopilotKit/OpenBot",
+      "description_raw": "Open-source AI coworkers that each get a computer of their own: a browser, files and tools, with every action decided before it happens and recorded after. Bring any AG-UI agent.",
+      "language": "TypeScript",
+      "category": "效率工具",
+      "category_model": "gemini-3.5-flash",
+      "stars_total": 9672,
+      "stars_this_week": 2286,
+      "stars_this_week_est": null,
+      "health_score": 90,
+      "flags": [],
+      "one_liner": "讓每個 AI 同事擁有專屬電腦、瀏覽器與工具的開源協作平台範本。",
+      "risk_flag": null,
+      "difficulty": 4,
+      "windows_ok": "wsl",
+      "needs_paid_api": "optional",
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "它結合了瀏覽器自動化與 AI 代理，能讓你探索更進階的本地端網頁操作與自動化專案。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "Windows 支援為 wsl",
+          "難度 4 > 2"
+        ],
+        "maybe_fit": false
+      },
+      "model": "gemini-flash-lite-latest",
+      "one_liner_status": "ai",
+      "lite_model": true
+    }
+  ],
+  "week": "2026-W45"
+}

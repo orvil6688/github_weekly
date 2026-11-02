@@ -74,6 +74,81 @@
       "week": "2026-W44",
       "full_name": "JetBrains/thinkrail",
       "tier": "quick"
+    },
+    {
+      "week": "2026-W45",
+      "full_name": "pbakaus/impeccable",
+      "tier": "featured"
+    },
+    {
+      "week": "2026-W45",
+      "full_name": "Nutlope/hallmark",
+      "tier": "featured"
+    },
+    {
+      "week": "2026-W45",
+      "full_name": "thedotmack/claude-mem",
+      "tier": "featured"
+    },
+    {
+      "week": "2026-W45",
+      "full_name": "anomalyco/hex",
+      "tier": "featured"
+    },
+    {
+      "week": "2026-W45",
+      "full_name": "LNPANDY/NX2Apple",
+      "tier": "featured"
+    },
+    {
+      "week": "2026-W45",
+      "full_name": "pingdotgg/t3code",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W45",
+      "full_name": "milind-soni/OpenMausBot",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W45",
+      "full_name": "YuJunZhiXue/dsh-purge",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W45",
+      "full_name": "openai/codex",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W45",
+      "full_name": "gitroomhq/postiz-app",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W45",
+      "full_name": "lightpanda-io/browser",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W45",
+      "full_name": "AgriciDaniel/claude-seo",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W45",
+      "full_name": "Leonxlnx/taste-skill",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W45",
+      "full_name": "Renhuai123/ziwei-doushu",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W45",
+      "full_name": "CopilotKit/OpenBot",
+      "tier": "quick"
     }
   ]
 }
