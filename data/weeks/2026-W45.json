@@ -79,8 +79,8 @@
         "llm_reason": "因為您平常會透過 Claude Code 開發本地網頁小工具，這款工具能直接嵌入 Claude Code，免寫複雜程式碼就能讓生成的網頁介面大幅提升美感。",
         "gate_passed": true,
         "gate_fail_reasons": [],
-        "badge": true,
-        "has_misuse_risk": false
+        "has_misuse_risk": false,
+        "badge": true
       },
       "trial_prompt": "# 任務：試用 GitHub 專案 pbakaus/impeccable\n\n專案網址：https://github.com/pbakaus/impeccable\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：在專案根目錄執行 `npx impeccable install` 完成安裝後，於 Claude Code 輸入 `/impeccable critique the pricing cards`，即可看到 AI 代理針對介面進行優化評分與給出修改建議。\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\impeccable` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/pbakaus/impeccable.git \"D:\\sandbox\\impeccable\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
       "intro_status": "ai",
@@ -160,8 +160,8 @@
         "gate_fail_reasons": [
           "健康度 59 < 60"
         ],
-        "badge": false,
-        "has_misuse_risk": false
+        "has_misuse_risk": false,
+        "badge": false
       },
       "trial_prompt": "# 任務：試用 GitHub 專案 Nutlope/hallmark\n\n專案網址：https://github.com/Nutlope/hallmark\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：在 Claude Code 輸入 `/hallmark <prompt>` 描述想做的網頁，會看到 AI 選用主題並產生符合設計規範且無視覺瑕疵的 HTML 與 CSS 網頁。\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\hallmark` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/Nutlope/hallmark.git \"D:\\sandbox\\hallmark\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
       "intro_status": "ai",
@@ -244,8 +244,8 @@
         "llm_reason": "您主要透過 Claude Code 開發 Python bot 與網頁工具，這款外掛能直接整合至您的工作流程中，讓 AI 記住歷史開發脈絡。",
         "gate_passed": true,
         "gate_fail_reasons": [],
-        "badge": true,
-        "has_misuse_risk": false
+        "has_misuse_risk": false,
+        "badge": true
       },
       "trial_prompt": "## ⚠ 注意事項\n- 【隱私｜主要用途】工具會自動紀錄對話與工具操作細節，若輸入密碼或敏感資料可能被存入記憶庫，需使用 private 標籤屏蔽。\n- 【費用｜主要用途】30 天免費試用結束後，若選擇切換為第三方 API 金鑰，頻繁呼叫可能會產生額外 API 費用。\n\n# 任務：試用 GitHub 專案 thedotmack/claude-mem\n\n專案網址：https://github.com/thedotmack/claude-mem\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：執行安裝指令並重啟 Claude Code 後，新對話將會自動提示已成功注入歷史記憶上下文。\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\claude-mem` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/thedotmack/claude-mem.git \"D:\\sandbox\\claude-mem\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- ⚠ 這個專案很可能需要付費 API 金鑰：遇到要填金鑰的步驟就停止，先問我，不要自己申請或填入。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
       "intro_status": "ai",
@@ -313,8 +313,8 @@
         "llm_reason": "這個專案提供 Windows 安裝檔且無需撰寫程式碼，適合偏好下載即用的你，可以用來口述輸入提示詞給 Claude Code 或撰寫腳本說明。",
         "gate_passed": true,
         "gate_fail_reasons": [],
-        "badge": true,
-        "has_misuse_risk": false
+        "has_misuse_risk": false,
+        "badge": true
       },
       "trial_prompt": "# 任務：試用 GitHub 專案 anomalyco/hex\n\n專案網址：https://github.com/anomalyco/hex\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：執行 Windows 安裝檔並開啟程式，在任何文字編輯器中按住快捷鍵對麥克風說一句話，放開後能看到語音轉成的文字自動貼在畫面上。\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\hex` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/anomalyco/hex.git \"D:\\sandbox\\hex\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
       "intro_status": "ai",
@@ -391,8 +391,8 @@
           "難度 4 > 3",
           "主要用途有版權風險"
         ],
-        "badge": false,
-        "has_misuse_risk": false
+        "has_misuse_risk": false,
+        "badge": false
       },
       "trial_prompt": "## ⚠ 注意事項\n- 【版權｜主要用途】執行過程需要獲取 Switch 遊戲備份檔（NSP/XCI）與金鑰檔（prod.keys），若使用非授權來源檔案可能構成版權侵權風險。\n\n# 任務：試用 GitHub 專案 LNPANDY/NX2Apple\n\n專案網址：https://github.com/LNPANDY/NX2Apple\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：下載軟體後跟隨指引匯入遊戲與金鑰完成建置，在遊戲庫看到封面並成功啟動遊戲\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\NX2Apple` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/LNPANDY/NX2Apple.git \"D:\\sandbox\\NX2Apple\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
       "intro_status": "ai",
@@ -415,23 +415,21 @@
       "flags": [
         "issue 堆積"
       ],
-      "one_liner": "一個可以用手機網頁或電腦集中控制多個 AI 代理工具的控制介面。",
+      "one_liner": "控制電腦上 Claude Code 等 AI 代理的遠端控制介面。",
       "risk_flag": null,
-      "difficulty": 3,
+      "difficulty": 2,
       "windows_ok": "yes",
       "needs_paid_api": "optional",
       "recommend": {
         "llm_says": true,
-        "llm_reason": "這能讓你透過多種介面集中管理並控制你正在使用的 Claude Code 與其他 AI 代理工具。",
-        "gate_passed": false,
-        "gate_fail_reasons": [
-          "難度 3 > 2"
-        ],
-        "maybe_fit": false
+        "llm_reason": "您正在使用 Windows 與 Claude Code，此工具能用手機或桌面介面方便地遠端控制您的 AI 代理。",
+        "gate_passed": true,
+        "gate_fail_reasons": [],
+        "maybe_fit": true
       },
-      "model": "gemini-flash-lite-latest",
+      "model": "gemini-3.5-flash",
       "one_liner_status": "ai",
-      "lite_model": true
+      "lite_model": false
     },
     {
       "full_name": "milind-soni/OpenMausBot",
@@ -447,23 +445,21 @@
       "flags": [
         "issue 堆積"
       ],
-      "one_liner": "具備專屬虛擬機器與瀏覽器的開源 AI 聊天與代理人協作應用程式。",
+      "one_liner": "在桌面視窗中管理與執行多個本地 AI 代理的工具。",
       "risk_flag": null,
-      "difficulty": 3,
+      "difficulty": 1,
       "windows_ok": "yes",
       "needs_paid_api": "optional",
       "recommend": {
         "llm_says": true,
-        "llm_reason": "它結合了你感興趣的 AI 代理與自動化操作，讓你在本地電腦上管理多個 AI 助手。",
-        "gate_passed": false,
-        "gate_fail_reasons": [
-          "難度 3 > 2"
-        ],
-        "maybe_fit": false
+        "llm_reason": "提供 Windows 軟體可直接下載使用，符合您對 AI 代理工具與下載即用軟體的偏好。",
+        "gate_passed": true,
+        "gate_fail_reasons": [],
+        "maybe_fit": true
       },
-      "model": "gemini-flash-lite-latest",
+      "model": "gemini-3.5-flash",
       "one_liner_status": "ai",
-      "lite_model": true
+      "lite_model": false
     },
     {
       "full_name": "YuJunZhiXue/dsh-purge",
@@ -477,24 +473,24 @@
       "stars_this_week_est": null,
       "health_score": 76,
       "flags": [],
-      "one_liner": "用於修改模型提示詞與解除安全限制的資安紅隊工具。",
+      "one_liner": "針對各類大語言模型進行提示詞越獄與安全測試的工具。",
       "risk_flag": "破解疑慮",
-      "difficulty": 4,
+      "difficulty": 3,
       "windows_ok": "yes",
-      "needs_paid_api": "no",
+      "needs_paid_api": "optional",
       "recommend": {
         "llm_says": false,
-        "llm_reason": "這偏向資安與模型越獄研究，與你偏好的自動化、爬蟲與小工具開發關聯較低。",
+        "llm_reason": "此專案主要用於模型越獄與安全測試，不符合您的自動化開發與實用腳本需求。",
         "gate_passed": false,
         "gate_fail_reasons": [
-          "難度 4 > 2",
+          "難度 3 > 2",
           "有風險標籤「破解疑慮」"
         ],
         "maybe_fit": false
       },
-      "model": "gemini-flash-lite-latest",
+      "model": "gemini-3.5-flash",
       "one_liner_status": "ai",
-      "lite_model": true
+      "lite_model": false
     },
     {
       "full_name": "openai/codex",
@@ -510,23 +506,23 @@
       "flags": [
         "issue 堆積"
       ],
-      "one_liner": "直接在終端機內執行的 OpenAI 輕量級程式碼編寫 AI 代理。",
+      "one_liner": "OpenAI 推出的命令列 AI 代理，可在終端機協助寫程式。",
       "risk_flag": null,
       "difficulty": 2,
       "windows_ok": "yes",
       "needs_paid_api": "yes",
       "recommend": {
         "llm_says": true,
-        "llm_reason": "它類似於你平常使用的 Claude Code，能幫你在終端機快速進行自動化與程式開發。",
+        "llm_reason": "您習慣使用 Claude Code 開發腳本，這款官方 AI 代理能在 Windows 終端機輔助程式寫作。",
         "gate_passed": false,
         "gate_fail_reasons": [
           "付費 API 為 yes"
         ],
         "maybe_fit": false
       },
-      "model": "gemini-flash-lite-latest",
+      "model": "gemini-3.5-flash",
       "one_liner_status": "ai",
-      "lite_model": true
+      "lite_model": false
     },
     {
       "full_name": "gitroomhq/postiz-app",
@@ -540,24 +536,23 @@
       "stars_this_week_est": null,
       "health_score": 89,
       "flags": [],
-      "one_liner": "結合 AI 代理的開源社羣媒體內容排程與自動化發布管理工具。",
+      "one_liner": "自動化排程與發佈多個社羣平台貼文的管理工具。",
       "risk_flag": null,
       "difficulty": 4,
-      "windows_ok": "wsl",
+      "windows_ok": "yes",
       "needs_paid_api": "optional",
       "recommend": {
-        "llm_says": true,
-        "llm_reason": "符合你對 Python 自動化與 bot 的興趣，可以用來自動排程與發布社羣內容。",
+        "llm_says": false,
+        "llm_reason": "主要用於社羣媒體營運排程，與您的 Python 自動化與小工具開發需求關聯較低。",
         "gate_passed": false,
         "gate_fail_reasons": [
-          "Windows 支援為 wsl",
           "難度 4 > 2"
         ],
         "maybe_fit": false
       },
-      "model": "gemini-flash-lite-latest",
+      "model": "gemini-3.5-flash",
       "one_liner_status": "ai",
-      "lite_model": true
+      "lite_model": false
     },
     {
       "full_name": "lightpanda-io/browser",
@@ -571,14 +566,14 @@
       "stars_this_week_est": 5775,
       "health_score": 77,
       "flags": [],
-      "one_liner": "專為 AI 代理與網頁自動化打造、速度極快的無頭瀏覽器。",
+      "one_liner": "專為 AI 代理與自動化打造的超輕量無頭瀏覽器。",
       "risk_flag": null,
       "difficulty": 3,
       "windows_ok": "unknown",
       "needs_paid_api": "no",
       "recommend": {
-        "llm_says": true,
-        "llm_reason": "這非常適合用來提升你未來在網頁爬蟲與資料擷取時的執行效能與速度。",
+        "llm_says": false,
+        "llm_reason": "雖然符合網頁自動化興趣，但目前偏向底層開發者整合，缺乏下載即用的 Windows 版本。",
         "gate_passed": false,
         "gate_fail_reasons": [
           "Windows 支援為 unknown",
@@ -586,9 +581,9 @@
         ],
         "maybe_fit": false
       },
-      "model": "gemini-flash-lite-latest",
+      "model": "gemini-3.5-flash",
       "one_liner_status": "ai",
-      "lite_model": true
+      "lite_model": false
     },
     {
       "full_name": "AgriciDaniel/claude-seo",
@@ -602,21 +597,23 @@
       "stars_this_week_est": null,
       "health_score": 83,
       "flags": [],
-      "one_liner": "專為 Claude Code 設計的開源 SEO 檢測與行銷自動化外掛工具。",
+      "one_liner": "專為 Claude Code 設計的網頁搜尋引擎最佳化擴充外掛。",
       "risk_flag": null,
       "difficulty": 2,
       "windows_ok": "yes",
-      "needs_paid_api": "optional",
+      "needs_paid_api": "yes",
       "recommend": {
         "llm_says": true,
-        "llm_reason": "身為 Claude Code 使用者，這個外掛能直接在你的開發環境中提供完整的網站優化分析。",
-        "gate_passed": true,
-        "gate_fail_reasons": [],
-        "maybe_fit": true
+        "llm_reason": "您平時使用 Claude Code 開發，這款外掛能直接嵌入您的工作流程，強化 AI 代理對網頁資料的分析能力。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "付費 API 為 yes"
+        ],
+        "maybe_fit": false
       },
-      "model": "gemini-flash-lite-latest",
+      "model": "gemini-3.5-flash",
       "one_liner_status": "ai",
-      "lite_model": true
+      "lite_model": false
     },
     {
       "full_name": "Leonxlnx/taste-skill",
@@ -632,21 +629,21 @@
       "flags": [
         "jakubkrehel/skills 的替代方案"
       ],
-      "one_liner": "賦予程式 AI 代理良好視覺美感與前端設計能力的擴充技能包。",
+      "one_liner": "為 AI 代理提供網頁介面設計與審美引導的擴充工具。",
       "risk_flag": null,
       "difficulty": 2,
       "windows_ok": "yes",
-      "needs_paid_api": "no",
+      "needs_paid_api": "optional",
       "recommend": {
         "llm_says": true,
-        "llm_reason": "它可以提升你用 Claude Code 開發本地網頁小工具時的視覺設計與前端介面質感。",
+        "llm_reason": "能為您的 AI 代理提供前端視覺設計建議，非常適合輔助您開發本地網頁小工具與介面。",
         "gate_passed": true,
         "gate_fail_reasons": [],
         "maybe_fit": true
       },
-      "model": "gemini-flash-lite-latest",
+      "model": "gemini-3.5-flash",
       "one_liner_status": "ai",
-      "lite_model": true
+      "lite_model": false
     },
     {
       "full_name": "Renhuai123/ziwei-doushu",
@@ -660,23 +657,23 @@
       "stars_this_week_est": null,
       "health_score": 76,
       "flags": [],
-      "one_liner": "基於倪海廈《天紀》體系的紫微斗數開源排盤引擎與超大型數據集。",
+      "one_liner": "基於傳統命理體系的紫微斗數排盤演算法與數據集。",
       "risk_flag": null,
       "difficulty": 3,
       "windows_ok": "yes",
       "needs_paid_api": "no",
       "recommend": {
         "llm_says": false,
-        "llm_reason": "該專案主要為傳統命理排盤與資料集，與你的 Python bot 或自動化興趣交集不大。",
+        "llm_reason": "屬於命理學數據與演算法庫，不符合您在自動化、爬蟲與小工具開發上的主要興趣。",
         "gate_passed": false,
         "gate_fail_reasons": [
           "難度 3 > 2"
         ],
         "maybe_fit": false
       },
-      "model": "gemini-flash-lite-latest",
+      "model": "gemini-3.5-flash",
       "one_liner_status": "ai",
-      "lite_model": true
+      "lite_model": false
     },
     {
       "full_name": "CopilotKit/OpenBot",
@@ -690,25 +687,25 @@
       "stars_this_week_est": null,
       "health_score": 90,
       "flags": [],
-      "one_liner": "讓每個 AI 同事擁有專屬電腦、瀏覽器與工具的開源協作平台範本。",
+      "one_liner": "可在獨立虛擬環境與瀏覽器中自動操作的 AI 代理框架。",
       "risk_flag": null,
       "difficulty": 4,
-      "windows_ok": "wsl",
+      "windows_ok": "yes",
       "needs_paid_api": "optional",
       "recommend": {
-        "llm_says": true,
-        "llm_reason": "它結合了瀏覽器自動化與 AI 代理，能讓你探索更進階的本地端網頁操作與自動化專案。",
+        "llm_says": false,
+        "llm_reason": "屬於需要自行建置基礎設施的企業級開發框架，不符合您偏好下載即用或簡單步驟安裝的需求。",
         "gate_passed": false,
         "gate_fail_reasons": [
-          "Windows 支援為 wsl",
           "難度 4 > 2"
         ],
         "maybe_fit": false
       },
-      "model": "gemini-flash-lite-latest",
+      "model": "gemini-3.5-flash",
       "one_liner_status": "ai",
-      "lite_model": true
+      "lite_model": false
     }
   ],
-  "week": "2026-W45"
+  "week": "2026-W45",
+  "filled_at": "2026-11-03T02:50:54+08:00"
 }
