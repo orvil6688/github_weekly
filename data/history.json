@@ -149,6 +149,81 @@
       "week": "2026-W45",
       "full_name": "CopilotKit/OpenBot",
       "tier": "quick"
+    },
+    {
+      "week": "2026-W46",
+      "full_name": "NVIDIA/auto-ontology",
+      "tier": "featured"
+    },
+    {
+      "week": "2026-W46",
+      "full_name": "D4Vinci/Scrapling",
+      "tier": "featured"
+    },
+    {
+      "week": "2026-W46",
+      "full_name": "milind-soni/OpenMausBot",
+      "tier": "featured"
+    },
+    {
+      "week": "2026-W46",
+      "full_name": "harry0703/MoneyPrinterTurbo",
+      "tier": "featured"
+    },
+    {
+      "week": "2026-W46",
+      "full_name": "xevrion/hatchzip",
+      "tier": "featured"
+    },
+    {
+      "week": "2026-W46",
+      "full_name": "meta/astryx",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W46",
+      "full_name": "vercel-labs/agent-browser",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W46",
+      "full_name": "sherlock-project/sherlock",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W46",
+      "full_name": "github/spec-kit",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W46",
+      "full_name": "dsx-ai-factory/nvke",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W46",
+      "full_name": "The-PR-Agent/pr-agent",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W46",
+      "full_name": "ranxianglei/billion-context",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W46",
+      "full_name": "scenario-labs/skills",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W46",
+      "full_name": "ethanplusai/sellbird",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W46",
+      "full_name": "blader/humanizer",
+      "tier": "quick"
     }
   ]
 }

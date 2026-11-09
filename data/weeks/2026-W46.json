@@ -1,0 +1,761 @@
+{
+  "period": "2026-W46",
+  "period_type": "weekly",
+  "generated_at": "2026-11-09T14:27:36+08:00",
+  "coverage": {
+    "from": "2026-11-02",
+    "to": "2026-11-09"
+  },
+  "source": "trending",
+  "candidate_count": 54,
+  "excluded_count": 6,
+  "projects": [
+    {
+      "rank": 1,
+      "slot": "hot",
+      "matched_interest": null,
+      "category": "AI 與 LLM",
+      "category_model": "gemini-3.5-flash",
+      "full_name": "NVIDIA/auto-ontology",
+      "url": "https://github.com/NVIDIA/auto-ontology",
+      "description_raw": "Auto Ontology is a Python framework for building semantic, graph-based reasoning layers over data. It enables deterministic query generation, better context retrieval, and more explainable AI for LLM and agent workflows.",
+      "language": "Python",
+      "license": "Apache-2.0",
+      "stars_total": 10584,
+      "stars_this_week": 9327,
+      "stars_this_week_est": null,
+      "health": {
+        "score": 66,
+        "last_push_days": 1,
+        "commits_30d": 94,
+        "open_issues": 96,
+        "contributors": 13,
+        "flags": [
+          "沒有正式版本"
+        ]
+      },
+      "intro": {
+        "one_liner": "NVIDIA 開發的數據語意層系統，讓 AI 代理更精確地查詢資料庫。",
+        "problem": "當 AI 代理直接查詢資料庫時，常因不理解數據定義或欄位關聯而算錯數字。此專案建立數據語意與關係地圖，確保 AI 用正確的邏輯與 SQL 查詢資料庫。",
+        "features": [
+          "自動讀取資料庫結構並生成數據語意與關聯圖譜",
+          "將自然語言問題精確轉換為 SQL 語法並執行查詢",
+          "提供網頁介面與 MCP 通訊協定，方便與各式 AI 代理工具整合"
+        ],
+        "audience": "需要讓 AI 代理精確查詢企業與專案資料庫的開發者或數據團隊。",
+        "getting_started": "需安裝 Docker 與取得 NVIDIA API 金鑰，設定環境變數後透過 Docker Compose 啟動服務，開啟瀏覽器進入網頁介面即可開始提問。",
+        "tech_stack": "Python (FastAPI, LangChain), TypeScript (Next.js), PostgreSQL (pgvector), Docker",
+        "why_trending": "由 NVIDIA 開發且解決了大型語言模型與 AI 代理在查詢 SQL 資料庫時容易產生幻覺與計算錯誤的痛點。"
+      },
+      "practicality": {
+        "difficulty": 4,
+        "windows_ok": "yes",
+        "needs_gpu": "optional",
+        "needs_paid_api": "yes",
+        "needs_coding": "light",
+        "verdict": "部署流程涉及 Docker 與環境變數設定較複雜，若無複雜資料庫查詢需求，不建議非工程師安裝。"
+      },
+      "ideas_for_me": [
+        {
+          "interest": "AI agent 與 LLM 工具",
+          "idea": "結合 MCP 通訊協定，讓 Claude Code 或其他 AI 代理連接此專案的數據地圖，直接用口語精確查詢自己的 PostgreSQL 資料庫內容與統計數據。"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "AI 代理",
+          "explain": "能自主理解目標、調用工具並執行多步驟任務的 AI 程式。"
+        },
+        {
+          "term": "SQL",
+          "explain": "用來在資料庫中查詢與操作資料的標準電腦語言。"
+        },
+        {
+          "term": "MCP",
+          "explain": "讓 AI 模型能安全連接並存取外部工具與資料庫的通訊標準。"
+        }
+      ],
+      "risk_notes": [
+        {
+          "type": "費用",
+          "scope": "主要用途",
+          "note": "專案預設使用 NVIDIA NIM API 服務，發送提問與建立資料嵌入時會產生 API 呼叫費用。"
+        },
+        {
+          "type": "資安",
+          "scope": "主要用途",
+          "note": "後端服務的部分 API 端點無獨立身份驗證機制，未正確限制網路存取範圍時可能遭未授權讀取。"
+        }
+      ],
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "此專案需要透過 Docker 部署多項服務並配置 API 金鑰，操作偏向企業後端系統，不符合讀者偏好開箱即用或步驟簡單工具的需求。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "付費 API 為 yes",
+          "難度 4 > 3",
+          "主要用途有資安風險"
+        ],
+        "badge": false,
+        "has_misuse_risk": false
+      },
+      "trial_prompt": "## ⚠ 注意事項\n- 【費用｜主要用途】專案預設使用 NVIDIA NIM API 服務，發送提問與建立資料嵌入時會產生 API 呼叫費用。\n- 【資安｜主要用途】後端服務的部分 API 端點無獨立身份驗證機制，未正確限制網路存取範圍時可能遭未授權讀取。\n\n# 任務：試用 GitHub 專案 NVIDIA/auto-ontology\n\n專案網址：https://github.com/NVIDIA/auto-ontology\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：用 Docker Compose 啟動服務並載入範例資料庫後，在網頁介面詢問產品銷售額，系統能成功回傳金額數字並顯示對應的 SQL 查詢語法。\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\auto-ontology` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/NVIDIA/auto-ontology.git \"D:\\sandbox\\auto-ontology\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- ⚠ 這個專案很可能需要付費 API 金鑰：遇到要填金鑰的步驟就停止，先問我，不要自己申請或填入。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
+      "intro_status": "ai",
+      "model": "gemini-3.5-flash",
+      "lite_model": false
+    },
+    {
+      "rank": 2,
+      "slot": "hot",
+      "matched_interest": null,
+      "category": "資料與爬蟲",
+      "category_model": "gemini-3.5-flash",
+      "full_name": "D4Vinci/Scrapling",
+      "url": "https://github.com/D4Vinci/Scrapling",
+      "description_raw": "🕷️ The BEST Web Scraping framework that handles everything from a single request to a full-scale crawl! Don't be shy, join here: https://discord.gg/EMgGbDceNQ and follow here for daily tips and tricks: https://x.com/Scrapling_dev",
+      "language": "Python",
+      "license": "BSD-3-Clause",
+      "stars_total": 100054,
+      "stars_this_week": 8342,
+      "stars_this_week_est": null,
+      "health": {
+        "score": 87,
+        "last_push_days": 0,
+        "commits_30d": 98,
+        "open_issues": 19,
+        "contributors": 53,
+        "flags": []
+      },
+      "intro": {
+        "one_liner": "快速且具備防封鎖功能的 Python 網頁爬蟲工具包。",
+        "problem": "在抓取網頁資料時，常遇到網站阻擋爬蟲、動態渲染頁面或防機器人驗證。這個工具整合了網頁請求、偽裝瀏覽器與資料解析功能，讓自動化抓取變得更簡單。",
+        "features": [
+          "支援隱形瀏覽器模式，自動應付 Cloudflare 等防機器人驗證機制",
+          "提供簡潔的資料擷取語法，可快速將網頁內容轉為 JSON 或 CSV 檔",
+          "支援 MCP 協定，能直接作為 AI 代理 的網頁抓取工具"
+        ],
+        "audience": "需要撰寫 Python 爬蟲、自動化收集網頁資料，或想讓 AI 代理 具備網頁瀏覽與抓取能力的人。",
+        "getting_started": "在電腦安裝 Python 後，開啟命令提示字元並輸入套件安裝指令，接著透過 Python 腳本指定網址即可開始擷取資料。",
+        "tech_stack": "Python, Playwright, MCP",
+        "why_trending": "結合了現代防封鎖瀏覽器技術與 MCP 協定，搭上了 AI 代理 自動化熱潮。"
+      },
+      "practicality": {
+        "difficulty": 3,
+        "windows_ok": "yes",
+        "needs_gpu": "no",
+        "needs_paid_api": "no",
+        "needs_coding": "light",
+        "verdict": "搭配 Claude Code 協助撰寫 Python 程式碼，能輕鬆解決抓取複雜網頁資料的問題。"
+      },
+      "ideas_for_me": [
+        {
+          "interest": "網頁爬蟲與資料擷取",
+          "idea": "配合 Claude Code 生成 Python 腳本，自動抓取常設有驗證機制的動態網頁資料，並自動導出成 CSV 檔案儲存。"
+        },
+        {
+          "interest": "Python 自動化與 bot",
+          "idea": "整合進你的 Python bot 中，讓機器人具備自動穿透網站防護機制、定時抓取特定網站最新資訊的能力。"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "AI 代理",
+          "explain": "能夠自主執行任務、呼叫工具並解決問題的 AI 系統。"
+        },
+        {
+          "term": "MCP",
+          "explain": "一種讓 AI 系統連線並呼叫外部工具或資料庫的標準溝通協定。"
+        },
+        {
+          "term": "Cloudflare",
+          "explain": "常見的網站防護服務，常會在進入網站前跳出驗證畫面來阻擋自動化程式。"
+        }
+      ],
+      "risk_notes": [
+        {
+          "type": "法律",
+          "scope": "不當使用",
+          "note": "抓取未經授權的網頁內容或頻繁請求導致目標網站過載，可能違反網站服務條款或相關法規。"
+        },
+        {
+          "type": "隱私",
+          "scope": "不當使用",
+          "note": "若用於批量收集未公開的個人資料，可能涉及隱私洩漏與個資法疑慮。"
+        }
+      ],
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "讀者會透過 Claude Code 開發 Python bot 與本地工具，此專案能大幅簡化動態網頁抓取與防封鎖處理的程式複雜度。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "難度 3 但寫程式需求為 light"
+        ],
+        "badge": false,
+        "has_misuse_risk": true
+      },
+      "trial_prompt": "## ⚠ 注意事項\n- 【法律｜不當使用】抓取未經授權的網頁內容或頻繁請求導致目標網站過載，可能違反網站服務條款或相關法規。\n- 【隱私｜不當使用】若用於批量收集未公開的個人資料，可能涉及隱私洩漏與個資法疑慮。\n\n# 任務：試用 GitHub 專案 D4Vinci/Scrapling\n\n專案網址：https://github.com/D4Vinci/Scrapling\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：執行官方最小範例程式碼抓取 Quotes 測試網站，命令列應順利輸出抓取到的名言佳句文字陣列。\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\Scrapling` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/D4Vinci/Scrapling.git \"D:\\sandbox\\Scrapling\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
+      "intro_status": "ai",
+      "model": "gemini-3.5-flash",
+      "lite_model": false
+    },
+    {
+      "rank": 3,
+      "slot": "domain",
+      "matched_interest": "AI agent 與 LLM 工具",
+      "category": "AI 與 LLM",
+      "category_model": "gemini-3.5-flash",
+      "full_name": "milind-soni/OpenMausBot",
+      "url": "https://github.com/milind-soni/OpenMausBot",
+      "description_raw": "Open-source Grok Bot alternative with a virtual machine that bots can use",
+      "language": "TypeScript",
+      "license": "Apache-2.0",
+      "stars_total": 18731,
+      "stars_this_week": null,
+      "stars_this_week_est": 10073,
+      "health": {
+        "score": 96,
+        "last_push_days": 0,
+        "commits_30d": 5324,
+        "open_issues": 857,
+        "contributors": 210,
+        "flags": []
+      },
+      "intro": {
+        "one_liner": "像即時通訊軟體一樣管理多個 AI 代理的桌面應用程式",
+        "problem": "傳統 AI 介面一次只能對話一個模型，且無法同時分工處理複雜任務。OpenMausBot 提供類似 Telegram 的介面，讓你可以建立一整隊各自具備不同模型、性格與電腦操作權限的 AI 代理。",
+        "features": [
+          "通訊軟體介面：每個聊天室代表一個獨立的 AI 代理，能自由切換 Claude、OpenAI 或 Grok 模型",
+          "電腦操作與安全授權：AI 代理能透過虛擬環境操作電腦，執行敏感指令或檔案修改前會跳出卡片要求你同意",
+          "應用程式生態圈：支援透過 Composio 連結超過 500 款服務（如 Gmail、Notion、GitHub），讓 AI 代理直接調用工具"
+        ],
+        "audience": "希望以直覺聊天介面同時管理多個 AI 代理、並讓它們自動化執行任務與電腦操作的使用者",
+        "getting_started": "到 GitHub 發布頁面下載 Windows 專用的 .exe 安裝檔，安裝後啟動軟體，並在設定中填入 API 金鑰即可開始建立 AI 代理並對話",
+        "tech_stack": "TypeScript, Electron, React, Vite, Tailwind CSS",
+        "why_trending": "作為 Grok Bot、Meta Muse 與 OpenAI dots 的開源替代方案，主打資料保存在本地端且支援自備金鑰"
+      },
+      "practicality": {
+        "difficulty": 2,
+        "windows_ok": "yes",
+        "needs_gpu": "no",
+        "needs_paid_api": "optional",
+        "needs_coding": "none",
+        "verdict": "適合想體驗視覺化多 AI 代理團隊的 Windows 使用者，下載即可用，但需注意 API 金鑰費用與權限賦予"
+      },
+      "ideas_for_me": [
+        {
+          "interest": "AI agent 與 LLM 工具",
+          "idea": "在聊天視窗中分別建立專門幫你寫程式、查資料與測試工具的 AI 代理團隊，並透過軟體內的卡片授權機制即時控管 AI 代理的權限與操作。"
+        },
+        {
+          "interest": "Python 自動化與 bot",
+          "idea": "結合內建的 GitHub 與應用程式連線功能，讓 AI 代理自動監控你開發的 Python bot 儲存庫狀況，或在需要時輔助編寫自動化腳本。"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "Electron",
+          "explain": "一種讓開發者可以使用網頁技術（HTML/CSS/JavaScript）來製作跨平台電腦桌面軟體的框架。"
+        },
+        {
+          "term": "API 金鑰",
+          "explain": "一串用來驗證身分並授權軟體呼叫雲端 AI 模型服務的專屬金鑰碼。"
+        }
+      ],
+      "risk_notes": [
+        {
+          "type": "費用",
+          "scope": "主要用途",
+          "note": "若綁定付費 API 金鑰，讓 AI 代理執行長對話或複雜任務時，可能會產生意外的 API 呼叫費用。"
+        },
+        {
+          "type": "資安",
+          "scope": "主要用途",
+          "note": "允許 AI 代理操作電腦環境時，若未仔細審核同意卡片，可能導致誤刪本地檔案或執行未預期的系統命令。"
+        }
+      ],
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "這款軟體提供雙擊即可安裝的 Windows 版本與友善的聊天介面，能讓你輕鬆調度多個 AI 代理來協助開發 Python 腳本與本地工具。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "主要用途有資安風險"
+        ],
+        "badge": false,
+        "has_misuse_risk": false
+      },
+      "trial_prompt": "## ⚠ 注意事項\n- 【費用｜主要用途】若綁定付費 API 金鑰，讓 AI 代理執行長對話或複雜任務時，可能會產生意外的 API 呼叫費用。\n- 【資安｜主要用途】允許 AI 代理操作電腦環境時，若未仔細審核同意卡片，可能導致誤刪本地檔案或執行未預期的系統命令。\n\n# 任務：試用 GitHub 專案 milind-soni/OpenMausBot\n\n專案網址：https://github.com/milind-soni/OpenMausBot\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：下載並執行 Windows 版安裝檔，開啟 App 後新增第一個 AI 代理，成功傳送訊息並收到 AI 的回應。\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\OpenMausBot` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/milind-soni/OpenMausBot.git \"D:\\sandbox\\OpenMausBot\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- ⚠ 這個專案很可能需要付費 API 金鑰：遇到要填金鑰的步驟就停止，先問我，不要自己申請或填入。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
+      "intro_status": "ai",
+      "model": "gemini-3.5-flash",
+      "lite_model": false
+    },
+    {
+      "rank": 4,
+      "slot": "domain",
+      "matched_interest": "Python 自動化與 bot",
+      "category": "效率工具",
+      "category_model": "gemini-3.5-flash",
+      "full_name": "harry0703/MoneyPrinterTurbo",
+      "url": "https://github.com/harry0703/MoneyPrinterTurbo",
+      "description_raw": "利用 AI 大模型和自動化工作流，根據主題或關鍵詞一鍵生成高畫質短影片。Generate HD short videos from a topic or keyword with an automated AI workflow.",
+      "language": "Python",
+      "license": "MIT",
+      "stars_total": 141187,
+      "stars_this_week": 4048,
+      "stars_this_week_est": null,
+      "health": {
+        "score": 97,
+        "last_push_days": 1,
+        "commits_30d": 132,
+        "open_issues": 77,
+        "contributors": 154,
+        "flags": []
+      },
+      "intro": {
+        "one_liner": "只需輸入關鍵字，就能用 AI 自動生成短影片的一站式工具。",
+        "problem": "想要製作短影片（如 TikTok、Reels、Shorts），但缺乏剪輯技巧、配音資源或寫文案的時間。此專案能自動完成腳本撰寫、畫面匹配、字幕生成到音訊合成的全套剪輯流程。",
+        "features": [
+          "一鍵腳本與素材合成：輸入主題即可自動撰寫文案，並由 AI 或素材庫匹配相符的影片畫面、字幕與背景音樂。",
+          "提供友善的 WebUI 介面：支援網頁圖形化操作介面（WebUI）與 AI 代理功能，免寫程式指令即可上手。",
+          "跨平台自動發布：影片合成完成後，支援一鍵或自動上傳至 TikTok、Instagram 及 YouTube Shorts。"
+        ],
+        "audience": "想經營短影片社羣平台、缺乏影音剪輯經驗，或希望透過 AI 工具提升內容產出效率的創作者。",
+        "getting_started": "前往 GitHub 的 Releases 頁面下載適用於 Windows 的版本，啟動後開啟瀏覽器進入網頁介面（WebUI），輸入影片主題並點擊生成即可。",
+        "tech_stack": "Python, WebUI, FFmpeg, Edge TTS, 多種大語言模型 API",
+        "why_trending": "結合大語言模型與生成式 AI 影片技術，大幅降低了短影片製作與自動化發布的門檻。"
+      },
+      "practicality": {
+        "difficulty": 2,
+        "windows_ok": "yes",
+        "needs_gpu": "no",
+        "needs_paid_api": "optional",
+        "needs_coding": "none",
+        "verdict": "適合想用 AI 快速產出短影片的非工程師體驗，介面直覺且進入門檻低。"
+      },
+      "ideas_for_me": [
+        {
+          "interest": "AI agent 與 LLM 工具",
+          "idea": "利用專案內建的 AI 代理介面，直接輸入初步的靈感或主題，讓 AI 自動規劃腳本並選取適合的配音與畫面風格。"
+        },
+        {
+          "interest": "Python 自動化與 bot",
+          "idea": "搭配 Claude Code 撰寫簡單的 Python 自動化腳本呼叫專案 API，達到每日定時抓取熱門話題、自動生成短片並發布到社羣平台的效果。"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "WebUI",
+          "explain": "網頁操作介面，指不需要寫代碼或輸入指令，直接在瀏覽器裡點選按鈕就能使用的圖形化介面。"
+        },
+        {
+          "term": "API",
+          "explain": "應用程式介面，是讓不同軟體或系統之間可以相互傳遞資料與溝通的通道。"
+        }
+      ],
+      "risk_notes": [
+        {
+          "type": "費用",
+          "scope": "主要用途",
+          "note": "若自行設定並串接了付費的雲端大語言模型或 AI 影音生成服務 API，大量產出影片時可能產生意外的 API 調用費用。"
+        },
+        {
+          "type": "版權",
+          "scope": "不當使用",
+          "note": "影片生成時若使用了未授權的背景音樂或素材上傳至公開平台，可能面臨版權警告或下架風險。"
+        }
+      ],
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "這個專案提供免寫程式的網頁介面且支援 Windows 環境，能直接搭配 AI 工具進行內容自動化創作，非常適合您的開發與使用需求。",
+        "gate_passed": true,
+        "gate_fail_reasons": [],
+        "badge": true,
+        "has_misuse_risk": true
+      },
+      "trial_prompt": "## ⚠ 注意事項\n- 【費用｜主要用途】若自行設定並串接了付費的雲端大語言模型或 AI 影音生成服務 API，大量產出影片時可能產生意外的 API 調用費用。\n- 【版權｜不當使用】影片生成時若使用了未授權的背景音樂或素材上傳至公開平台，可能面臨版權警告或下架風險。\n\n# 任務：試用 GitHub 專案 harry0703/MoneyPrinterTurbo\n\n專案網址：https://github.com/harry0703/MoneyPrinterTurbo\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：成功開啟 WebUI 網頁介面，輸入主題關鍵字後點擊生成，順利看到系統自動合成出一支帶有字幕與配音的短影片。\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\MoneyPrinterTurbo` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/harry0703/MoneyPrinterTurbo.git \"D:\\sandbox\\MoneyPrinterTurbo\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- ⚠ 這個專案很可能需要付費 API 金鑰：遇到要填金鑰的步驟就停止，先問我，不要自己申請或填入。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
+      "intro_status": "ai",
+      "model": "gemini-3.5-flash",
+      "lite_model": false
+    },
+    {
+      "rank": 5,
+      "slot": "rising",
+      "matched_interest": null,
+      "category": "效率工具",
+      "category_model": "gemini-3.5-flash",
+      "full_name": "xevrion/hatchzip",
+      "url": "https://github.com/xevrion/hatchzip",
+      "description_raw": "HatchZip is a free, open-source archive extractor for Windows, macOS and Linux that extracts ZIP, 7z, RAR, tar and split archives in place, so it needs free space for the extracted files only. Desktop app and CLI.",
+      "language": "Rust",
+      "license": "Apache-2.0",
+      "stars_total": 2700,
+      "stars_this_week": null,
+      "stars_this_week_est": 1050,
+      "health": {
+        "score": 72,
+        "last_push_days": 3,
+        "commits_30d": 205,
+        "open_issues": 20,
+        "contributors": 9,
+        "flags": []
+      },
+      "intro": {
+        "one_liner": "邊解壓邊刪除原檔、節省硬碟空間的免費解壓工具。",
+        "problem": "傳統解壓軟體（如 WinRAR 或 7-Zip）解壓時需要同時保留原壓縮檔與解壓後的檔案，當硬碟空間不夠時就會失敗。HatchZip 採取邊解壓邊釋放原檔空間的方式，讓硬碟只需準備解壓後檔案的空間即可完成作業。",
+        "features": [
+          "原位邊解邊刪：實時刪除已解壓完畢的壓縮檔部分，不需準備雙倍硬碟空間",
+          "空間預測防呆：解壓前自動計算硬碟剩餘空間是否足夠，並保留安全備用空間",
+          "斷點續傳保護：解壓過程若中途中斷或電腦當機，重新執行能接續先前進度"
+        ],
+        "audience": "硬碟空間有限，經常需要解壓縮大型遊戲或大資料集檔案的 Windows 電腦使用者。",
+        "getting_started": "前往官方網站或 GitHub 下載 Windows 安裝檔（HatchZip-x64-setup.exe）完成安裝。之後只需在壓縮檔上點擊滑鼠右鍵，選擇 HatchZip 的「Extract here」即可開始解壓縮。",
+        "tech_stack": "Rust",
+        "why_trending": "資料不足"
+      },
+      "practicality": {
+        "difficulty": 1,
+        "windows_ok": "yes",
+        "needs_gpu": "no",
+        "needs_paid_api": "no",
+        "needs_coding": "none",
+        "verdict": "適合非工程師使用，提供 Windows 安裝包與右鍵選單，下載安裝後即可操作。"
+      },
+      "ideas_for_me": [
+        {
+          "interest": "Python 自動化與 bot",
+          "idea": "在撰寫 Python 自動化下載或處理大檔案的腳本時，可透過命令列呼叫 HatchZip，自動在容量有限的硬碟中完成解壓與清空原檔。"
+        },
+        {
+          "interest": "網頁爬蟲與資料擷取",
+          "idea": "當爬蟲抓取回來的壓縮資料集檔案過大時，利用 HatchZip 進行解壓縮可避免因硬碟空間爆滿而導致爬蟲任務中斷。"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "Rust",
+          "explain": "一種講求執行效率與記憶體安全的現代程式語言。"
+        }
+      ],
+      "risk_notes": [],
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "讀者使用 Windows 且偏好下載即用工具，此軟體提供圖形介面安裝檔與右鍵選單，能直接解決寫 Python 腳本或下載大檔時硬碟空間不足的困擾。",
+        "gate_passed": true,
+        "gate_fail_reasons": [],
+        "badge": true,
+        "has_misuse_risk": false
+      },
+      "trial_prompt": "# 任務：試用 GitHub 專案 xevrion/hatchzip\n\n專案網址：https://github.com/xevrion/hatchzip\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：執行 `hatchzip check game.zip` 指令後，畫面會顯示該壓縮檔解壓前後的檔案大小、當前硬碟剩餘空間，以及採用原位解壓所需與剩餘的精確數據。\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\hatchzip` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/xevrion/hatchzip.git \"D:\\sandbox\\hatchzip\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
+      "intro_status": "ai",
+      "model": "gemini-3.5-flash",
+      "lite_model": false
+    }
+  ],
+  "quick_picks": [
+    {
+      "full_name": "meta/astryx",
+      "url": "https://github.com/meta/astryx",
+      "description_raw": "An open source design system that's fully customizable and agent ready",
+      "language": "TypeScript",
+      "category": "前端與網頁",
+      "category_model": "gemini-3.5-flash",
+      "stars_total": 17602,
+      "stars_this_week": null,
+      "stars_this_week_est": 6125,
+      "health_score": 89,
+      "flags": [],
+      "one_liner": "適用於 React 的開放原始碼前端 UI 設計系統與組件庫。",
+      "risk_flag": null,
+      "difficulty": 4,
+      "windows_ok": "yes",
+      "needs_paid_api": "no",
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "這是一個前端 UI 設計系統，主要適合專業 React 開發者，不符合非工程師的需求。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "難度 4 > 2"
+        ],
+        "maybe_fit": false
+      },
+      "model": "gemini-3.5-flash",
+      "one_liner_status": "ai",
+      "lite_model": false
+    },
+    {
+      "full_name": "vercel-labs/agent-browser",
+      "url": "https://github.com/vercel-labs/agent-browser",
+      "description_raw": "Browser automation CLI for AI agents",
+      "language": "Rust",
+      "category": "開發工具",
+      "category_model": "gemini-3.5-flash",
+      "stars_total": 47877,
+      "stars_this_week": null,
+      "stars_this_week_est": 5705,
+      "health_score": 89,
+      "flags": [],
+      "one_liner": "讓 AI 代理能透過命令列自動控制與讀取瀏覽器網頁的工具。",
+      "risk_flag": null,
+      "difficulty": 3,
+      "windows_ok": "yes",
+      "needs_paid_api": "no",
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "結合讀者對 Python 自動化與 AI 代理工具的興趣，可用於瀏覽器自動化與網頁操作。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "難度 3 > 2"
+        ],
+        "maybe_fit": false
+      },
+      "model": "gemini-3.5-flash",
+      "one_liner_status": "ai",
+      "lite_model": false
+    },
+    {
+      "full_name": "sherlock-project/sherlock",
+      "url": "https://github.com/sherlock-project/sherlock",
+      "description_raw": "Hunt down social media accounts by username across social networks",
+      "language": "Python",
+      "category": "資安",
+      "category_model": "gemini-3.5-flash",
+      "stars_total": 104702,
+      "stars_this_week": null,
+      "stars_this_week_est": 16611,
+      "health_score": 78,
+      "flags": [
+        "近 30 天幾乎沒有更新"
+      ],
+      "one_liner": "輸入使用者名稱即可跨數百個社羣平台搜尋同名帳號的 Python 工具。",
+      "risk_flag": "蒐集他人資料",
+      "difficulty": 2,
+      "windows_ok": "yes",
+      "needs_paid_api": "no",
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "符合讀者對 Python 自動化與資料擷取的興趣，且安裝與使用方式相當簡單。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "有風險標籤「蒐集他人資料」"
+        ],
+        "maybe_fit": false
+      },
+      "model": "gemini-3.5-flash",
+      "one_liner_status": "ai",
+      "lite_model": false
+    },
+    {
+      "full_name": "github/spec-kit",
+      "url": "https://github.com/github/spec-kit",
+      "description_raw": "💫 Toolkit to help you get started with SDD or any other process!",
+      "language": "Python",
+      "category": "開發工具",
+      "category_model": "gemini-3.5-flash",
+      "stars_total": 148795,
+      "stars_this_week": 4045,
+      "stars_this_week_est": null,
+      "health_score": 92,
+      "flags": [],
+      "one_liner": "提供結構化流程與範本，協助 AI 代理輔助軟體開發的工具包。",
+      "risk_flag": null,
+      "difficulty": 3,
+      "windows_ok": "yes",
+      "needs_paid_api": "optional",
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "適合使用 Claude Code 開發小工具的讀者，能提升 AI 代理輔助程式開發的效率。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "難度 3 > 2"
+        ],
+        "maybe_fit": false
+      },
+      "model": "gemini-3.5-flash",
+      "one_liner_status": "ai",
+      "lite_model": false
+    },
+    {
+      "full_name": "dsx-ai-factory/nvke",
+      "url": "https://github.com/dsx-ai-factory/nvke",
+      "description_raw": "NVIDIA Kubernetes Engine (NVKE). A management plane for GPU Kubernetes on bare metal.",
+      "language": "Go",
+      "category": "系統與基礎建設",
+      "category_model": "gemini-3.5-flash",
+      "stars_total": 936,
+      "stars_this_week": null,
+      "stars_this_week_est": 2415,
+      "health_score": 90,
+      "flags": [
+        "issue 堆積"
+      ],
+      "one_liner": "在實體伺服器上部署與營運 GPU Kubernetes 集羣的管理系統。",
+      "risk_flag": null,
+      "difficulty": 5,
+      "windows_ok": "wsl",
+      "needs_paid_api": "no",
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "專為企業級 GPU 與 Kubernetes 雲端架構設計，對非工程師過於複雜且不實用。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "Windows 支援為 wsl",
+          "難度 5 > 2"
+        ],
+        "maybe_fit": false
+      },
+      "model": "gemini-3.5-flash",
+      "one_liner_status": "ai",
+      "lite_model": false
+    },
+    {
+      "full_name": "The-PR-Agent/pr-agent",
+      "url": "https://github.com/The-PR-Agent/pr-agent",
+      "description_raw": "🚀 PR Agent: The Original Open-Source PR Reviewer. This project is not the Qodo free tier.",
+      "language": "Python",
+      "category": "開發工具",
+      "category_model": "gemini-3.5-flash",
+      "stars_total": 15635,
+      "stars_this_week": 1706,
+      "stars_this_week_est": null,
+      "health_score": 96,
+      "flags": [],
+      "one_liner": "自動分析並審查 GitHub Pull Request 程式碼的 AI 工具。",
+      "risk_flag": null,
+      "difficulty": 3,
+      "windows_ok": "yes",
+      "needs_paid_api": "optional",
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "主要用於團隊 GitHub 的 PR 程式碼審查，對個人開發 bot 或小工具幫助不大。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "難度 3 > 2"
+        ],
+        "maybe_fit": false
+      },
+      "model": "gemini-3.5-flash",
+      "one_liner_status": "ai",
+      "lite_model": false
+    },
+    {
+      "full_name": "ranxianglei/billion-context",
+      "url": "https://github.com/ranxianglei/billion-context",
+      "description_raw": "A context-compression plugin for month-long single sessions (billions of tokens) ,small context windows (a 100K context is enough) and token savings (5x fewer tokens) .上下文壓縮外掛，月級長會話會話， 兼顧小視窗(100k上下文足矣)省token(省5倍token) . billion-context is all you need",
+      "language": "TypeScript",
+      "category": "AI 與 LLM",
+      "category_model": "gemini-3.5-flash",
+      "stars_total": 5380,
+      "stars_this_week": null,
+      "stars_this_week_est": 3220,
+      "health_score": 76,
+      "flags": [
+        "issue 堆積"
+      ],
+      "one_liner": "適用於 Claude Code 等 AI 工具的上下文壓縮外掛，可節省 Token。",
+      "risk_flag": null,
+      "difficulty": 2,
+      "windows_ok": "yes",
+      "needs_paid_api": "no",
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "讀者平時使用 Claude Code 開發 Python bot，此外掛可幫助節省使用成本與上下文空間。",
+        "gate_passed": true,
+        "gate_fail_reasons": [],
+        "maybe_fit": true
+      },
+      "model": "gemini-3.5-flash",
+      "one_liner_status": "ai",
+      "lite_model": false
+    },
+    {
+      "full_name": "scenario-labs/skills",
+      "url": "https://github.com/scenario-labs/skills",
+      "description_raw": "Get production-ready images, video, audio, and 3D from any AI agent: skills that pick the right model, price before spending, and keep characters and brands consistent through the Scenario MCP, plus expert teams that drive Blender, Maya, ZBrush, Unreal, and Unity.",
+      "language": "Python",
+      "category": "開發工具",
+      "category_model": "gemini-3.5-flash",
+      "stars_total": 3556,
+      "stars_this_week": 2118,
+      "stars_this_week_est": null,
+      "health_score": 79,
+      "flags": [],
+      "one_liner": "讓 AI 代理能自動調用模型生成圖片、影片與 3D 內容的技能擴充套件。",
+      "risk_flag": "可能產生費用",
+      "difficulty": 2,
+      "windows_ok": "yes",
+      "needs_paid_api": "yes",
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "符合讀者使用 Claude Code 及探索 AI 代理工具的興趣，方便生成各類多媒體內容。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "付費 API 為 yes",
+          "有風險標籤「可能產生費用」"
+        ],
+        "maybe_fit": false
+      },
+      "model": "gemini-3.5-flash",
+      "one_liner_status": "ai",
+      "lite_model": false
+    },
+    {
+      "full_name": "ethanplusai/sellbird",
+      "url": "https://github.com/ethanplusai/sellbird",
+      "description_raw": "Sellbird (formerly Harvey): the open-source outreach platform that runs on your Claude or ChatGPT plan. Finds companies and decision makers, verifies emails, writes personal cold email, sends it and handles the replies.",
+      "language": "Python",
+      "category": "效率工具",
+      "category_model": "gemini-3.5-flash",
+      "stars_total": 4930,
+      "stars_this_week": 1041,
+      "stars_this_week_est": null,
+      "health_score": 85,
+      "flags": [],
+      "one_liner": "利用 AI 代理自動搜尋潛在客戶、驗證 Email 並發送開發信的行銷平台。",
+      "risk_flag": "蒐集他人資料",
+      "difficulty": 3,
+      "windows_ok": "yes",
+      "needs_paid_api": "optional",
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "符合讀者對 Python 自動化 bot 與 AI 代理工具的開發與應用興趣。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "難度 3 > 2",
+          "有風險標籤「蒐集他人資料」"
+        ],
+        "maybe_fit": false
+      },
+      "model": "gemini-3.5-flash",
+      "one_liner_status": "ai",
+      "lite_model": false
+    },
+    {
+      "full_name": "blader/humanizer",
+      "url": "https://github.com/blader/humanizer",
+      "description_raw": "Agent skill that removes signs of AI-generated writing from text",
+      "language": "Python",
+      "category": "效率工具",
+      "category_model": "gemini-3.5-flash",
+      "stars_total": 66691,
+      "stars_this_week": 3118,
+      "stars_this_week_est": null,
+      "health_score": 61,
+      "flags": [],
+      "one_liner": "適用於 AI 代理的技能套件，能將 AI 撰寫的文字修飾得更加自然流暢。",
+      "risk_flag": null,
+      "difficulty": 1,
+      "windows_ok": "yes",
+      "needs_paid_api": "no",
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "可搭配讀者常用的 Claude Code 使用，幫助優化 AI 產出文字的自然閱讀感。",
+        "gate_passed": true,
+        "gate_fail_reasons": [],
+        "maybe_fit": true
+      },
+      "model": "gemini-3.5-flash",
+      "one_liner_status": "ai",
+      "lite_model": false
+    }
+  ],
+  "week": "2026-W46"
+}
