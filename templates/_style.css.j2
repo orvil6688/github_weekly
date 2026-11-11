@@ -1,6 +1,6 @@
 :root {
   --paper: #EDF0EB; --paper-2: #F5F7F3; --ink: #1D2A23; --muted: #5E6B63; --rule: #C8CFC8;
-  --kraft: #C8A46A; --kraft-ink: #4A3613; --caution: #9A6400; --alert: #A3272F; --link: #1F5E54;
+  --kraft: #C8A46A; --kraft-ink: #4A3613; --caution: #875800; --alert: #A3272F; --link: #1F5E54;
   --sans: "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", sans-serif;
   --narrow: "Bahnschrift", "Avenir Next Condensed", "Roboto Condensed", "Arial Narrow", "Microsoft JhengHei", "PingFang TC", sans-serif;
   --mono: Consolas, "Cascadia Mono", "Microsoft JhengHei", monospace;
@@ -36,7 +36,7 @@ header.top h1 { font-family: var(--narrow); font-weight: 600; font-size: clamp(2
 label.switch { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; font-size: .95rem; }
 label.switch input { width: 18px; height: 18px; margin: 0; accent-color: var(--ink); }
 .archive-note { margin-top: 10px; font-size: .875rem; color: var(--muted); }
-h2.section { font-size: 1.15rem; font-weight: bold; margin: 36px 0 0; padding-bottom: 8px; border-bottom: 1px solid var(--ink); }
+h2.section { font-size: 1.3rem; font-weight: bold; margin: 36px 0 0; padding-bottom: 8px; border-bottom: 1px solid var(--ink); }
 h2.section small { color: var(--muted); font-weight: normal; font-size: .875rem; margin-left: 10px; }
 .empty-page { margin: 32px 0; color: var(--muted); }
 
@@ -58,6 +58,9 @@ h2.section small { color: var(--muted); font-weight: normal; font-size: .875rem;
 .price .health { font-family: var(--narrow); font-size: 1.25rem; font-weight: 600; line-height: 1.5; }
 .m-only { display: none; }
 .name:hover { color: var(--link); text-decoration: underline; }
+/* 專案名稱的標題元素只負責語意,外觀交給 .name */
+.name-h { margin: 0; font-size: inherit; font-weight: inherit; line-height: inherit; }
+.c-caution { color: var(--caution); }
 .kind { color: var(--muted); font-size: .875rem; margin-top: 2px; }
 .flags { font-size: .875rem; margin-top: 2px; }
 .flags span + span::before { content: " ｜ "; color: var(--muted); }
@@ -89,10 +92,10 @@ details > summary::-webkit-details-marker { display: none; }
 details > summary::before { content: "▸ "; }
 details[open] > summary::before { content: "▾ "; }
 .risk-box { border: 1px solid var(--caution); padding: 10px 14px; margin: 12px 0 16px; }
-.risk-box h3 { margin: 0 0 4px; font-size: .95rem; color: var(--caution); }
+.risk-box h4 { margin: 0 0 4px; font-size: 1rem; color: var(--caution); }
 .risk-box ul { margin: 0; padding-left: 1.2em; }
 .risk-box .scope { color: var(--muted); font-size: .8rem; }
-.block h3 { font-size: .95rem; margin: 18px 0 4px; }
+.block h4 { font-size: 1rem; margin: 18px 0 4px; }
 .block p, .block ul, .block dl { margin: 0 0 6px; }
 .block ul { padding-left: 1.3em; }
 dl.kv { display: grid; grid-template-columns: 7.5em 1fr; gap: 4px 12px; }
@@ -139,14 +142,15 @@ footer { margin-top: 48px; padding-top: 12px; border-top: 1px solid var(--rule);
 @media (max-width: 640px) {
   .wrap { padding: 8px 16px 56px; }
   nav.tabs { gap: 18px; }
-  .item { grid-template-columns: minmax(0, 1fr); padding-top: 22px; }
+  /* 上方留白要大於名稱下方(含吊牌)的間距,名稱才會讀成屬於自己這一項 */
+  .item { grid-template-columns: minmax(0, 1fr); padding-top: 36px; }
   .item.has-risk { margin-left: -13px; padding-left: 10px; }
   /* 價格標移到名稱下方、橫排一行:.body 攤平後用 order 重新排序 */
   /* 吊牌移到名稱下方靠左 */
   .body { display: contents; }
   .body > * { grid-column: 1; order: 6; }
-  .body > .name { order: 1; }
-  .tag-kraft { order: 2; position: static; justify-self: start; margin: 8px 0 6px 2px; font-size: .85rem; padding: 4px 10px 4px 20px; }
+  .body > .name-h { order: 1; }
+  .tag-kraft { order: 2; position: static; justify-self: start; margin: 4px 0 2px 2px; font-size: .85rem; padding: 3px 10px 3px 20px; }
   .tag-kraft::before { left: 6px; }
   .tag-kraft small { display: inline; margin-left: 6px; }
   .tag-kraft.with-note::before { top: 50%; margin-top: -4px; }

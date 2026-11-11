@@ -63,8 +63,8 @@
   </div>
 
   <div class="body">
-    <a class="name" href="{{ p.url }}" target="_blank" rel="noopener">{{ repo_wbr(p.full_name) }}</a>
-    <div class="kind">{{ slot_label(p.slot) }} ｜ {{ p.category }}{% if p.matched_interest %} ｜ {{ p.matched_interest }}{% endif %}{% if risks %} ｜ <span style="color: var(--caution)">注意事項 {{ risks|length }}</span>{% endif %}</div>
+    <h3 class="name-h"><a class="name" href="{{ p.url }}" target="_blank" rel="noopener">{{ repo_wbr(p.full_name) }}</a></h3>
+    <div class="kind">{{ slot_label(p.slot) }} ｜ {{ p.category }}{% if p.matched_interest %} ｜ {{ p.matched_interest }}{% endif %}{% if risks %} ｜ <span class="c-caution">注意事項 {{ risks|length }}</span>{% endif %}</div>
     {% if p.health.flags %}<div class="flags">{% for f in p.health.flags %}<span class="f-{{ flag_class(f) }}">{{ f }}</span>{% endfor %}</div>{% endif %}
     {% if p.intro_status != "ai" %}<p class="fallback">AI 介紹未產生，以下是官方原文</p>{% endif %}
     <p class="one-liner">{{ p.intro.one_liner }}</p>
@@ -76,12 +76,12 @@
       <summary>展開完整介紹</summary>
       {% if risks %}
       <div class="risk-box">
-        <h3>注意事項</h3>
+        <h4>注意事項</h4>
         <ul>{% for r in risks %}<li>【{{ r.type }}】{{ r.note }}{% if r.scope %} <span class="scope">（{{ "正常用法就有這個風險" if r.scope == "主要用途" else "被不當使用時才有風險" }}）</span>{% endif %}</li>{% endfor %}</ul>
       </div>
       {% endif %}
       <div class="block">
-        <h3>介紹</h3>
+        <h4>介紹</h4>
         <dl class="kv">
           <dt>解決什麼問題</dt><dd>{{ p.intro.problem }}</dd>
           <dt>主要功能</dt><dd><ul>{% for f in p.intro.features %}<li>{{ f }}</li>{% endfor %}</ul></dd>
@@ -92,11 +92,11 @@
         </dl>
         {% if p.intro_status != "ai" and p.description_raw %}<p><span class="muted">官方原文描述：</span>{{ p.description_raw }}</p>{% endif %}
         {% if p.ideas_for_me %}
-        <h3>可以怎麼用在我的專案</h3>
+        <h4>可以怎麼用在我的專案</h4>
         {% for i in p.ideas_for_me %}<div class="idea"><span class="muted">{{ i.interest }}</span><br>{{ i.idea }}</div>{% endfor %}
         {% endif %}
         {% if p.glossary %}
-        <h3>名詞解釋</h3>
+        <h4>名詞解釋</h4>
         <dl class="kv">{% for g in p.glossary %}<dt>{{ g.term }}</dt><dd>{{ g.explain }}</dd>{% endfor %}</dl>
         {% endif %}
       </div>
@@ -127,7 +127,7 @@
     <a class="q-name" href="{{ q.url }}" target="_blank" rel="noopener">{{ repo_wbr(q.full_name) }}</a>
     <div class="q-sub">{{ q.category }} ｜ {{ q.language or "語言不明" }} ｜ ★ <span class="num">{{ num(q.stars_total) }}</span>{% if q.lite_model %} ｜ 輕量模型產生{% endif %}</div>
     {% if qr.maybe_fit or q.flags or q.risk_flag %}
-    <div class="q-marks">{% if qr.maybe_fit %}<span class="maybe" title="{{ qr.llm_reason }}">可能適合</span>{% endif %}{% for f in q.flags or [] %}<span class="f-{{ flag_class(f) }}">{{ f }}</span>{% endfor %}{% if q.risk_flag %}<span style="color: var(--caution)">{{ q.risk_flag }}</span>{% endif %}</div>
+    <div class="q-marks">{% if qr.maybe_fit %}<span class="maybe" title="{{ qr.llm_reason }}">可能適合</span>{% endif %}{% for f in q.flags or [] %}<span class="f-{{ flag_class(f) }}">{{ f }}</span>{% endfor %}{% if q.risk_flag %}<span class="c-caution">{{ q.risk_flag }}</span>{% endif %}</div>
     {% endif %}
   </div>
   <div class="q-line">{{ q.one_liner }}</div>
