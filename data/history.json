@@ -224,6 +224,81 @@
       "week": "2026-W46",
       "full_name": "blader/humanizer",
       "tier": "quick"
+    },
+    {
+      "week": "2026-W47",
+      "full_name": "meta/astryx",
+      "tier": "featured"
+    },
+    {
+      "week": "2026-W47",
+      "full_name": "sherlock-project/sherlock",
+      "tier": "featured"
+    },
+    {
+      "week": "2026-W47",
+      "full_name": "pingdotgg/t3code",
+      "tier": "featured"
+    },
+    {
+      "week": "2026-W47",
+      "full_name": "ZhuLinsen/daily_stock_analysis",
+      "tier": "featured"
+    },
+    {
+      "week": "2026-W47",
+      "full_name": "sarpstar/cinecode",
+      "tier": "featured"
+    },
+    {
+      "week": "2026-W47",
+      "full_name": "dream-num/univer",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W47",
+      "full_name": "ChromeDevTools/chrome-devtools-mcp",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W47",
+      "full_name": "we-promise/sure",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W47",
+      "full_name": "GoogleChrome/modern-web-guidance-src",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W47",
+      "full_name": "ag-ui-protocol/ag-ui",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W47",
+      "full_name": "addyosmani/agent-skills",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W47",
+      "full_name": "google/elephant-goldfish-model",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W47",
+      "full_name": "homeassistant-ai/ha-mcp",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W47",
+      "full_name": "google-deepmind/mujoco",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W47",
+      "full_name": "openai/codex-security",
+      "tier": "quick"
     }
   ]
 }
