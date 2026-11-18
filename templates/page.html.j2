@@ -36,24 +36,35 @@
     {% endif %}
     <label class="switch"><input type="checkbox" id="only-rec"> 只看推薦</label>
   </div>
+  <div class="filters" role="group" aria-label="依追蹤領域篩選">
+    <span class="muted">領域</span>
+    <button type="button" class="ifilter" data-interest="" aria-pressed="true">全部</button>
+    {% for name in interest_names %}<button type="button" class="ifilter" data-interest="{{ name }}" aria-pressed="false">{{ name }}</button>{% endfor %}
+    <span class="iselect-wrap"><select class="iselect" aria-label="依追蹤領域篩選">
+      <option value="">全部</option>
+      {% for name in interest_names %}<option value="{{ name }}">{{ name }}</option>{% endfor %}
+    </select></span>
+    <a class="edit-interests" href="{{ edit_interests_url }}" target="_blank" rel="noopener">修改追蹤領域</a>
+  </div>
 </header>
 
 <h2 class="section">精選</h2>
 <p class="only-rec-empty">本期沒有推薦安裝的項目。</p>
+<p class="filter-empty" hidden>這一期沒有符合「<span></span>」的專案。</p>
 
 {% for p in wd.projects %}
 {% set pr = p.practicality %}
 {% set risks = p.risk_notes or [] %}
 {% set rec = p.recommend or {} %}
 {% set main_risk = risks|selectattr("scope", "equalto", "主要用途")|list %}
-<article class="item{% if main_risk %} has-risk{% endif %}{% if rec.badge %} rec{% endif %}" id="p{{ p.rank }}">
+<article class="item{% if main_risk %} has-risk{% endif %}{% if rec.badge %} rec{% endif %}" id="p{{ p.rank }}" data-interests="{{ interests_of(p) }}">
   {% if rec.badge %}<div class="tag-kraft{% if rec.has_misuse_risk %} with-note{% endif %}">推薦安裝{% if rec.has_misuse_risk %}<small>先看注意事項</small>{% endif %}</div>{% endif %}
 
   <div class="price">
     <span class="rank">No.{{ p.rank }}</span>
     {% set g = period_gain(p) %}
-    <span class="gain{% if g[1] %} est{% endif %}">{{ g[0] }}</span>
-    <span class="gain-label">{{ label }}新增星數{% if g[1] %}（估）{% endif %}</span>
+    <span class="gain{% if g[1] %} est{% endif %}">{{ g[0] }}{% if g[1] %}<small>推算</small>{% endif %}</span>
+    <span class="gain-label">{{ label }}新增星數</span>
     <dl>
       <dt>總星數</dt><dd>★ {{ num(p.stars_total) }}</dd>
       <dt>健康度</dt><dd class="health h-{{ health_class(p.health.score) }}">健康度 {{ p.health.score }}</dd>
@@ -65,6 +76,8 @@
   <div class="body">
     <h3 class="name-h"><a class="name" href="{{ p.url }}" target="_blank" rel="noopener">{{ repo_wbr(p.full_name) }}</a></h3>
     <div class="kind">{{ slot_label(p.slot) }} ｜ {{ p.category }}{% if p.matched_interest %} ｜ {{ p.matched_interest }}{% endif %}{% if risks %} ｜ <span class="c-caution">注意事項 {{ risks|length }}</span>{% endif %}</div>
+    {% set why = reason(p, ptype) %}
+    {% if why %}<div class="why">入選原因：{{ why }}</div>{% endif %}
     {% if p.health.flags %}<div class="flags">{% for f in p.health.flags %}<span class="f-{{ flag_class(f) }}">{{ f }}</span>{% endfor %}</div>{% endif %}
     {% if p.intro_status != "ai" %}<p class="fallback">AI 介紹未產生，以下是官方原文</p>{% endif %}
     <p class="one-liner">{{ p.intro.one_liner }}</p>
@@ -120,9 +133,10 @@
 <section id="quick-section">
 <h2 class="section">速覽<small>其他新品</small></h2>
 <div class="q-head"><span>名稱</span><span>一句話</span><span class="q-r">{{ label }}新增</span><span class="q-r">健康度</span></div>
+<p class="filter-empty" hidden>這一期沒有符合「<span></span>」的專案。</p>
 {% for q in wd.quick_picks %}
 {% set qr = q.recommend or {} %}
-<div class="q-row">
+<div class="q-row" data-interests="{{ interests_of(q) }}">
   <div>
     <a class="q-name" href="{{ q.url }}" target="_blank" rel="noopener">{{ repo_wbr(q.full_name) }}</a>
     <div class="q-sub">{{ q.category }} ｜ {{ q.language or "語言不明" }} ｜ ★ <span class="num">{{ num(q.stars_total) }}</span>{% if q.lite_model %} ｜ 輕量模型產生{% endif %}</div>
@@ -131,7 +145,8 @@
     {% endif %}
   </div>
   <div class="q-line">{{ q.one_liner }}</div>
-  <div class="q-r q-gain num">{{ period_stars(q) }}</div>
+  {% set qg = period_gain(q) %}
+  <div class="q-r q-gain num{% if qg[1] %} est{% endif %}">{{ qg[0] }}{% if qg[1] %}<small>推算</small>{% endif %}</div>
   <div class="q-r q-health num h-{{ health_class(q.health_score) }}"><span class="m-only">健康度 </span>{{ q.health_score }}</div>
 </div>
 {% endfor %}
@@ -148,7 +163,8 @@
 <p class="all-history"><a href="{{ root }}history.html">查看全部推薦紀錄 ›</a></p>
 
 <footer>
-  資料來源：GitHub Trending 與 GitHub API。中文介紹由 Gemini 產生，可能有誤，請以官方 README 為準。健康度依最近更新、commit 活躍度、貢獻者、fork 比例、正式版本、授權計算。「推薦安裝」需同時通過 AI 判斷與程式門檻：Windows 可用、免付費 API、難度不高、健康度足夠、沒有主要用途上的版權／法律／資安風險。
+  資料來源：GitHub Trending 與 GitHub API。中文介紹由 Gemini 產生，可能有誤，請以官方 README 為準。健康度依最近更新、commit 活躍度、貢獻者、fork 比例、正式版本、授權計算。「推薦安裝」需同時通過 AI 判斷與程式門檻：Windows 可用、免付費 API、難度不高、健康度足夠、沒有主要用途上的版權／法律／資安風險。星數標「推算」的，是 Trending 沒有提供本期數字、由總星數與建立天數推算的估計值。
+  <a href="{{ edit_interests_url }}" target="_blank" rel="noopener">修改追蹤領域</a>（下次自動執行時生效）
 </footer>
 </div>
 
@@ -186,12 +202,56 @@
       }
     });
   });
+  // 「只看推薦」與領域篩選可以同時使用;選擇狀態不需要記住
   var onlyRec = document.getElementById("only-rec");
+  var current = "";
+  function showEmpty(el, count) {
+    if (!el) return;
+    el.hidden = !(current && count === 0);
+    el.querySelector("span").textContent = current;
+  }
+  function apply() {
+    var rec = !!(onlyRec && onlyRec.checked);
+    document.body.classList.toggle("only-rec", rec);
+    var featured = 0, quick = 0;
+    // data-interests 是以「|」分隔的所有命中領域,只要包含目前選的領域就顯示
+    function hasInterest(el) {
+      return !current || (el.dataset.interests || "").split("|").indexOf(current) !== -1;
+    }
+    document.querySelectorAll(".item").forEach(function (el) {
+      var out = !hasInterest(el);
+      el.classList.toggle("f-out", out);
+      if (!out && (!rec || el.classList.contains("rec"))) featured++;
+    });
+    document.querySelectorAll(".q-row").forEach(function (el) {
+      var out = !hasInterest(el);
+      el.classList.toggle("f-out", out);
+      if (!out) quick++;
+    });
+    var empties = document.querySelectorAll(".filter-empty");
+    showEmpty(empties[0], featured);
+    showEmpty(empties[1], quick);
+  }
   if (onlyRec) {
     onlyRec.checked = false;
-    onlyRec.addEventListener("change", function () {
-      document.body.classList.toggle("only-rec", onlyRec.checked);
+    onlyRec.addEventListener("change", apply);
+  }
+  // 桌面用按鈕、手機用下拉選單,兩者同步
+  var sel = document.querySelector("select.iselect");
+  function choose(value) {
+    current = value;
+    document.querySelectorAll("button.ifilter").forEach(function (b) {
+      b.setAttribute("aria-pressed", b.dataset.interest === value ? "true" : "false");
     });
+    if (sel) sel.value = value;
+    apply();
+  }
+  document.querySelectorAll("button.ifilter").forEach(function (btn) {
+    btn.addEventListener("click", function () { choose(btn.dataset.interest); });
+  });
+  if (sel) {
+    sel.value = "";
+    sel.addEventListener("change", function () { choose(sel.value); });
   }
 })();
 </script>

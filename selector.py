@@ -49,19 +49,68 @@ def classify_category(repo: dict, cfg: dict) -> str:
     return LANG_CATEGORY.get(repo.get("language") or "", "其他")
 
 
-def classify_interest(repo: dict, interests: list[str], cfg: dict | None = None) -> str | None:
-    """判斷是否屬於 Orvil 的興趣領域;先用 topics/描述關鍵字,判斷不出再用 LLM。回傳對應的 interest 字串或 None。
+def load_interests(path: Path) -> dict:
+    """讀取 interests.json。回傳 {"enabled": [名稱...], "keywords": {名稱: [...]}, "all": [原始項目...]}。
 
-    階段 2 只做關鍵字比對;LLM 補判在階段 3 加入。
+    檔案不存在、不是合格 JSON、或格式不對時直接丟出錯誤(由呼叫端以失敗結束),
+    不默默改用空清單——否則「領域相關」配額會整個消失而沒人發現。
+    """
+    try:
+        raw = json.loads(path.read_text(encoding="utf-8-sig"))
+    except FileNotFoundError:
+        raise ValueError(f"找不到追蹤領域設定檔 {path.name}") from None
+    except json.JSONDecodeError as e:
+        raise ValueError(f"{path.name} 不是合格的 JSON(第 {e.lineno} 行第 {e.colno} 字:{e.msg})") from None
+    items = raw.get("interests") if isinstance(raw, dict) else None
+    if not isinstance(items, list) or not items:
+        raise ValueError(f"{path.name} 缺少 interests 清單")
+    for i, it in enumerate(items, 1):
+        if not (isinstance(it, dict) and isinstance(it.get("name"), str) and it["name"].strip()
+                and isinstance(it.get("enabled"), bool) and isinstance(it.get("keywords"), list)):
+            raise ValueError(f"{path.name} 第 {i} 個領域格式不對(需要 name、enabled 為 true/false、keywords 清單)")
+    enabled = [it["name"] for it in items if it["enabled"]]
+    if not enabled:
+        raise ValueError(f"{path.name} 沒有任何 enabled 為 true 的領域")
+    return {"enabled": enabled, "keywords": {it["name"]: it["keywords"] for it in items}, "all": items}
+
+
+def _kw_words(kw: str) -> int:
+    """關鍵字的字詞數:「personal finance」= 2、「finance」= 1、「web-scraping」= 2。"""
+    return len([w for w in re.split(r"[\s-]+", kw) if w])
+
+
+def classify_interests(repo: dict, interests: list[str], cfg: dict | None = None) -> list[str]:
+    """回傳所有命中的已啟用領域,依分數由高到低排序(沒有命中就是空清單)。
+
+    計分:每個命中的關鍵字依字詞數計分(描述或名稱命中 ×1、topics 命中 ×2),
+    所以「personal finance」比單獨的「finance」更有份量。
+    同分時,命中關鍵字中最長者(先比字詞數、再比字數)較長的領域優先;仍同分才依 interests.json 的順序。
     """
     kw_map = (cfg or {}).get("interest_keywords", {})
     body, topics = _texts(repo)
-    best, best_score = None, 0
-    for interest in interests:
-        s = _hits(kw_map.get(interest, []), body, topics)
-        if s > best_score:
-            best, best_score = interest, s
-    return best
+    ranked = []
+    for order, interest in enumerate(interests):
+        score, longest = 0, (0, 0)
+        for kw in kw_map.get(interest, []):
+            pat = r"(?<![a-z0-9])" + re.escape(kw.lower()) + r"(?![a-z0-9])"
+            words = _kw_words(kw)
+            hit = 0
+            if re.search(pat, body):
+                hit += words
+            if re.search(pat, topics):
+                hit += 2 * words
+            if hit:
+                score += hit
+                longest = max(longest, (words, len(kw)))
+        if score:
+            ranked.append((-score, (-longest[0], -longest[1]), order, interest))
+    return [r[3] for r in sorted(ranked)]
+
+
+def classify_interest(repo: dict, interests: list[str], cfg: dict | None = None) -> str | None:
+    """主要領域(「領域相關」名額用):classify_interests 的第一名,沒有命中就是 None。"""
+    ranked = classify_interests(repo, interests, cfg)
+    return ranked[0] if ranked else None
 
 
 # ---------- 雜訊過濾 ----------
@@ -425,6 +474,8 @@ def select_picks(candidates: list[dict], cfg: dict) -> list[dict]:
     slots = cfg["slots"]
     hot = sorted([c for c in candidates if c.get("hot_source")],
                  key=lambda c: (c["momentum_est"], -c["momentum"]))
+    for i, c in enumerate(hot, 1):
+        c["hot_rank"] = i  # 只記錄名次給「入選原因」顯示,不影響挑選
     domain = sorted([c for c in candidates if c.get("interest")], key=lambda c: -c["composite"])
     rising = sorted([c for c in candidates
                      if c.get("age_days", 9999) <= cfg["rising_created_within_days"]

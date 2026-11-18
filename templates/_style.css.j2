@@ -46,7 +46,10 @@ h2.section small { color: var(--muted); font-weight: normal; font-size: .875rem;
 .price { font-family: var(--narrow); font-variant-numeric: tabular-nums; }
 .price .rank { font-size: .875rem; color: var(--muted); }
 .price .gain { font-size: 2rem; font-weight: 600; line-height: 1.1; display: block; white-space: nowrap; }
-.price .gain.est { font-size: 1.6rem; }
+/* 推算值:淡色數字後面接小字「推算」 */
+.gain.est, .q-gain.est { color: var(--muted); }
+.gain.est small, .q-gain.est small { font-family: var(--sans); font-size: .75rem; font-weight: normal; margin-left: 4px; }
+.why { color: var(--muted); font-size: .875rem; margin-top: 2px; }
 .price .gain-label { font-family: var(--sans); font-size: .8rem; color: var(--muted); display: block; margin-bottom: 10px; }
 .price dl { margin: 0; font-size: .9rem; line-height: 1.7; }
 .price dt { display: none; }
@@ -136,6 +139,24 @@ body.only-rec .only-rec-empty { display: block; }
 .arch dd a, .arch dd b { margin-right: 1.2em; font-family: var(--narrow); }
 .arch dd a.current { font-weight: bold; color: var(--ink); }
 .all-history { margin: 14px 0 0; font-size: .95rem; }
+
+/* ---------- 領域篩選:純文字,底線表示選中 ---------- */
+.filters { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; margin-top: 12px; font-size: .95rem; }
+button.ifilter { font: inherit; background: none; border: 0; padding: 2px 0; color: var(--muted); cursor: pointer; }
+button.ifilter:hover { color: var(--ink); }
+button.ifilter[aria-pressed="true"] { color: var(--ink); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; }
+.edit-interests { margin-left: auto; font-size: .875rem; }
+/* 手機用的下拉選單:沿用文字與細線的風格,不用瀏覽器預設的外觀 */
+.iselect-wrap { display: none; position: relative; }
+.iselect-wrap::after { content: "▾"; position: absolute; right: 4px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+select.iselect { -webkit-appearance: none; appearance: none; font: inherit; color: var(--ink); background: var(--paper); border: 0; border-bottom: 2px solid var(--ink); border-radius: 0; padding: 4px 24px 4px 2px; cursor: pointer; }
+select.iselect option { color: var(--ink); background: var(--paper); }
+@media (max-width: 640px) {
+  .filters button.ifilter { display: none; }
+  .iselect-wrap { display: inline-block; }
+}
+.f-out { display: none !important; }
+.filter-empty { color: var(--muted); padding: 16px 0; margin: 0; }
 footer { margin-top: 48px; padding-top: 12px; border-top: 1px solid var(--rule); color: var(--muted); font-size: .8rem; }
 
 /* ---------- 手機 ---------- */
@@ -158,7 +179,6 @@ footer { margin-top: 48px; padding-top: 12px; border-top: 1px solid var(--rule);
   .body > .flags { order: 4; }
   .price { order: 5; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 14px; margin-top: 8px; font-size: .9rem; }
   .price .gain { font-size: 1.3rem; display: inline; }
-  .price .gain.est { font-size: 1.2rem; }
   .price .gain-label { display: inline; margin: 0; }
   .price .health { font-size: 1.1rem; }
   .price dl { display: contents; }

@@ -1,0 +1,18 @@
+{
+  "_說明": "enabled 改成 true 或 false 就能開關領域；keywords 是用來比對專案描述與 topics 的英文關鍵字。修改後下次自動執行時生效。",
+  "interests": [
+    { "name": "Python 自動化與 bot", "enabled": true, "keywords": ["automation", "automate", "bot", "telegram", "discord", "line bot", "rpa", "scheduler", "selenium"] },
+    { "name": "網頁爬蟲與資料擷取", "enabled": true, "keywords": ["scraper", "scraping", "web-scraping", "crawler", "crawl", "spider", "data extraction", "extract data", "headless browser"] },
+    { "name": "股票與量化交易", "enabled": true, "keywords": ["stock", "stocks", "trading", "trader", "quant", "quantitative", "backtest", "backtesting", "portfolio", "market data", "investing", "finance"] },
+    { "name": "運動數據分析", "enabled": true, "keywords": ["sports", "football", "soccer", "nba", "baseball", "basketball", "fantasy football", "esports"] },
+    { "name": "AI agent 與 LLM 工具", "enabled": true, "keywords": ["agent", "agents", "agentic", "llm", "llms", "mcp", "claude", "claude code", "gpt", "openai", "rag", "chatbot", "copilot", "gemini", "codex"] },
+    { "name": "瀏覽器擴充與 userscript", "enabled": true, "keywords": ["browser extension", "chrome extension", "firefox extension", "userscript", "tampermonkey", "greasemonkey", "web extension"] },
+    { "name": "本地網頁小工具", "enabled": true, "keywords": ["self-hosted", "selfhosted", "local-first", "offline", "single html", "single-file", "pwa", "web app", "dashboard"] },
+    { "name": "HTML/JS 小遊戲", "enabled": true, "keywords": ["game", "games", "canvas", "webgl", "phaser", "pixel art", "puzzle", "arcade", "three.js", "threejs"] },
+    { "name": "記帳與個人理財", "enabled": false, "keywords": ["personal finance", "budget", "budgeting", "expense", "expense tracker", "accounting", "bookkeeping", "money manager", "net worth"] },
+    { "name": "影音與下載", "enabled": false, "keywords": ["video", "audio", "music", "downloader", "youtube", "yt-dlp", "ffmpeg", "media player", "streaming", "podcast"] },
+    { "name": "室內設計與 3D", "enabled": false, "keywords": ["interior design", "floor plan", "floorplan", "3d modeling", "cad", "blender", "architecture", "home design", "room planner"] },
+    { "name": "料理與生活", "enabled": false, "keywords": ["recipe", "recipes", "cooking", "meal planner", "meal planning", "grocery", "kitchen", "nutrition", "food"] },
+    { "name": "筆記與效率工具", "enabled": false, "keywords": ["note-taking", "notes", "markdown", "obsidian", "knowledge base", "todo", "to-do", "productivity", "pkm", "journal"] }
+  ]
+}

@@ -87,30 +87,33 @@ python -m pip install -r requirements.txt
 - 不會呼叫 Gemini 的指令可以隨時用：`--dry-run`、`--no-llm`、`--build-only`。
 - 額度用完時，程式會依序改用備援型號，最後退到輕量模型；當天下午的補跑或之後手動「週補跑」會再嘗試升級。
 
+## 修改追蹤領域
+
+「領域相關」配額、網頁上的領域篩選按鈕，都來自 `interests.json`。可以直接在 GitHub 網頁上修改，不用開電腦裡的檔案：
+
+1. 點網頁頂部或頁尾的「**修改追蹤領域**」連結（或直接開 https://github.com/orvil6688/github_weekly/edit/main/interests.json ）
+2. 找到想開關的領域，把 `"enabled": false` 改成 `true`（開啟），或把 `true` 改成 `false`（關閉）
+3. 按右上角綠色的 **Commit changes**，在跳出的視窗再按一次 **Commit changes**
+
+注意事項：
+
+- **下次自動執行時生效**（每週一早上），不會改變已經產生的週次；想馬上看到網頁上的按鈕變化，可以手動執行「只重建網頁」
+- 每個領域的 `keywords` 是用來比對專案描述與 topics 的**英文**關鍵字，可以自己增減
+- 一個專案可以同時屬於好幾個領域：網頁上點任何一個它命中的領域都看得到它
+- 挑「領域相關」名額時，每個專案只算一個**主要領域**，算法是：
+  - 每個命中的關鍵字依**字詞數**計分，例如 `personal finance` 算 2 分、`finance` 算 1 分；命中 GitHub 的 topics 時分數加倍
+  - 分數最高的領域就是主要領域；同分時，命中的關鍵字裡**最長的那個比較長**的領域優先；還是同分才看 `interests.json` 裡的先後順序
+  - 所以想讓某個領域更容易被認出來，加上**越具體的多字關鍵字**越有效（例如 `expense tracker` 比 `expense` 更準）
+- 改壞了（例如少了逗號或引號）時，下次執行會以失敗結束並在 Actions 的紀錄寫明原因，不會默默跳過；修正後再手動執行一次即可
+- 至少要有一個領域是 `true`
+
 ## 怎麼修改設定（config.json）
 
 用記事本或 VS Code 打開 `config.json` 修改，存檔後下次執行就生效。
 
-### 興趣領域與個人背景
+### 個人背景
 
-`interests` 是你的興趣清單，影響「領域相關」的挑選和「可以怎麼用在我的專案」的點子；`user_profile` 是給 AI 判斷「推薦安裝」時參考的個人背景。
-
-```json
-"interests": [
-  "Python 自動化與 bot",
-  "股票與量化交易",
-  ...
-]
-```
-
-**新增或改名一個興趣時，記得同時在 `interest_keywords` 加上對應的英文關鍵字**，程式才判斷得出哪些專案屬於這個領域。例如：
-
-```json
-"interest_keywords": {
-  "股票與量化交易": ["stock", "trading", "quant", "backtest"],
-  ...
-}
-```
+追蹤領域已移到 `interests.json`（見上方「修改追蹤領域」）。`config.json` 的 `user_profile` 是給 AI 判斷「推薦安裝」時參考的個人背景。
 
 ### 配額
 

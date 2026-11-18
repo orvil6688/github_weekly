@@ -131,7 +131,9 @@ def gather(cfg: dict, P: dict, llm=None) -> dict:
             c["health"]["flags"].insert(0, c["growth_level"])
             log.info("%s %s:%s", c["growth_level"], c["full_name"], ";".join(c["growth_reasons"]))
         c["category"] = selector.classify_category(c, cfg)
-        c["interest"] = selector.classify_interest(c, cfg["interests"], cfg)
+        # 所有命中的領域(依分數排序,給網頁篩選);第一名是主要領域(給「領域相關」名額)
+        c["interests"] = selector.classify_interests(c, cfg["interests"], cfg)
+        c["interest"] = c["interests"][0] if c["interests"] else None
         kept.append(c)
     for c in kept:  # 替代方案(規則 A):先看描述;挑中的專案之後再看 README 第一段
         selector.add_alternative_flag(c, [c["description_raw"]], kept)
@@ -206,6 +208,18 @@ def write_up(res: dict, cfg: dict, P: dict, llm) -> dict:
             "rank": c["rank"],
             "slot": c["slot"],
             "matched_interest": c["matched_interest"],
+            "interests": c.get("interests") or [],
+            # 入選原因所需的數值(只供網頁顯示,不影響挑選)
+            "selection": {
+                "slot": c["slot"],
+                "hot_rank": c.get("hot_rank"),
+                "matched_interest": c["matched_interest"],
+                "composite": round(c.get("composite", 0), 1),
+                "age_days": c.get("age_days"),
+                "stars_per_day": round((c.get("stars_total") or 0) / max(c.get("age_days") or 1, 1)),
+                "momentum": int(c.get("momentum", 0)),
+                "momentum_est": bool(c.get("momentum_est")),
+            },
             "category": c["category"],
             "category_model": c.get("category_model"),
             "full_name": c["full_name"],
@@ -236,6 +250,7 @@ def write_up(res: dict, cfg: dict, P: dict, llm) -> dict:
             "language": c.get("language"),
             "category": c["category"],
             "category_model": c.get("category_model"),
+            "interests": c.get("interests") or [],
             "stars_total": c.get("stars_total"),
             "stars_this_week": c.get("stars_this_week"),
             "stars_this_week_est": int(c["momentum"]) if c.get("stars_this_week") is None else None,
@@ -513,6 +528,14 @@ def print_report(res: dict, P: dict, inspect: list[str], cfg: dict) -> None:
 
     print_near_thresholds(res, cfg)
 
+    print("\n【追蹤領域分布】(保留的候選中,依已啟用領域的關鍵字比對;主要領域 / 命中但非主要)")
+    for name in cfg["interests"]:
+        main_ = [c["full_name"] for c in kept if c.get("interest") == name]
+        also = [c["full_name"] for c in kept if name in (c.get("interests") or []) and c.get("interest") != name]
+        print(f"  {name}:主要 {len(main_)} 個" + (f"——{'、'.join(main_)}" if main_ else "")
+              + (f";另外命中 {len(also)} 個——{'、'.join(also)}" if also else ""))
+    print(f"  沒有對應任何領域:{sum(1 for c in kept if not c.get('interest'))} 個")
+
     print("\n【類別分布】(全部保留的候選 / 精選 / 速覽)")
     all_c = Counter(c["category"] for c in res["kept"])
     f_c = Counter(c["category"] for c in res["featured"])
@@ -545,6 +568,8 @@ def print_report(res: dict, P: dict, inspect: list[str], cfg: dict) -> None:
             print(f"  結果:保留,{where};健康度 {h['score']}(" +
                   "、".join(f"{k} {v}" for k, v in h["parts"].items()) + ")")
             print(f"  標籤:{'、'.join(h['flags']) or '無'}")
+            print(f"  命中領域(依分數):{'、'.join(c.get('interests') or []) or '無'};"
+                  f"主要領域(matched_interest 依據):{c.get('interest') or '無'}")
             if c["growth_level"]:
                 print(f"  成長判定:{c['growth_level']}——{';'.join(c['growth_reasons'])}")
 
@@ -629,12 +654,23 @@ def main() -> None:
     load_dotenv(ROOT / ".env")
     base_cfg = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
     P = make_period(args.period, datetime.now(TPE), args.month, args.week)
-    cfg = period_cfg(base_cfg, P)
-    if args.trending_url:
-        cfg["trending_url"] = args.trending_url
 
     log_path = setup_logging(P["id"])
     print(f"開始執行 {P['id']}({P['type']}),紀錄檔:{log_path.relative_to(ROOT)}")
+
+    # 追蹤領域改由 interests.json 設定(Orvil 可以直接在 GitHub 網頁上編輯);讀不到就以失敗結束
+    try:
+        interests = selector.load_interests(ROOT / "interests.json")
+    except ValueError as e:
+        log.error("追蹤領域設定錯誤:%s", e)
+        sys.exit(1)
+    base_cfg["interests"] = interests["enabled"]
+    base_cfg["interest_keywords"] = interests["keywords"]
+    print(f"已啟用的追蹤領域:{'、'.join(interests['enabled'])}")
+
+    cfg = period_cfg(base_cfg, P)
+    if args.trending_url:
+        cfg["trending_url"] = args.trending_url
 
     cache_root = ROOT / "data" / "cache"
     llm = None
