@@ -299,6 +299,81 @@
       "week": "2026-W47",
       "full_name": "openai/codex-security",
       "tier": "quick"
+    },
+    {
+      "week": "2026-W48",
+      "full_name": "elementalsouls/Claude-BugHunter",
+      "tier": "featured"
+    },
+    {
+      "week": "2026-W48",
+      "full_name": "dream-num/univer",
+      "tier": "featured"
+    },
+    {
+      "week": "2026-W48",
+      "full_name": "affaan-m/ECC",
+      "tier": "featured"
+    },
+    {
+      "week": "2026-W48",
+      "full_name": "firecrawl/firecrawl",
+      "tier": "featured"
+    },
+    {
+      "week": "2026-W48",
+      "full_name": "Immortal-Protocols/lastbook",
+      "tier": "featured"
+    },
+    {
+      "week": "2026-W48",
+      "full_name": "mvanhorn/last30days-skill",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W48",
+      "full_name": "alibaba/open-code-review",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W48",
+      "full_name": "Tracer-Cloud/opensre",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W48",
+      "full_name": "backnotprop/plannotator",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W48",
+      "full_name": "XiaoYouChR/Ghost-Downloader-3",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W48",
+      "full_name": "kajisho5/ffmpeg-skill",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W48",
+      "full_name": "toeverything/AFFiNE",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W48",
+      "full_name": "zhouxiaoka/autoclip",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W48",
+      "full_name": "Tencent/LoopForge",
+      "tier": "quick"
+    },
+    {
+      "week": "2026-W48",
+      "full_name": "HKUDS/CLI-Anything",
+      "tier": "quick"
     }
   ]
 }

@@ -1,0 +1,853 @@
+{
+  "period": "2026-W48",
+  "period_type": "weekly",
+  "generated_at": "2026-11-23T15:39:51+08:00",
+  "coverage": {
+    "from": "2026-11-16",
+    "to": "2026-11-23"
+  },
+  "source": "trending",
+  "candidate_count": 108,
+  "excluded_count": 8,
+  "projects": [
+    {
+      "rank": 1,
+      "slot": "hot",
+      "matched_interest": null,
+      "interests": [
+        "AI agent 與 LLM 工具"
+      ],
+      "selection": {
+        "slot": "hot",
+        "hot_rank": 1,
+        "matched_interest": null,
+        "composite": 88.5,
+        "age_days": 201,
+        "stars_per_day": 92,
+        "momentum": 11269,
+        "momentum_est": false
+      },
+      "category": "資安",
+      "category_model": "gemini-3.5-flash",
+      "full_name": "elementalsouls/Claude-BugHunter",
+      "url": "https://github.com/elementalsouls/Claude-BugHunter",
+      "description_raw": "A Claude Code skill bundle for bug hunting and external red-team work - 82 skills, 15 slash commands, 681 disclosed-report patterns curated across 24 core vulnerability classes, plus enterprise identity + infrastructure attack matrices.",
+      "language": "Python",
+      "license": "MIT",
+      "stars_total": 18419,
+      "stars_this_week": 11269,
+      "stars_this_week_est": null,
+      "health": {
+        "score": 77,
+        "last_push_days": 0,
+        "commits_30d": 105,
+        "open_issues": 20,
+        "contributors": 18,
+        "flags": []
+      },
+      "intro": {
+        "one_liner": "為 Claude Code 擴充專業網站漏洞檢測與資安測試技能的軟體包。",
+        "problem": "解決一般 AI 聊天機器人缺乏專業網站安全測試知識與自動化流程的問題。幫助資安人員在授權範圍內更有效率地進行漏洞排查與報告撰寫。",
+        "features": [
+          "內建 83 種資安測試技能與 15 個快捷指令",
+          "自動依據對話主題載入對應的網站漏洞檢核與分析流程",
+          "提供漏洞驗證、風險評估與回報報告標準化工具"
+        ],
+        "audience": "具備授權資安測試需求的網路安全研究員、紅隊測試人員或 Bug Bounty 漏洞獵人。",
+        "getting_started": "在 Claude Code 中執行外掛安裝指令，或下載專案後執行 PowerShell 安裝腳本。",
+        "tech_stack": "Python, PowerShell, Shell",
+        "why_trending": "本週獲得超過一萬顆 Star，將熱門的 AI 代理工具 Claude Code 結合專業資安測試流程，降低資安排查自動化門檻。"
+      },
+      "practicality": {
+        "difficulty": 4,
+        "windows_ok": "yes",
+        "needs_gpu": "no",
+        "needs_paid_api": "optional",
+        "needs_coding": "light",
+        "verdict": "此專案為專業資安漏洞測試工具，不適合一般非工程師日常使用且涉及法律風險。"
+      },
+      "ideas_for_me": [
+        {
+          "interest": "AI agent 與 LLM 工具",
+          "idea": "參考此專案設計技能檔（SKILL.md）的架構，打造適合自己日常工作流程的專屬 AI 代理擴充包。"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "紅隊測試",
+          "explain": "模擬真實駭客攻擊手法，針對系統進行安全防護評估的實戰演練。"
+        },
+        {
+          "term": "Bug Bounty",
+          "explain": "企業提供獎金吸引資安專家協助尋找並回報系統漏洞的獎賞計畫。"
+        }
+      ],
+      "risk_notes": [
+        {
+          "type": "法律",
+          "scope": "不當使用",
+          "note": "若未獲得目標系統明確授權即使用此工具進行漏洞掃描，可能觸犯相關法律。"
+        },
+        {
+          "type": "資安",
+          "scope": "主要用途",
+          "note": "專案包含大量資安漏洞檢驗手法，需在合格受控的測試環境中操作。"
+        }
+      ],
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "此專案主要面向專業資安漏洞挖掘與紅隊測試，與您開發自動化 bot 或網頁小工具的背景不合，亦有法律風險。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "難度 4 > 3",
+          "主要用途有資安風險"
+        ],
+        "badge": false,
+        "has_misuse_risk": true
+      },
+      "trial_prompt": "## ⚠ 注意事項\n- 【法律｜不當使用】若未獲得目標系統明確授權即使用此工具進行漏洞掃描，可能觸犯相關法律。\n- 【資安｜主要用途】專案包含大量資安漏洞檢驗手法，需在合格受控的測試環境中操作。\n\n# 任務：試用 GitHub 專案 elementalsouls/Claude-BugHunter\n\n專案網址：https://github.com/elementalsouls/Claude-BugHunter\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：在 Claude Code 輸入測試目標對話，系統會自動載入偵查技能並輸出網域端點分析結果。\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\Claude-BugHunter` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/elementalsouls/Claude-BugHunter.git \"D:\\sandbox\\Claude-BugHunter\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- ⚠ 這個專案很可能需要付費 API 金鑰：遇到要填金鑰的步驟就停止，先問我，不要自己申請或填入。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
+      "intro_status": "ai",
+      "model": "gemini-3.5-flash",
+      "lite_model": false
+    },
+    {
+      "rank": 2,
+      "slot": "hot",
+      "matched_interest": null,
+      "interests": [
+        "AI agent 與 LLM 工具"
+      ],
+      "selection": {
+        "slot": "hot",
+        "hot_rank": 2,
+        "matched_interest": null,
+        "composite": 92.5,
+        "age_days": 1515,
+        "stars_per_day": 21,
+        "momentum": 6436,
+        "momentum_est": false
+      },
+      "category": "效率工具",
+      "category_model": "gemini-3.5-flash",
+      "full_name": "dream-num/univer",
+      "url": "https://github.com/dream-num/univer",
+      "description_raw": "Build your own AI office with Univer Office SDK. Bring editing, calculation, collaboration, and file processing into your product for people and AI agents. Built on an extensible open-source core.",
+      "language": "TypeScript",
+      "license": "Apache-2.0",
+      "stars_total": 31339,
+      "stars_this_week": 6436,
+      "stars_this_week_est": null,
+      "health": {
+        "score": 86,
+        "last_push_days": 0,
+        "commits_30d": 195,
+        "open_issues": 213,
+        "contributors": 78,
+        "flags": []
+      },
+      "intro": {
+        "one_liner": "開放原始碼的網頁版 Office 套件開發工具包（SDK）。",
+        "problem": "幫助開發者在自己的網頁應用程式中，快速嵌入類似 Excel 試算表或 Word 文檔的編輯與計算功能，無需從頭開發複雜的文書處理介面。",
+        "features": [
+          "提供網頁版 Excel 試算表與 Word 文檔編輯介面",
+          "支援公式計算、儲存格樣式與操作復原",
+          "能與 AI 代理結合進行自動化內容編輯與處理"
+        ],
+        "audience": "網頁前端開發者、想要在自家系統中嵌入 Office 編輯功能的軟體團隊",
+        "getting_started": "需要先安裝 Node.js 與套件管理工具，在網頁前端專案中安裝套件，並撰寫程式碼來呼叫與渲染編輯介面。",
+        "tech_stack": "TypeScript, HTML, Node.js",
+        "why_trending": "資料不足"
+      },
+      "practicality": {
+        "difficulty": 4,
+        "windows_ok": "yes",
+        "needs_gpu": "no",
+        "needs_paid_api": "no",
+        "needs_coding": "heavy",
+        "verdict": "這是一個前端開發用的程式庫（SDK），非下載即用的應用程式，非工程師門檻較高。"
+      },
+      "ideas_for_me": [
+        {
+          "interest": "本地網頁小工具",
+          "idea": "透過 Claude Code 撰寫 HTML 與 JavaScript 程式碼導入 Univer，為自己打造一個能在本機瀏覽器運行的專屬網頁版 Excel 數據處理小工具。"
+        },
+        {
+          "interest": "AI agent 與 LLM 工具",
+          "idea": "透過 Univer 的 API 與大型語言模型結合，製作出能自動產生表格數據並填入計算公式的 AI 代理工作流程。"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "SDK",
+          "explain": "軟體開發工具包，是一整套提供給工程師用來開發特定功能或嵌入應用程式的程式碼與工具組。"
+        },
+        {
+          "term": "AI 代理",
+          "explain": "能夠自主理解目標、規劃步驟並利用工具執行任務的 AI 程式。"
+        },
+        {
+          "term": "Node.js",
+          "explain": "一種讓電腦能夠執行 JavaScript 程式碼的開發環境與工具。"
+        }
+      ],
+      "risk_notes": [],
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "Univer 是給開發者整合到網頁專案中的程式庫（SDK），缺乏下載即用的安裝檔，不符合偏好按步驟安裝即可使用軟體的讀者背景。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "難度 4 > 3",
+          "寫程式需求為 heavy"
+        ],
+        "badge": false,
+        "has_misuse_risk": false
+      },
+      "trial_prompt": "# 任務：試用 GitHub 專案 dream-num/univer\n\n專案網址：https://github.com/dream-num/univer\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：在網頁前端專案中引入套件並執行建立工作簿的程式碼，畫面上會成功渲染出一個可點擊編輯的網頁試算表介面。\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\univer` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/dream-num/univer.git \"D:\\sandbox\\univer\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
+      "intro_status": "ai",
+      "model": "gemini-3.5-flash",
+      "lite_model": false
+    },
+    {
+      "rank": 3,
+      "slot": "domain",
+      "matched_interest": "AI agent 與 LLM 工具",
+      "interests": [
+        "AI agent 與 LLM 工具"
+      ],
+      "selection": {
+        "slot": "domain",
+        "hot_rank": 3,
+        "matched_interest": "AI agent 與 LLM 工具",
+        "composite": 94.5,
+        "age_days": 309,
+        "stars_per_day": 1001,
+        "momentum": 5444,
+        "momentum_est": false
+      },
+      "category": "開發工具",
+      "category_model": "gemini-3.5-flash",
+      "full_name": "affaan-m/ECC",
+      "url": "https://github.com/affaan-m/ECC",
+      "description_raw": "The agent harness performance optimization system. Skills, instincts, memory, security, and research-first development for Claude Code, Codex, Opencode, Cursor and beyond.",
+      "language": "JavaScript",
+      "license": "MIT",
+      "stars_total": 309172,
+      "stars_this_week": 5444,
+      "stars_this_week_est": null,
+      "health": {
+        "score": 93,
+        "last_push_days": 0,
+        "commits_30d": 903,
+        "open_issues": 196,
+        "contributors": 403,
+        "flags": [
+          "爆發成長"
+        ]
+      },
+      "intro": {
+        "one_liner": "增強 Claude Code 規劃、測試與自我修復程式碼能力的工具包。",
+        "problem": "使用 Claude Code 開發時，AI 常缺乏長遠規劃、容易忘記前文或無法自行驗證程式碼錯誤。這個專案為 AI 建立標準工程流程，讓它在寫程式前先規劃、寫完後自動執行測試與檢視。",
+        "features": [
+          "提供 72 種專門的 AI 代理，負責任務規劃、程式碼修復與安全審查",
+          "內建 328 種開發技能與記憶機制，能跨會話累積專案開發經驗",
+          "整合 AgentShield 安全檢查，主動掃描潛在的提示詞與設定安全風險"
+        ],
+        "audience": "習慣使用 Claude Code 等工具開發程式，希望讓 AI 輸出更高品質、更少錯誤程式碼的開發者。",
+        "getting_started": "確認電腦已安裝 Node.js、Git 與 Claude Code，開啟 PowerShell 貼上 npx 安裝指令，完成後在 Claude Code 視窗輸入 `/plugin list` 確認啟用即可。",
+        "tech_stack": "JavaScript, TypeScript, Python, Shell, Rust, Go",
+        "why_trending": "因大幅提升了 Claude Code 等程式開發工具的自我修復與任務規劃能力，近期在開發者社羣中獲得快速關注。"
+      },
+      "practicality": {
+        "difficulty": 2,
+        "windows_ok": "yes",
+        "needs_gpu": "no",
+        "needs_paid_api": "optional",
+        "needs_coding": "light",
+        "verdict": "適合經常使用 Claude Code 的非工程師，只需照著步驟在 PowerShell 執行指令就能順利升級 AI 功能。"
+      },
+      "ideas_for_me": [
+        {
+          "interest": "AI agent 與 LLM 工具",
+          "idea": "在 Claude Code 中載入此工具包，讓 AI 代理在執行複雜開發任務時，先自動建立規劃與測試步驟，減少產生錯誤程式碼的情況。"
+        },
+        {
+          "interest": "Python 自動化與 bot",
+          "idea": "利用其內建的測試與檢查技能，輔助 Claude Code 開發 Python bot，確保自動化腳本在不同狀況下都能穩定執行。"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "AI 代理",
+          "explain": "能自主規劃步驟、執行任務並自我修正的 AI 輔助程式。"
+        },
+        {
+          "term": "PowerShell",
+          "explain": "Windows 系統內建的文字指令執行工具。"
+        },
+        {
+          "term": "AgentShield",
+          "explain": "專門用來檢查 AI 設定檔與指令是否含有資安漏洞的安全掃描機制。"
+        }
+      ],
+      "risk_notes": [
+        {
+          "type": "資安",
+          "scope": "不當使用",
+          "note": "若由非官方管道下載或執行未經審查的套件指令，可能會有執行到惡意程式的風險。"
+        }
+      ],
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "你已在 Windows 上透過 Claude Code 開發 Python bot 與網頁小工具，安裝此擴充包能讓 AI 自動幫你驗證程式碼，顯著提升開發成功率。",
+        "gate_passed": true,
+        "gate_fail_reasons": [],
+        "badge": true,
+        "has_misuse_risk": true
+      },
+      "trial_prompt": "## ⚠ 注意事項\n- 【資安｜不當使用】若由非官方管道下載或執行未經審查的套件指令，可能會有執行到惡意程式的風險。\n\n# 任務：試用 GitHub 專案 affaan-m/ECC\n\n專案網址：https://github.com/affaan-m/ECC\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：在 PowerShell 執行 `npx ecc-universal@2.2.3 setup` 完成設定後，在 Claude Code 中輸入 `/plugin list` 應能看到 `ecc@ecc` 插件顯示為已啟用。\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\ECC` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/affaan-m/ECC.git \"D:\\sandbox\\ECC\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- ⚠ 這個專案很可能需要付費 API 金鑰：遇到要填金鑰的步驟就停止，先問我，不要自己申請或填入。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
+      "intro_status": "ai",
+      "model": "gemini-3.5-flash",
+      "lite_model": false
+    },
+    {
+      "rank": 4,
+      "slot": "domain",
+      "matched_interest": "網頁爬蟲與資料擷取",
+      "interests": [
+        "網頁爬蟲與資料擷取",
+        "AI agent 與 LLM 工具"
+      ],
+      "selection": {
+        "slot": "domain",
+        "hot_rank": 61,
+        "matched_interest": "網頁爬蟲與資料擷取",
+        "composite": 86.0,
+        "age_days": 951,
+        "stars_per_day": 218,
+        "momentum": 6405,
+        "momentum_est": true
+      },
+      "category": "資料與爬蟲",
+      "category_model": "gemini-3.5-flash",
+      "full_name": "firecrawl/firecrawl",
+      "url": "https://github.com/firecrawl/firecrawl",
+      "description_raw": "Knowledge infrastructure to make your agents smarter. Search, scrape and access 550+ data providers through one API.",
+      "language": "TypeScript",
+      "license": "AGPL-3.0",
+      "stars_total": 207290,
+      "stars_this_week": null,
+      "stars_this_week_est": 6405,
+      "health": {
+        "score": 74,
+        "last_push_days": 0,
+        "commits_30d": 245,
+        "open_issues": 923,
+        "contributors": 171,
+        "flags": []
+      },
+      "intro": {
+        "one_liner": "專為 AI 代理 設計的網頁爬蟲與資料轉換工具",
+        "problem": "傳統爬蟲容易被動態網頁擋下，且擷取出的 HTML 包含大量無用標籤，會讓 AI 閱讀時消耗大量 Token 與成本。Firecrawl 能將任何網頁快速轉為乾淨的 Markdown 或結構化資料。",
+        "features": [
+          "網頁轉 Markdown：自動移除廣告與無用標籤，輸出適合 AI 閱讀的純文字格式",
+          "全站爬取與地圖解析：輸入網址即可自動掃描並列出所有子頁面連結與內容",
+          "MCP 伺服器整合：一鍵設定即可成為 Claude Code 等 AI 工具的延伸功能"
+        ],
+        "audience": "需要抓取網頁內容供 AI 分析的開發者、自動化腳本撰寫者與 AI 工具使用者",
+        "getting_started": "在命令提示字元執行單行 npx 指令即可體驗抓取，或使用 pip 安裝 Python 套件，亦可透過指令將其直接設定為 Claude Code 的擴充工具",
+        "tech_stack": "TypeScript, Python, Rust",
+        "why_trending": "解決了 AI 擷取網頁資料時品質差與消耗 Token 的痛點，且全面支援最新的 MCP 協定，能無縫串接各大主流 AI 軟體"
+      },
+      "practicality": {
+        "difficulty": 2,
+        "windows_ok": "yes",
+        "needs_gpu": "no",
+        "needs_paid_api": "optional",
+        "needs_coding": "light",
+        "verdict": "非常適合搭配 Claude Code 使用，能顯著降低網頁抓取與資料清理的門檻"
+      },
+      "ideas_for_me": [
+        {
+          "interest": "網頁爬蟲與資料擷取",
+          "idea": "在撰寫 Python 爬蟲時呼叫 Firecrawl API，直接將動態渲染的目標網頁轉成乾淨的 Markdown，省去寫 BeautifulSoup 解析 HTML 標籤的時間。"
+        },
+        {
+          "interest": "AI agent 與 LLM 工具",
+          "idea": "將 Firecrawl 綁定為 Claude Code 的 MCP 工具，讓 AI 代理 在幫你寫程式或做研究時，能夠即時上網搜尋並抓取最新技術文件的完整內容。"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "AI 代理",
+          "explain": "一種能自主思考、規劃步驟並呼叫外部工具來完成複雜任務的 AI 系統。"
+        },
+        {
+          "term": "Markdown",
+          "explain": "一種結構簡單的純文字格式，非常適合讓 AI 快速讀取與理解。"
+        },
+        {
+          "term": "Token",
+          "explain": "AI 處理文字時的基本計數單位，輸入的字數與無用資料越多，消耗的 Token 與費用就越高。"
+        },
+        {
+          "term": "MCP",
+          "explain": "一種讓 AI 軟體（如 Claude Code）能輕鬆連線並使用外部擴充工具與資料庫的標準協定。"
+        }
+      ],
+      "risk_notes": [
+        {
+          "type": "法律",
+          "scope": "不當使用",
+          "note": "爬取設有嚴格服務條款或需登入驗證的網站資料時，可能違反該網站的使用合約。"
+        },
+        {
+          "type": "費用",
+          "scope": "主要用途",
+          "note": "使用雲端服務超過每月免費 1000 次額度後，繼續大量呼叫會產生 API 訂閱費用。"
+        }
+      ],
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "這款工具能透過單一指令整合進你現有的 Claude Code 環境，讓你在開發 Python 爬蟲與自動化腳本時省去處理複雜網頁結構的麻煩。",
+        "gate_passed": true,
+        "gate_fail_reasons": [],
+        "badge": true,
+        "has_misuse_risk": true
+      },
+      "trial_prompt": "## ⚠ 注意事項\n- 【法律｜不當使用】爬取設有嚴格服務條款或需登入驗證的網站資料時，可能違反該網站的使用合約。\n- 【費用｜主要用途】使用雲端服務超過每月免費 1000 次額度後，繼續大量呼叫會產生 API 訂閱費用。\n\n# 任務：試用 GitHub 專案 firecrawl/firecrawl\n\n專案網址：https://github.com/firecrawl/firecrawl\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：執行抓取指令後，能在螢幕上看到目標網址（如 firecrawl.dev）被轉成乾淨且排版整齊的 Markdown 文字內容。\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\firecrawl` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/firecrawl/firecrawl.git \"D:\\sandbox\\firecrawl\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- ⚠ 這個專案很可能需要付費 API 金鑰：遇到要填金鑰的步驟就停止，先問我，不要自己申請或填入。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
+      "intro_status": "ai",
+      "model": "gemini-3.5-flash",
+      "lite_model": false
+    },
+    {
+      "rank": 5,
+      "slot": "rising",
+      "matched_interest": null,
+      "interests": [
+        "本地網頁小工具"
+      ],
+      "selection": {
+        "slot": "rising",
+        "hot_rank": null,
+        "matched_interest": null,
+        "composite": 82.4,
+        "age_days": 10,
+        "stars_per_day": 298,
+        "momentum": 2083,
+        "momentum_est": true
+      },
+      "category": "效率工具",
+      "category_model": "gemini-3.5-flash",
+      "full_name": "Immortal-Protocols/lastbook",
+      "url": "https://github.com/Immortal-Protocols/lastbook",
+      "description_raw": "Offline knowledge AI, maps and videos for survival and rebuilding",
+      "language": "Python",
+      "license": "MIT",
+      "stars_total": 2977,
+      "stars_this_week": null,
+      "stars_this_week_est": 2083,
+      "health": {
+        "score": 90,
+        "last_push_days": 0,
+        "commits_30d": 570,
+        "open_issues": 208,
+        "contributors": 71,
+        "flags": [
+          "issue 堆積"
+        ]
+      },
+      "intro": {
+        "one_liner": "離線運行的生存知識庫與地圖工具，內建離線 AI 代理與檢索功能。",
+        "problem": "解決在完全沒有網路的環境下無法查詢醫療救援、生存指南與地圖的問題。它將 PDF 手冊、影片與百科全書整合到電腦中，並透過離線 AI 代理協助解答問題與引述來源。",
+        "features": [
+          "提供包含地形與資源點的離線地圖與地址查詢",
+          "整合 PDF 手冊、影片與離線百科全書（ZIM 檔案）的完整知識庫",
+          "支援完全在本地電腦運行的 AI 代理，解答時會自動附上資料引用"
+        ],
+        "audience": "需要在無網環境下查閱生存知識、離線地圖，或想體驗本地 AI 代理問答的使用者。",
+        "getting_started": "前往官網下載 Windows 安裝檔並安裝，開啟軟體後依提示下載所需的離線資料包與地圖即可開始使用。",
+        "tech_stack": "Python, HTML, JavaScript, WebView2, llama.cpp",
+        "why_trending": "近期因強調資料完全離線保存、極高隱私保護與支援本地執行的 AI 代理功能而獲得關注。"
+      },
+      "practicality": {
+        "difficulty": 1,
+        "windows_ok": "yes",
+        "needs_gpu": "optional",
+        "needs_paid_api": "no",
+        "needs_coding": "none",
+        "verdict": "非工程師非常值得嘗試，官網提供直接安裝的 Windows 檔案，下載後即可離線使用。"
+      },
+      "ideas_for_me": [
+        {
+          "interest": "AI agent 與 LLM 工具",
+          "idea": "利用 Lastbook 內建的本地 AI 代理，測試完全斷網狀態下的文件檢索與知識問答功能，了解離線 LLM 的實際效能與運作邏輯。"
+        },
+        {
+          "interest": "本地網頁小工具",
+          "idea": "參考此專案以 Python 搭配 HTML/JS 開發無網路通訊埠（No-port）桌面應用的架構，學習如何把網頁介面轉化為安全的本地小工具。"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "AI 代理",
+          "explain": "能夠接收白話指令、自動搜尋資料並給出解答的人工智慧系統。"
+        },
+        {
+          "term": "PDF",
+          "explain": "一種常見且跨平台保持固定文件視覺排版的電子檔案格式。"
+        },
+        {
+          "term": "ZIM 檔案",
+          "explain": "一種將整個網站或百科全書打包成單一檔案以供離線瀏覽的格式。"
+        }
+      ],
+      "risk_notes": [],
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "專案提供下載即用的 Windows 安裝檔，除了能作為實用的離線知識庫，其結合本地 AI 代理與網頁技術的設計也非常適合你作為開發本地網頁小工具的參考。",
+        "gate_passed": true,
+        "gate_fail_reasons": [],
+        "badge": true,
+        "has_misuse_risk": false
+      },
+      "trial_prompt": "# 任務：試用 GitHub 專案 Immortal-Protocols/lastbook\n\n專案網址：https://github.com/Immortal-Protocols/lastbook\n目標：只跑 README 官方的最小範例，確認它能在我的 Windows 電腦上運作。\n預期：從官網下載安裝檔並開啟軟體，完成初次設定與 Small 資料包下載後，順利進行離線搜尋與 AI 代理問答。\n\n## 規則（全部必須遵守）\n- 只在 `D:\\sandbox\\lastbook` 這個資料夾裡操作；資料夾不存在就建立。不得讀寫、移動或刪除這個資料夾以外的任何檔案。\n- 用 `git clone https://github.com/Immortal-Protocols/lastbook.git \"D:\\sandbox\\lastbook\"` 取得程式碼。\n- 若官方提供的安裝方式是 .exe、.msi 等安裝程式，或需要安裝到上述資料夾以外的位置：不得自行下載或執行，停止並回報官方下載頁網址、檔案名稱與發布者，由我決定是否自己安裝。\n- 若是 Python 專案，一律先在該資料夾建立虛擬環境（`python -m venv .venv`）再安裝套件，不得裝到全域。Node 專案不得使用 `npm install -g`。\n- 安裝前先閱讀安裝腳本（install.sh、setup.py、package.json 的 scripts 等）與相依清單。若發現可疑行為——下載不明執行檔、要求系統管理員權限、修改系統設定或登錄檔、改動 PATH 以外的系統環境——立刻停止，把可疑內容回報給我。\n- 只執行 README 中官方提供的最小範例。跑出結果後就停止，回報你做了哪些步驟、看到什麼結果；不得自行延伸、修改程式或嘗試其他功能。\n- 需要任何付費 API 金鑰（OpenAI、Anthropic、Google 等）時，先停止並詢問我。\n- 遇到錯誤最多嘗試修正 2 次，仍失敗就停止，回報錯誤訊息與你的判斷。\n\n## 回報格式\n1. 執行了哪些指令\n2. 最小範例的輸出（或截圖說明）\n3. 你對「非工程師能不能自己用」的一句話評語",
+      "intro_status": "ai",
+      "model": "gemini-3.5-flash",
+      "lite_model": false
+    }
+  ],
+  "quick_picks": [
+    {
+      "full_name": "mvanhorn/last30days-skill",
+      "url": "https://github.com/mvanhorn/last30days-skill",
+      "description_raw": "AI agent skill that researches any topic across Reddit, X, YouTube, HN, Polymarket, and the web - then synthesizes a grounded summary",
+      "language": "Python",
+      "category": "資料與爬蟲",
+      "category_model": "gemini-3.5-flash",
+      "interests": [
+        "AI agent 與 LLM 工具",
+        "Python 自動化與 bot"
+      ],
+      "stars_total": 72981,
+      "stars_this_week": 4731,
+      "stars_this_week_est": null,
+      "health_score": 89,
+      "flags": [],
+      "one_liner": "跨平台搜尋社羣與新聞內容並生成總結的 AI 代理擴充技能。",
+      "risk_flag": null,
+      "difficulty": 2,
+      "windows_ok": "yes",
+      "needs_paid_api": "optional",
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "能透過你習慣的 Claude Code 直接安裝，符合你對 AI 代理與資料擷取的興趣。",
+        "gate_passed": true,
+        "gate_fail_reasons": [],
+        "maybe_fit": true
+      },
+      "model": "gemini-3.5-flash",
+      "one_liner_status": "ai",
+      "lite_model": false
+    },
+    {
+      "full_name": "alibaba/open-code-review",
+      "url": "https://github.com/alibaba/open-code-review",
+      "description_raw": "Secure, fast, efficient, battle-tested at Alibaba's scale. Hybrid architecture code review tool: deterministic pipelines + LLM Agent, precise line-level comments, built-in multi-language ruleset (NPE, thread-safety, XSS, SQL injection), OpenAI & Anthropic compatible.",
+      "language": "Go",
+      "category": "開發工具",
+      "category_model": "gemini-3.5-flash",
+      "interests": [
+        "AI agent 與 LLM 工具"
+      ],
+      "stars_total": 55508,
+      "stars_this_week": 3700,
+      "stars_this_week_est": null,
+      "health_score": 89,
+      "flags": [],
+      "one_liner": "自動分析程式碼並提供逐行修改建議的 AI 代理審查工具。",
+      "risk_flag": null,
+      "difficulty": 3,
+      "windows_ok": "yes",
+      "needs_paid_api": "yes",
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "主要用於團隊與大規模程式碼審查，對開發簡單腳本的個人使用者效益較低。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "付費 API 為 yes",
+          "難度 3 > 2"
+        ],
+        "maybe_fit": false
+      },
+      "model": "gemini-3.5-flash",
+      "one_liner_status": "ai",
+      "lite_model": false
+    },
+    {
+      "full_name": "Tracer-Cloud/opensre",
+      "url": "https://github.com/Tracer-Cloud/opensre",
+      "description_raw": "The open-source agent for CI/CD reliability.",
+      "language": "Python",
+      "category": "系統與基礎建設",
+      "category_model": "gemini-3.5-flash",
+      "interests": [
+        "AI agent 與 LLM 工具"
+      ],
+      "stars_total": 14539,
+      "stars_this_week": null,
+      "stars_this_week_est": 2793,
+      "health_score": 96,
+      "flags": [],
+      "one_liner": "自動分析 CI/CD 流程錯誤原因並嘗試修復的 AI 代理工具。",
+      "risk_flag": null,
+      "difficulty": 4,
+      "windows_ok": "yes",
+      "needs_paid_api": "optional",
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "主要針對 CI/CD 部署除錯，與你平常開發本地小工具與腳本的情境不符。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "難度 4 > 2"
+        ],
+        "maybe_fit": false
+      },
+      "model": "gemini-3.5-flash",
+      "one_liner_status": "ai",
+      "lite_model": false
+    },
+    {
+      "full_name": "backnotprop/plannotator",
+      "url": "https://github.com/backnotprop/plannotator",
+      "description_raw": "The workspace to stay in the loop and on top of agents - shape, decide, plan, annotate, review code, share with team, and send all feedback to agents with one click. ",
+      "language": "TypeScript",
+      "category": "開發工具",
+      "category_model": "gemini-3.5-flash",
+      "interests": [
+        "AI agent 與 LLM 工具"
+      ],
+      "stars_total": 14517,
+      "stars_this_week": 2815,
+      "stars_this_week_est": null,
+      "health_score": 92,
+      "flags": [
+        "成長異常"
+      ],
+      "one_liner": "供使用者標註計畫與程式碼並傳送反饋給 AI 代理的工作區。",
+      "risk_flag": null,
+      "difficulty": 3,
+      "windows_ok": "yes",
+      "needs_paid_api": "unknown",
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "主要用於團隊與多代理協作審查，開發個人 Python 腳本不需要此複雜介面。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "付費 API 為 unknown",
+          "難度 3 > 2",
+          "成長異常"
+        ],
+        "maybe_fit": false
+      },
+      "model": "gemini-3.5-flash",
+      "one_liner_status": "ai",
+      "lite_model": false
+    },
+    {
+      "full_name": "XiaoYouChR/Ghost-Downloader-3",
+      "url": "https://github.com/XiaoYouChR/Ghost-Downloader-3",
+      "description_raw": "The only downloader you need. 下載器的集大成者。",
+      "language": "Python",
+      "category": "效率工具",
+      "category_model": "gemini-3.5-flash",
+      "interests": [],
+      "stars_total": 15611,
+      "stars_this_week": null,
+      "stars_this_week_est": 4907,
+      "health_score": 74,
+      "flags": [],
+      "one_liner": "支援多種協定與 BT 下載的跨平台桌面下載管理工具。",
+      "risk_flag": null,
+      "difficulty": 1,
+      "windows_ok": "yes",
+      "needs_paid_api": "no",
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "為一般下載工具，未涵蓋你在 Python 自動化或 AI 代理方面的開發興趣。",
+        "gate_passed": true,
+        "gate_fail_reasons": [],
+        "maybe_fit": false
+      },
+      "model": "gemini-3.5-flash",
+      "one_liner_status": "ai",
+      "lite_model": false
+    },
+    {
+      "full_name": "kajisho5/ffmpeg-skill",
+      "url": "https://github.com/kajisho5/ffmpeg-skill",
+      "description_raw": "Local video editor for coding agents: 42 FFmpeg tools with a machine-readable contract and an MCP server, for Claude Code, Cursor and Codex. Cut, captions, reframe, loudness, platform exports. No cloud, no API keys.",
+      "language": "Python",
+      "category": "效率工具",
+      "category_model": "gemini-3.5-flash",
+      "interests": [
+        "AI agent 與 LLM 工具"
+      ],
+      "stars_total": 9900,
+      "stars_this_week": 3748,
+      "stars_this_week_est": null,
+      "health_score": 79,
+      "flags": [],
+      "one_liner": "讓 AI 代理能透過本地 FFmpeg 進行影片剪輯的擴充技能。",
+      "risk_flag": null,
+      "difficulty": 2,
+      "windows_ok": "yes",
+      "needs_paid_api": "no",
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "能直接整合至你的 Claude Code，無須付費 API 即可透過 AI 代理自動處理影片。",
+        "gate_passed": true,
+        "gate_fail_reasons": [],
+        "maybe_fit": true
+      },
+      "model": "gemini-3.5-flash",
+      "one_liner_status": "ai",
+      "lite_model": false
+    },
+    {
+      "full_name": "toeverything/AFFiNE",
+      "url": "https://github.com/toeverything/AFFiNE",
+      "description_raw": "There can be more than Notion and Miro. AFFiNE(pronounced [ə‘fain]) is a next-gen knowledge base that brings planning, sorting and creating all together. Privacy first, open-source, customizable and ready to use. ",
+      "language": "TypeScript",
+      "category": "效率工具",
+      "category_model": "gemini-3.5-flash",
+      "interests": [],
+      "stars_total": 77000,
+      "stars_this_week": null,
+      "stars_this_week_est": 3794,
+      "health_score": 76,
+      "flags": [],
+      "one_liner": "整合文件、畫布與表格的開源隱私優先筆記與知識庫軟體。",
+      "risk_flag": null,
+      "difficulty": 1,
+      "windows_ok": "yes",
+      "needs_paid_api": "no",
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "屬於一般生產力與筆記軟體，與你專注的 Python 與 AI 代理開發不相關。",
+        "gate_passed": true,
+        "gate_fail_reasons": [],
+        "maybe_fit": false
+      },
+      "model": "gemini-3.5-flash",
+      "one_liner_status": "ai",
+      "lite_model": false
+    },
+    {
+      "full_name": "zhouxiaoka/autoclip",
+      "url": "https://github.com/zhouxiaoka/autoclip",
+      "description_raw": "AutoClip｜一個連結，一鍵出片。開源 AI 影片剪輯桌面工具，將播客、訪談、課程等長影片自動剪成短影片，生成字幕、封面和釋出文案，適配抖音、小紅書、TikTok、Reels 與 YouTube Shorts。Open-source AI video clipping & content repurposing.",
+      "language": "Python",
+      "category": "效率工具",
+      "category_model": "gemini-3.5-flash",
+      "interests": [
+        "AI agent 與 LLM 工具"
+      ],
+      "stars_total": 13814,
+      "stars_this_week": 2808,
+      "stars_this_week_est": null,
+      "health_score": 84,
+      "flags": [],
+      "one_liner": "將長影片自動剪輯為短影片並生成字幕文案的桌面工具。",
+      "risk_flag": "可能產生費用",
+      "difficulty": 1,
+      "windows_ok": "yes",
+      "needs_paid_api": "yes",
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "提供 Windows 桌面版下載即用，符合你對 AI 代理與影音自動化處理的興趣。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "付費 API 為 yes",
+          "有風險標籤「可能產生費用」"
+        ],
+        "maybe_fit": false
+      },
+      "model": "gemini-3.5-flash",
+      "one_liner_status": "ai",
+      "lite_model": false
+    },
+    {
+      "full_name": "Tencent/LoopForge",
+      "url": "https://github.com/Tencent/LoopForge",
+      "description_raw": "Self-hosted workflows for coding-agent delivery. Orchestrate CodeBuddy, Codex and Claude Code with scripts and human approval gates. Includes Local workflows for coding assistants.",
+      "language": "Go",
+      "category": "開發工具",
+      "category_model": "gemini-3.5-flash",
+      "interests": [
+        "AI agent 與 LLM 工具",
+        "本地網頁小工具",
+        "Python 自動化與 bot"
+      ],
+      "stars_total": 5769,
+      "stars_this_week": 4316,
+      "stars_this_week_est": null,
+      "health_score": 73,
+      "flags": [
+        "issue 堆積"
+      ],
+      "one_liner": "管理與編排多個 AI 代理程式碼開發流程的自託管平台。",
+      "risk_flag": null,
+      "difficulty": 4,
+      "windows_ok": "yes",
+      "needs_paid_api": "optional",
+      "recommend": {
+        "llm_says": false,
+        "llm_reason": "需透過 Docker 自託管且偏向團隊流程管理，對非工程師來說架設門檻較高。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "難度 4 > 2"
+        ],
+        "maybe_fit": false
+      },
+      "model": "gemini-3.5-flash",
+      "one_liner_status": "ai",
+      "lite_model": false
+    },
+    {
+      "full_name": "HKUDS/CLI-Anything",
+      "url": "https://github.com/HKUDS/CLI-Anything",
+      "description_raw": "\"CLI-Anything: Making ALL Software Agent-Native\" -- CLI-Hub: https://clianything.cc/",
+      "language": "Python",
+      "category": "開發工具",
+      "category_model": "gemini-3.5-flash",
+      "interests": [
+        "AI agent 與 LLM 工具"
+      ],
+      "stars_total": 63027,
+      "stars_this_week": null,
+      "stars_this_week_est": 4893,
+      "health_score": 68,
+      "flags": [
+        "近 30 天幾乎沒有更新"
+      ],
+      "one_liner": "將各種日常軟體轉換為 AI 代理可呼叫指令列介面的工具。",
+      "risk_flag": null,
+      "difficulty": 3,
+      "windows_ok": "yes",
+      "needs_paid_api": "optional",
+      "recommend": {
+        "llm_says": true,
+        "llm_reason": "採用 Python 開發且專注於 AI 代理延伸工具，非常符合你的興趣清單。",
+        "gate_passed": false,
+        "gate_fail_reasons": [
+          "難度 3 > 2"
+        ],
+        "maybe_fit": false
+      },
+      "model": "gemini-3.5-flash",
+      "one_liner_status": "ai",
+      "lite_model": false
+    }
+  ],
+  "week": "2026-W48"
+}
